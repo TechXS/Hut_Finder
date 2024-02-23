@@ -1,35 +1,37 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {RouterProvider} from "react-router-dom";
+import router from "./router/Router";
+import {useDispatch} from "react-redux";
+import {setCurrentLandlord} from "./stores/landlordSlice";
+import {setCurrentClient} from "./stores/clientSlice";
+import CssBaseline from "@mui/material/CssBaseline";
+import {createTheme, ThemeProvider} from '@mui/material';
+import useMediaQuery from "@mui/material/useMediaQuery";
+import {useMemo} from "react";
+import {themePalette} from "./presetsColor.js";
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+const App = () => {
+    const dispatch = useDispatch();
+    const currentLandlord = JSON.parse(localStorage.getItem("currentLandlord"));
+    const currentClient = JSON.parse(localStorage.getItem("currentClient"));
+    if (currentLandlord) {
+        dispatch(setCurrentLandlord(currentLandlord));
+    } else if (currentClient) {
+        dispatch(setCurrentClient(currentClient));
+    }
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-export default App
+    const theme = useMemo(
+        () =>
+            createTheme(themePalette[prefersDarkMode ? 'dark' : 'light']),
+        [prefersDarkMode],
+    );
+
+    return (
+        <ThemeProvider theme={theme}>
+            <CssBaseline/>
+            <RouterProvider router={router}/>
+        </ThemeProvider>);
+};
+
+export default App;
