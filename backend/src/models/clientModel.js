@@ -51,8 +51,15 @@ const clientSchema = new Schema(
             default: "https://res.cloudinary.com/dlhv79tzp/image/upload/v1688329957/user-images/nsn2dlabvge32pbgoxhr.jpg",
         },
         location: {
-            type: String,
-            ref: "location",
+            type: {
+                type: String,
+                enum: ['Point'],
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            }
         },
         reviews: [{
             type: Schema.Types.ObjectId,

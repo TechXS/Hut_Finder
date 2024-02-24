@@ -8,8 +8,15 @@ const propertySchema = new Schema(
             unique: true,
         },
         location: {
-            type: String,
-            required: true,
+            type: {
+                type: String,
+                enum: ['Point'],
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            }
         },
         images: [
             {

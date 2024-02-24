@@ -4,7 +4,7 @@ const Property = require("../models/propertyModel");
 
 // remove from wishlist
 const removeFromWishlist = async (req, res) => {
-    const {id} = req.params;
+    const {id} = req.params
     const {data} = req.body
     try {
         if (!isValidObjectId(id)) {
