@@ -59,7 +59,8 @@ const clientSchema = new Schema(
             coordinates: {
                 type: [Number],
                 required: true
-            }
+            },
+            index: '2dsphere'
         },
         reviews: [{
             type: Schema.Types.ObjectId,

@@ -18,6 +18,9 @@ const getAllProperties = async (req, res) => {
 // Get one Property
 const getSpecificProperty = async (req, res) => {
     const {id} = req.params;
+    const {location} = req.query();
+
+    console.log(location);
 
     try {
         if (!isValidObjectId(id)) {
@@ -27,7 +30,7 @@ const getSpecificProperty = async (req, res) => {
             });
         }
 
-        const result = await Property.findById(id)
+        const result = await Property.findOne({ _id: id }).where('location').within(location)
             .populate({
                 path: "units",
                 select: "name type price vacancies",
