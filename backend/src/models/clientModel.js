@@ -27,6 +27,20 @@ const clientSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "property",
         }],
+        preferences: {
+            amenities: [{
+                type: Schema.Types.ObjectId,
+                ref: "amenity",
+            }],
+            prices: {
+                type: Number,
+                ref: "price",
+            },
+            location: {
+                type: String,
+                ref: "location",
+            },
+        },
         publicId: {
             type: String,
             required: false,
@@ -35,7 +49,15 @@ const clientSchema = new Schema(
             type: String,
             required: false,
             default: "https://res.cloudinary.com/dlhv79tzp/image/upload/v1688329957/user-images/nsn2dlabvge32pbgoxhr.jpg",
-        }
+        },
+        location: {
+            type: String,
+            ref: "location",
+        },
+        reviews: [{
+            type: Schema.Types.ObjectId,
+            ref: "review",
+        }]
     },
     {timestamps: true}
 );

@@ -30,6 +30,10 @@ const unitSchema = new Schema(
                 type: String,
             }
         ],
+        special_amenities: [{
+            type: Schema.Types.ObjectId,
+            ref: "amenity",
+        }],
 
     },
     {timestamps: true}
