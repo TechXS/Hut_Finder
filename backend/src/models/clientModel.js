@@ -60,7 +60,6 @@ const clientSchema = new Schema(
                 type: [Number],
                 required: true
             },
-            index: '2dsphere'
         },
         reviews: [{
             type: Schema.Types.ObjectId,
