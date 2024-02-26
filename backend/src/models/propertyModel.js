@@ -8,8 +8,16 @@ const propertySchema = new Schema(
             unique: true,
         },
         location: {
-            type: String,
-            required: true,
+            type: {
+                type: String,
+                enum: ['Point'],
+                required: true
+            },
+            coordinates: {
+                type: [Number],
+                required: true
+            },
+            index: '2dsphere'
         },
         images: [
             {
@@ -17,11 +25,10 @@ const propertySchema = new Schema(
 
             }
         ],
-        amenities: [
-            {
-                type: String,
-            }
-        ],
+        amenities: [{
+            type: Schema.Types.ObjectId,
+            ref: "amenity",
+        }],
         description: String,
         units: [{type: Schema.Types.ObjectId, ref: "unit"}],
         show_vacancies: Boolean,
