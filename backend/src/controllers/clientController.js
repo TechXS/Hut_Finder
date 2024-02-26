@@ -1,5 +1,5 @@
 const Client = require('../models/clientModel')
-const {isValidObjectId} = require("mongoose");
+const {isValidObjectId,Types} = require("mongoose");
 const Property = require("../models/propertyModel");
 const Appointment = require("../models/appointmentModel");
 
@@ -32,16 +32,16 @@ const addToWishList = async (req, res) => {
 
 // remove from wishlist
 const removeFromWishlist = async (req, res) => {
-    const {id} = req.params
-    const {data} = req.body
+    const { client_id, property_id } = req.params;
+
     try {
-        if (!isValidObjectId(id)) {
+        if (!isValidObjectId(client_id)) {
             throw Error('Client does not exist');
-        } else if (!isValidObjectId(data.property_id)) {
+        } else if (!isValidObjectId(property_id)) {
             throw Error('Property does not exist');
         }
 
-        const result = await Client.findByIdAndUpdate(id, {$pop: {wishlist: data.property_id}},
+        const result = await Client.findByIdAndUpdate(client_id, {$pull: {wishlist: property_id}},
             {new: true})
 
         res.json(result);
@@ -62,19 +62,12 @@ const createAppointment = async (req, res) => {
         }
 
         // Create the appointment using the provided data
-        const appointment = await Appointment.create({
-            landlord: data.landlord,
-            property: data.property,
-            client: data.client,
-            date: new Date(data.date),
-            purpose: data.purpose || 'view property', // Default to 'view property' if purpose is not provided
-
-        });
+        const appointment = await Appointment.create(data);
 
         res.status(201).json(appointment);
     } catch (error) {
         console.error("Error creating appointment:", error);
-        res.status(500).json({ error: 'Failed to create appointment.' });
+        res.status(500).json({ message: 'Failed to create appointment.' ,error:error.message });
     }
 };
 
@@ -95,8 +88,8 @@ const getPropertyById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        if (!id) {
-            return res.status(400).json({ error: 'Property ID is missing in the request parameters.' });
+        if (!isValidObjectId(id)) {
+            return res.status(400).json({ error: 'Property does not exist' });
         }
 
         const property = await Property.findById(id);
@@ -108,7 +101,7 @@ const getPropertyById = async (req, res) => {
         res.status(200).json(property);
     } catch (error) {
         console.error("Error getting property by ID:", error);
-        res.status(500).json({ error: 'Failed to retrieve property.' });
+        res.status(500).json({ message: 'Failed to retrieve property.' ,error:error.message  });
     }
 };
 module.exports = {addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById}
