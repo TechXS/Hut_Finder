@@ -17,7 +17,6 @@ const propertySchema = new Schema(
                 type: [Number],
                 required: true
             },
-            //index: '2dsphere'
         },
         images: [
             {
