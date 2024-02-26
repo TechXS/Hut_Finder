@@ -54,6 +54,10 @@ const Browse = () => {
           </div>
           <div className="browseResult">
             <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
+            <SearchItem/>
           </div>
         </div>
       </div>
