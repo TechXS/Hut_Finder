@@ -17,7 +17,7 @@ const propertySchema = new Schema(
                 type: [Number],
                 required: true
             },
-            index: '2dsphere'
+            // index: '2dsphere'
         },
         images: [
             {
@@ -35,5 +35,5 @@ const propertySchema = new Schema(
     },
     {timestamps: true}
 );
-
+// propertySchema.index({ location: '2dsphere' });
 module.exports = model("property", propertySchema);
