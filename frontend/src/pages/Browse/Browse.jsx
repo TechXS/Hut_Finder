@@ -2,79 +2,37 @@ import "./browse.css"
 import Navbar from "../../components/Navbar/Navbar"
 import Header from "../../components/Header/Header"
 import SearchItem from "../../components/SearchItem/SearchItem"
-// const Browse = () => {
-//   return (
-//     <div>
-//         <Navbar/>
-//         <Header/>
-//         <div className="browseContainer">
-//             <div className="browseWrapper">
-//                 <div className="browseSearch">
-//                     <h1 className="brtitle">Search</h1>
-//                     <div className="brItem">
-//                         <label>Search by Property name...</label>
-//                         <input type="text"/>
-//                     </div>
-//                     <div className="brItem">
-//                         <label>Options</label>
-//                         <div className="brOptionItem">
-//                             <span className="brOptionText">
-//                                 Min price
-//                             </span>
-//                             <input type="number" className="brOptionInput"/>
-//                         </div>
-//                         <div className="brOptionItem">
-//                             <span className="brOptionText">
-//                                 Max price
-//                             </span>
-//                             <input type="number" className="brOptionInput"/>
-//                         </div>
-//                     </div>
-//                     <button>Search</button>
-//                 </div>
-//                 <div className="browseResult">
-//                     <SearchItem/>
-//                 </div>
-//             </div>
-//         </div>
 
-//     </div>
-//   )
-// }
-
-// export default Browse
 const Browse = () => {
-    return (
-      <div>
-        <Navbar/>
-        <Header/>
-        <div className="browseContainer">
-          <div className="browseWrapper">
-            <div className="browseSearch">
-              <h1 className="brtitle">Search</h1>
-              <div className="brItem">
-                <label>Search by Property name...</label>
-                <input type="text"/>
-              </div>
-              <div className="brItem">
-                <label>Options</label>
-                <div className="brOptionItem">
-                  <span className="brOptionText">
-                    Min price
-                  </span>
-                  <input type="number" className="brOptionInput"/>
-                </div>
-                <div className="brOptionItem">
-                  <span className="brOptionText">
-                    Max price
-                  </span>
-                  <input type="number" className="brOptionInput"/>
-                </div>
-              </div>
-              <button>Search</button>
+  return (
+    <div>
+      <Navbar/>
+      <Header/>
+      <div className="browseContainer">
+        <div className="browseWrapper">
+          <div className="browseSearch">
+            <h1 className="brtitle">Search</h1>
+            <div className="brItem">
+              <label>Search by Property name...</label>
+              <input type="text"/>
             </div>
-            <div className="browseFilters">
-              <h2>Filters</h2>
+            <div className="brItem">
+              <label>Options</label>
+              <div className="brOptionItem">
+                <span className="brOptionText">
+                  Min price
+                </span>
+                <input type="number" className="brOptionInput"/>
+              </div>
+              <div className="brOptionItem">
+                <span className="brOptionText">
+                  Max price
+                </span>
+                <input type="number" className="brOptionInput"/>
+              </div>
+            </div>
+            <div className="brItem">
+              <label>Filters</label>
               <div className="filterItem">
                 <input type="checkbox" id="oceanView"/>
                 <label htmlFor="oceanView">Ocean View</label>
@@ -92,13 +50,15 @@ const Browse = () => {
                 <label htmlFor="lift">Lift</label>
               </div>
             </div>
-            <div className="browseResult">
-              <SearchItem/>
-            </div>
+            <button>Search</button>
+          </div>
+          <div className="browseResult">
+            <SearchItem/>
           </div>
         </div>
       </div>
-    )
-  }
-  
-  export default Browse
+    </div>
+  )
+}
+
+export default Browse
