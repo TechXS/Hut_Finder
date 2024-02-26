@@ -42,5 +42,15 @@ const getSpecificProperty = async (req, res) => {
 
     }
 };
+const createLandlord = async (req, res) => {
+    const { data } = req.body;
+    Landlord.create(data)
+        .then((landlord) => {
+            res.status(201).json(landlord);
+        })
+        .catch((error) => {
+            res.status(500).json({message: 'Could not create landlord', error: error.message});
+        });
+};
 
-module.exports = {getSpecificProperty, getAllProperties}
+module.exports = {getSpecificProperty, getAllProperties, createLandlord}
