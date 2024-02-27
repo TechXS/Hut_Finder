@@ -7,7 +7,6 @@ const landlordRoutes = require("./landlordRouter");
 const clientRoutes = require("./clientRouter");
 const authRoutes = require("./authRouter");
 const propertyRoutes = require("./propertyRouter");
-const authRoutes = require("./authRouter");
 
 const router = Router();
 router.use("/auth", authRoutes);
