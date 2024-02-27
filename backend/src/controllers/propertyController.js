@@ -151,7 +151,29 @@ const deleteProperty = (req, res) => {
     })
 }
 
+//update property
+const updateProperty = (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Property ID"});
+    }
+    Property.findByIdAndUpdate(
+        {_id: id}, 
+        data, 
+        {new: true}
+    ).then((response) => {
+        console.log('Updated property:', response)
+        res.status(200).json({message: "Property updated successfully"});
+    })
+    .catch((err) => {
+        console.log("Error:\n", err.message)
+        res.status(400).json({error: "Error updating property"});
+    })
+}
+
        
     
 
-module.exports = {createProperty, deleteProperty}
+module.exports = {createProperty, updateProperty, deleteProperty}
