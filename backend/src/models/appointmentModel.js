@@ -7,7 +7,7 @@ const appointmentSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'Landlord',
       required: true,
-    },
+    }, 
     property: {
       type: Schema.Types.ObjectId,
       ref: 'Property',
