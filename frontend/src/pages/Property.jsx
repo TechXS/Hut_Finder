@@ -66,7 +66,7 @@ const Property = () => {
         <Box>
             <div className="backbutton">
                 {" "}
-                <Link to="/landlord/properties">
+                <Link to="/">
                     <Button variant="contained" color="secondary">
                         Back
                     </Button>
