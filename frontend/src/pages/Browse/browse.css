@@ -1,0 +1,94 @@
+  .browseContainer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.browseWrapper {
+    width: 100%;
+    max-width: 1024px;
+    display: flex;
+}
+
+.browseSearch {
+    flex: 1;
+    background-color: rgb(146, 142, 172);
+    padding: 10px;
+    border-radius: 10px;
+    position: sticky;
+    top: 10px;
+    margin-right: 20px;
+    height: max-content;
+}
+
+.brtitle {
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.brItem {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.brItem > input {
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.brOptionItem {
+    display: flex; 
+    flex-direction: column;
+    gap: 5px;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.brOptionInput {
+    height: 30px;
+}
+
+.browseSearch > button {
+    padding: 10px;
+    background-color: #0071c2;
+    color: white;
+    border: none;
+    width: 100%;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 10px; /* Add margin to separate from filters */
+}
+
+.browseSearch > button:hover {
+    background-color: #003580;
+}
+
+.browseFilters {
+    flex: 1; /* Take up remaining space */
+    background-color: rgb(146, 142, 172);
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 20px; /* Add margin to separate from search */
+}
+
+.filterItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+
+.filterItem input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+.filterItem label {
+    font-size: 16px;
+}
+

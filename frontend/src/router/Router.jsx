@@ -12,6 +12,7 @@ import ClientSignIn from "../components/SignIn/ClientSignIn.jsx";
 import ResetPassword from "../components/SignIn/ResetPassword.jsx";
 import CancelResetPassword from "../components/SignIn/CancelResetPassword.jsx";
 import PortalLayout from "../layouts/PortalLayout.jsx";
+import BrowseLayout from "../layouts/BrowseLayout.jsx";
 
 const router = createBrowserRouter([
     {
@@ -56,6 +57,11 @@ const router = createBrowserRouter([
                 element: <>dashboard</>,
             },
         ],
+    },
+    {
+        path: "/browse",
+        element: <BrowseLayout/>,
+        errorElement: <Error/>,
     },
 ]);
 
