@@ -1,5 +1,5 @@
 import "./browse.css"
-import Navbar from "../../components/Navbar/Navbar"
+import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
 import SearchItem from "../../components/SearchItem/SearchItem"
 
