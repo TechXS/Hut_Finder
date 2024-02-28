@@ -53,11 +53,12 @@ const Browse = () => {
             <button>Search</button>
           </div>
           <div className="browseResult">
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
           </div>
         </div>
       </div>

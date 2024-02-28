@@ -1,22 +1,22 @@
 import "./propertyPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 // import Header from "../../components/header/Header";
-// import MailList from "../../components/mailList/MailList";
 // import Footer from "../../components/Footer/Footer";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleArrowLeft,
-  faCircleArrowRight,
-  faCircleXmark,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
+import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import CancelIcon from '@mui/icons-material/Cancel';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+import WifiIcon from '@mui/icons-material/Wifi';
+import BathtubIcon from '@mui/icons-material/Bathtub';
+import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useState } from "react";
-
 
 const PropertyPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
-
 
   const photos = [
     {
@@ -39,27 +39,20 @@ const PropertyPage = () => {
     },
   ];
 
-
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
   };
 
-
   const handleMove = (direction) => {
     let newSlideNumber;
-
-
     if (direction === "l") {
       newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
     } else {
       newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
     }
-
-
-    setSlideNumber(newSlideNumber)
+    setSlideNumber(newSlideNumber);
   };
-
 
   return (
     <div>
@@ -68,21 +61,18 @@ const PropertyPage = () => {
       <div className="PropContainer">
         {open && (
           <div className="slider">
-            <FontAwesomeIcon
-              icon={faCircleXmark}
+            <CancelIcon
               className="close"
               onClick={() => setOpen(false)}
             />
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
+            <ArrowCircleLeftIcon
               className="arrow"
               onClick={() => handleMove("l")}
             />
             <div className="sliderWrapper">
               <img src={photos[slideNumber].src} alt="" className="sliderImg" />
             </div>
-            <FontAwesomeIcon
-              icon={faCircleArrowRight}
+            <ArrowCircleRightIcon
               className="arrow"
               onClick={() => handleMove("r")}
             />
@@ -92,7 +82,7 @@ const PropertyPage = () => {
           <button className="bookNow">Reserve or Book Now!</button>
           <h1 className="PropTitle">Cascade Plaza</h1>
           <div className="PropAddress">
-            <FontAwesomeIcon icon={faLocationDot} />
+            <LocationOnIcon />
             <span>Sunrise St 125 Juja</span>
           </div>
           <span className="PropDistance">
@@ -126,6 +116,36 @@ const PropertyPage = () => {
                 The nearest petrol station is Shell petrol, 16.1 km
                 from Cascade Plaza, and the property offers a paid gabbage collection
               </p>
+              <div className="PropDetailsExtra">
+                <div className="PropDetailsWrapper">
+                  <div className="PropIcons">
+                    <div className="iconWithText">
+                      <ApartmentIcon />
+                      <span>Apartment</span>
+                    </div>
+                    <div className="iconWithText">
+                      <LocalFloristIcon />
+                      <span>Garden</span>
+                    </div>
+                    <div className="iconWithText">
+                      <WifiIcon />
+                      <span>Wifi</span>
+                    </div>
+                    <div className="iconWithText">
+                      <BathtubIcon />
+                      <span>Washrooms</span>
+                    </div>
+                    <div className="iconWithText">
+                      <LocalParkingIcon />
+                      <span>Parking</span>
+                    </div>
+                    <div className="iconWithText">
+                      <VisibilityIcon />
+                      <span>View</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div className="PropDetailsPrice">
               <h1>Get what you need</h1>
@@ -150,12 +170,10 @@ const PropertyPage = () => {
             </div>
           </div>
         </div>
-        {/* <MailList /> */}
         {/* <Footer /> */}
       </div>
     </div>
   );
 };
-
 
 export default PropertyPage;

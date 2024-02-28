@@ -42,30 +42,31 @@ export default SearchItem;
 
 
 // import "./searchItem.css";
+
 // const SearchItem = ({ retrievedItems }) => {
 //   return (
 //     <>
 //       {retrievedItems.map((item, index) => (
 //         <div key={index} className="searchItem">
-//           <img src={item.image} alt="" className="brImg" />
+//           <img src={item.imageUrl} alt="" className="brImg" />
 //           <div className="brDesc">
 //             <h1 className="brTitle">{item.title}</h1>
 //             <span className="brDistance">{item.distance}</span>
-//             <span className="brTaxiOp">{item.taxi}</span>
+//             <span className="brTaxiOp">{item.taxiOption}</span>
 //             <span className="brSubtitle">{item.subtitle}</span>
 //             <span className="brFeatures">{item.features}</span>
-//             <span className="brCancelOp">{item.cancel}</span>
-//             <span className="brCancelOpSubtitle">{item.cancelSubtitle}</span>
+//             <span className="brCancelOp">{item.cancelOption}</span>
+//             <span className="brCancelOpSubtitle">{item.cancelOptionSubtitle}</span>
 //           </div>
 //           <div className="brDetails">
 //             <div className="brRating">
 //               <span>{item.ratingLabel}</span>
-//               <button>{item.rating}</button>
+//               <button>{item.ratingValue}</button>
 //             </div>
 //             <div className="brDetailTexts">
 //               <span className="brPrice">{item.price}</span>
-//               <span className="brTaxOp">{item.tax}</span>
-//               <button className="brCheckButton">{item.availability}</button>
+//               <span className="brTaxOp">{item.taxOption}</span>
+//               <button className="brCheckButton">{item.availabilityButton}</button>
 //             </div>
 //           </div>
 //         </div>
