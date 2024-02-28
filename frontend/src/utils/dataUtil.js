@@ -13,3 +13,34 @@ export const getUnitType = (type) => {
         return "Four Bedroom";
     }
 };
+
+export const properties = [
+    {
+      type: "Select",
+      value: "undefined",
+    },
+    {
+      type: "Single Room",
+      value: "SR",
+    },
+    {
+      type: "Bedsitter",
+      value: "BD",
+    },
+    {
+      type: "One Bedroom",
+      value: "OBD",
+    },
+    {
+      type: "Two Bedroom",
+      value: "TWB",
+    },
+    {
+      type: "Three Bedroom",
+      value: "THB",
+    },
+    {
+      type: "Four Bedroom",
+      value: "FRB",
+    },
+  ];
