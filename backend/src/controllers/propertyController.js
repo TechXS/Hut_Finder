@@ -101,25 +101,79 @@ const deleteProperty = (req, res) => {
         // res.status(200).json({message: "Property deleted successfully"});
         const units = response.units;
         console.log('unitArray:', units);
+        const amenities = response.amenities;
+        console.log("Amenity", amenities);
         for (const unit of units){
             Unit.findByIdAndDelete({_id: unit})
             .then((response) => {
-                console.log('Deleted unit:', response)
-                res.status(200).json({message: "Property deleted successfully"});
+                // const special_amenities = unit.special_amenities
+                console.log('Deleted unit\n', response)
+                console.log('Special amenity:', response.special_amenities)
+                for (const samenity of response.special_amenities){
+                    Amenity.findByIdAndDelete({_id: samenity})
+                    .then((response) => {
+                        console.log('Deleted special amenity:', response)
+                        // res.status(200).json({message: "Property deleted successfully"});
+                    })
+                    .catch((err) => {
+                        console.log("Error:\n", err.message)
+                        // res.status(400).json({error: "Error deleting property"});
+                    })
+                }
+                // res.status(200).json({message: "Property deleted successfully"});
             })
             .catch((err) => {
                 console.log("Error:\n", err.message)
-                res.status(400).json({error: "Error deleting uuuuproperty"});
+                // res.status(400).json({error: "Error deleting uuuuproperty"});
             })
         }
+        for (const amenity of amenities){
+            Amenity.findByIdAndDelete({_id: amenity})
+            .then((response) => {
+                console.log('Deleted amenity:', response)
+                // res.status(200).json({message: "Property deleted successfully"});
+            })
+            .catch((err) => {
+                console.log("Error:\n", err.message)
+                // res.status(400).json({error: "Error deleting property"});
+            })
+        }
+
     })
+    .then((response) =>{
+        console.log("Successful property creation")
+        res.status(200).json({message: "Property deleted successfully"});
+    })
+
     .catch((err) => {
         console.log("Error:\n", err.message)
         res.status(400).json({error: "Error deleting property"});
     })
 }
 
+//update property
+const updateProperty = (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Property ID"});
+    }
+    Property.findByIdAndUpdate(
+        {_id: id}, 
+        data, 
+        {new: true}
+    ).then((response) => {
+        console.log('Updated property:', response)
+        res.status(200).json({message: "Property updated successfully"});
+    })
+    .catch((err) => {
+        console.log("Error:\n", err.message)
+        res.status(400).json({error: "Error updating property"});
+    })
+}
+
        
     
 
-module.exports = {createProperty, deleteProperty}
+module.exports = {createProperty, updateProperty, deleteProperty}
