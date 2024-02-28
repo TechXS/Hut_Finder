@@ -47,43 +47,7 @@ const LandlordSignUp = () => {
       dispatch(setErrorNotification(e?.data?.message ?? e.error));
     }
   };
-  // const handleSubmit = (event) => {
-  //     event.preventDefault();
-  //     setLoading(true);
-  //
-  //     landlordSignupValidation(signupData)
-  //         .then(() => {
-  //             fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/landlord/`, {
-  //                 method: "POST",
-  //                 headers: {
-  //                     "Content-Type": "application/json",
-  //                 },
-  //                 credentials: "include",
-  //                 body: JSON.stringify({data: signupData}),
-  //             })
-  //                 .then(async (response) => {
-  //                     setLoading(false);
-  //                     if (response.status !== 200) {
-  //                         const data = await response.json();
-  //                         throw new Error(data.message);
-  //                     }
-  //                     return response.json();
-  //                 })
-  //                 .then(() => {
-  //                     dispatch(setSignupError(null));
-  //                     setLoading(false);
-  //                     return navigate("/login");
-  //                 })
-  //                 .catch((error) => {
-  //                     setLoading(false);
-  //                     dispatch(setSignupError(error.message));
-  //                 });
-  //         })
-  //         .catch((error) => {
-  //             setLoading(false);
-  //             dispatch(setSignupError(error.message));
-  //         });
-  // };
+
   return (
     <>
       <Typography component="h1" variant="h5">
@@ -176,14 +140,6 @@ const LandlordSignUp = () => {
           label="Remember me"
           sx={{ marginBottom: "10px" }}
         />
-        {/* <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Sign Up
-        </Button> */}
         <LoadingButton
           loading={isLoading}
           loadingPosition="end"

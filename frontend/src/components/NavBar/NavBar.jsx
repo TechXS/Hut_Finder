@@ -41,9 +41,12 @@ const NavBar = () => {
             <Typography
             sx={{padding:2}}
             to={"/"}><Link>Contacts</Link></Typography>
-            <Button 
-            sx={{backgroundColor:'#07779a'}}
-            variant='contained'>LOGIN</Button>
+            <Link to="/auth/signin/client">
+                <Button
+                    sx={{backgroundColor:'#07779a'}}
+                    variant='contained'>LOGIN</Button>
+            </Link>
+
         </Box>
       </Box>
         </Paper>
