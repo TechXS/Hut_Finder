@@ -181,6 +181,8 @@ const PropertyPage = () => {
             <PropertyListing />
             <PropertyListing />
             <PropertyListing />
+            <PropertyListing />
+            <PropertyListing />
           </div>
         </div>
         {/* <Footer /> */}
