@@ -2,6 +2,8 @@ import "./propertyPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 // import Header from "../../components/header/Header";
 // import Footer from "../../components/Footer/Footer";
+import PropertyListing from "../../components/PropertyListing/PropertyListing"
+import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
 import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -168,6 +170,17 @@ const PropertyPage = () => {
               </h2>
               <button>Reserve or Book Now!</button>
             </div>
+          </div>
+        </div>
+        <div className="propInfo">
+          <PropertyHeader/>
+          <div className="flex-container">
+            <PropertyListing />
+            <PropertyListing />
+            <PropertyListing />
+            <PropertyListing />
+            <PropertyListing />
+            <PropertyListing />
           </div>
         </div>
         {/* <Footer /> */}
