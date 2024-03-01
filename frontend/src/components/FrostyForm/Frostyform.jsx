@@ -6,51 +6,36 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import { Box, FormControl } from '@mui/material';
+import axios from 'axios';
 
 const Frostyform = () => {
-
-
     const handleChange = (event) => {
       setLocation(event.target);
-  
+      
     };
-
 
     const [address, setAddress] = useState('');
-    const [location, setLocation] = useState(null);
-    const [error, setError] = useState('');
+    const [coordinates, setCoordinates] = useState(null);
+    
+    const handleGeocode = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.get(
+          `https://api.opencagedata.com/geocode/v1/json?q=${address}&key=207d121f6a144cd7b1b049fb9497f409`
+        );
   
-    const geocodeAddress = () => {
-      const encodedAddress = encodeURIComponent(address);
-  
-      fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodedAddress}&key=207d121f6a144cd7b1b049fb9497f409`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.results.length > 0) {
-            const result = data.results[0];
-            const formattedAddress = result.formatted;
-            const coordinates = result.geometry;
-  
-            setLocation({
-              formattedAddress,
-              latitude: coordinates.lat,
-              longitude: coordinates.lng
-            });
-          } else {
-            setError('Geocode was not successful.');
-          }
-        })
-        .catch(error => {
-          console.error('Error during geocoding:', error);
-          setError('Error during geocoding.');
-        });
+        const { results } = response.data;
+        if (results.length > 0) {
+          const { lat, lng } = results[0].geometry;
+          setCoordinates({ latitude: lat, longitude: lng });
+          console.log(lat,lng);
+        } else {
+          console.error('Location not found');
+        }
+      } catch (error) {
+        console.error('Error fetching geocode data', error);
+      }
     };
-  
-    const handleInputChange = (event) => {
-      setAddress(event.target.value);
-    };
-  
-
 
   return (
     <div>
@@ -103,26 +88,22 @@ const Frostyform = () => {
                         sx={{backgroundColor:'#07779a'}}
                         startIcon={<SearchIcon />}
                         variant='contained'>Search</Button>
-        <input
-        type="text"
-        id="addressInput"
-        placeholder="Enter an address"
-        value={address}
-        onChange={handleInputChange}
-      />
-      <button onClick={geocodeAddress}>Geocode</button>
-
-      {location && (
-        <div>
-          <p>Latitude: {location.latitude}</p>
-          <p>Longitude: {location.longitude}</p>
-          <p>Address: {location.formattedAddress}</p>
-        </div>
-      )}
-
-      {error && <p>{error}</p>}
 
                 </Box>
+        <form onSubmit={handleGeocode}>
+        <input
+          type="text"
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <button type="submit">Geocode</button>
+      </form>
+      {coordinates && (
+        <div>
+          <p>Latitude: {coordinates.latitude}</p>
+          <p>Longitude: {coordinates.longitude}</p>
+        </div>
+      )}
     </div>
   )
 }
