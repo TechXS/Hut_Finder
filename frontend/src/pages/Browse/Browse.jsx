@@ -5,7 +5,7 @@ import SearchItem from "../../components/SearchItem/SearchItem"
 
 const Browse = () => {
   return (
-    <div>
+    <div>  
       <Navbar/>
       <Header/>
       <div className="browseContainer">

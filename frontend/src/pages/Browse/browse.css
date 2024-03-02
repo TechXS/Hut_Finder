@@ -1,7 +1,8 @@
   .browseContainer {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    background-color: #f1f1f1;
 }
 
 .browseWrapper {

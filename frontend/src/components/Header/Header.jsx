@@ -38,14 +38,6 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div className="searchBar">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-        />
-      </div>
       <div className="headerContainer">
         <div className="headerList">
           <div className="headerListItem">

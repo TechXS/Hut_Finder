@@ -1,12 +1,10 @@
 
 
 .header {
-    background-color: #0071c2;
-    color: white;
+    background-color: #f1f1f1;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 20px;
   }
   
   .headerContainer {
@@ -24,16 +22,23 @@
     width: 100%;
     max-width: 1024px;
     justify-content: center;
+    border-radius: 5px;
+
   }
   
   .headerListItem {
     padding-bottom: 10px;
     display: flex;
     align-items: center;
-    width: 100%;
     max-width: 1024px;
-    gap: 30px;
+    border-radius: 5px;
   }
+  .headerListItem select {
+    height: 40px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
   
   .searchBar {
     width: 100%;
@@ -42,6 +47,7 @@
     margin-top: 10px;
     display: flex;
     justify-content: center;
+    border: 1px solid black;
   }
   
   .searchBar input {
