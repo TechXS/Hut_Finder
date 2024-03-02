@@ -16,6 +16,7 @@ import BrowseLayout from "../layouts/BrowseLayout.jsx";
 import Properties from "../pages/Properties.jsx";
 import AddProperty from "../pages/AddProperties.jsx";
 import Property from "../pages/Property.jsx";
+import PropertyLayout from "../layouts/PropertyLayout.jsx"
 
 const router = createBrowserRouter([
     {
@@ -67,9 +68,14 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
+        path: "/property",
+        element: <PropertyLayout/>,
+        errorElement: <Error/>,
+    },
+    {
         path:'/properties',
         element: <Properties />
-        
+
     },
     {
         path: '/addproperty',

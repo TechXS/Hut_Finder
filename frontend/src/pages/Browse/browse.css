@@ -61,21 +61,12 @@
     width: 100%;
     font-weight: 500;
     cursor: pointer;
-    margin-top: 10px; /* Add margin to separate from filters */
+    margin-top: 10px;
 }
 
 .browseSearch > button:hover {
     background-color: #003580;
 }
-
-.browseFilters {
-    flex: 1; /* Take up remaining space */
-    background-color: rgb(146, 142, 172);
-    padding: 10px;
-    border-radius: 10px;
-    margin-left: 20px; /* Add margin to separate from search */
-}
-
 .filterItem {
     display: flex;
     align-items: center;

@@ -50,14 +50,15 @@ const Browse = () => {
                 <label htmlFor="lift">Lift</label>
               </div>
             </div>
-            <button>Search</button>
+            <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
-            <SearchItem/>
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
           </div>
         </div>
       </div>
@@ -66,3 +67,4 @@ const Browse = () => {
 }
 
 export default Browse
+
