@@ -1,7 +1,6 @@
   .browseContainer {
     display: flex;
     justify-content: center;
-    /* margin-top: 20px; */
     background-color: #f1f1f1;
 }
 
@@ -18,7 +17,7 @@
     border-radius: 10px;
     position: sticky;
     top: 10px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     height: max-content;
 }
 
