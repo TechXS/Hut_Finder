@@ -27,7 +27,8 @@ const App = () => {
 
     const theme = useMemo(
         () =>
-            createTheme(themePalette[prefersDarkMode ? 'dark' : 'light']),
+            // createTheme(themePalette[prefersDarkMode ? 'dark' : 'light']),
+            createTheme(themePalette['light']),
         [prefersDarkMode],
     );
 
