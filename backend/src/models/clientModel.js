@@ -54,13 +54,14 @@ const clientSchema = new Schema(
             type: {
                 type: String,
                 enum: ['Point'],
-                required: true
+                default:'Point',
+                required: false
             },
             coordinates: {
                 type: [Number],
-                required: true
+                default: [null,null],
+                required: false
             },
-            index: '2dsphere'
         },
         reviews: [{
             type: Schema.Types.ObjectId,
@@ -69,6 +70,22 @@ const clientSchema = new Schema(
     },
     {timestamps: true}
 );
+//  method to the clientSchema for adding a property to the wishlist
+clientSchema.methods.addToWishList = async function (propertyId) {
+    try {
+      // Check if the propertyId is already in the wishlist
+      if (!this.wishlist.includes(propertyId)) {
+        this.wishlist.push(propertyId);
+        await this.save();
+        return { success: true, message: 'Property added to wishlist.' };
+      } else {
+        return { success: false, message: 'Property is already in the wishlist.' };
+      }
+    } catch (error) {
+      console.error('Error adding property to wishlist:', error);
+      return { success: false, message: 'Failed to add property to wishlist.' };
+    }
+  };
 
 // Mongoose Life hooks ---- before save
 clientSchema.pre("save", async function (next) {

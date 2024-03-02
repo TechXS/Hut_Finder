@@ -12,7 +12,14 @@ export const signUpValidation = (data) => {
                 }
             });
         } else {
-            resolve(data);
+            const location = JSON.parse(sessionStorage.getItem("location") ?? '')
+            console.log(location)
+            const new_data = {...data,location:{
+                type:"Point",
+                    coordinates:[location.longitude,location.latitude]
+                }};
+            console.log(new_data)
+            resolve(new_data);
         }
     });
 };

@@ -12,7 +12,7 @@
 
 .browseSearch {
     flex: 1;
-    background-color: rgb(146, 142, 172);
+    background-color: #f1f1f1;
     padding: 10px;
     border-radius: 10px;
     position: sticky;

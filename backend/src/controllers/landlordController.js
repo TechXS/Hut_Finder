@@ -1,5 +1,6 @@
 const Property = require('../models/propertyModel');
 const Landlord = require('../models/landlordModel')
+const Appointment = require('../models/appointmentModel')
 const {isValidObjectId} = require("mongoose");
 
 
@@ -42,5 +43,33 @@ const getSpecificProperty = async (req, res) => {
 
     }
 };
+const createLandlord = async (req, res) => {
+    const { data } = req.body;
+    Landlord.create(data)
+        .then((landlord) => {
+            res.status(201).json(landlord);
+        })
+        .catch((error) => {
+            res.status(500).json({message: 'Could not create landlord', error: error.message});
+        });
+};
 
-module.exports = {getSpecificProperty, getAllProperties}
+//get appointments
+const getAllAppointments = (req, res) => {
+    const { id } = req.params
+    console.log("id", id)
+    Appointment.find({ landlord: id })
+        .populate({ path: 'property', select: 'name location' })
+        .populate({ path: 'client', select: 'name email' })
+        .then((appointments) => {
+            console.log("appointments\n", appointments)
+            res.status(200).json({ message: "Appointments fetched successfully\n", appointments });
+        })
+        .catch((err) => {
+            console.log("Error:\n", err.message)
+            res.status(400).json({ error: "Error fetching appointments" });
+        });
+};
+
+
+module.exports = {getSpecificProperty, getAllProperties, createLandlord, getAllAppointments}
