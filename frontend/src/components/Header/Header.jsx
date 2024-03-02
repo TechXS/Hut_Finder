@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import "./header.css";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -7,6 +8,7 @@ const Header = () => {
   const [property, setProperty] = useState("properties");
   const [unitType, setUnitType] = useState("unitType");
   const [price, setPrice] = useState("price");
+  // const search = () => {}
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value);
@@ -76,6 +78,7 @@ const Header = () => {
               <option value="20001-30000">20001 - 30000</option>
             </select>
           </div>
+          <SearchIcon style={{ alignSelf: 'center' }}/>
           <button className="btn" onClick={handleReset}>Reset</button>
         </div>
       </div>
