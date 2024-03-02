@@ -31,6 +31,5 @@ const appointmentSchema = new Schema(
   { timestamps: true }
 );
 
-const Appointment = model('Appointment', appointmentSchema);
 
-module.exports = Appointment;
+module.exports =  model('appointment', appointmentSchema);
