@@ -78,7 +78,7 @@ const Header = () => {
               <option value="20001-30000">20001 - 30000</option>
             </select>
           </div>
-          <SearchIcon style={{ alignSelf: 'center' }}/>
+          <SearchIcon style={{ alignSelf: 'center' }}/>          
           <button className="btn" onClick={handleReset}>Reset</button>
         </div>
       </div>

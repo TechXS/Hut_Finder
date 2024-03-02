@@ -9,7 +9,9 @@ const NavBar = () => {
   return (
     <div>
         <Paper 
-        elevation={3}>
+        elevation={3}
+        sx={{ boxShadow: '0px 0px 20px 5px rgba(0, 0, 0, 0.2)' }}
+        >
         <Box 
       height={"8vh"}
       width={"100%"}
@@ -21,7 +23,7 @@ const NavBar = () => {
         <Box>
             <Typography
             sx={{padding:2}}
-            to={"/"}><Link>TMS FINDER</Link></Typography>
+            to={"/"}><Link>HUT FINDER</Link></Typography>
         </Box>
         <Box
         display={"flex"}

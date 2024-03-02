@@ -36,9 +36,11 @@
 }
 
 .brItem > input {
-    border: none;
+    border: 1px solid rgb(158, 154, 154);
     padding: 10px;
     font-size: 16px;
+    border-radius: 10px;
+    height: 40px;
 }
 
 .brOptionItem {
@@ -50,7 +52,10 @@
 }
 
 .brOptionInput {
-    height: 30px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgb(158, 154, 154);
+    /* width: 50%; */
 }
 
 .browseSearch > button {

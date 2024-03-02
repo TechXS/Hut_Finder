@@ -16,8 +16,11 @@ const Browse = () => {
               <label>Search by Property name...</label>
               <input type="text"/>
             </div>
+            <br/>
+            <hr/>
+            <br/>
             <div className="brItem">
-              <label>Options</label>
+              <label className="brtitle">Options</label>
               <div className="brOptionItem">
                 <span className="brOptionText">
                   Min price
