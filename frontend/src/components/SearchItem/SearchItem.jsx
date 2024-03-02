@@ -13,7 +13,7 @@ const SearchItem = () => {
         <span className="brDistance">500m from Juja City Mall</span>
         <span className="brTaxiOp">Free wifi installation</span>
         <span className="brSubtitle">
-          Spacious Apartment with Air conditioning
+          1 bedroom • 2 bedroom • bedsitter • Studio
         </span>
         <span className="brFeatures">
           Laundry area • Underground packing • Rooftop oasis
