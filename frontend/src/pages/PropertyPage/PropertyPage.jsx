@@ -1,19 +1,8 @@
 import "./propertyPage.css";
 import Navbar from "../../components/NavBar/NavBar";
-// import Header from "../../components/header/Header";
-// import Footer from "../../components/Footer/Footer";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import CancelIcon from '@mui/icons-material/Cancel';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ApartmentIcon from '@mui/icons-material/Apartment';
-import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
-import WifiIcon from '@mui/icons-material/Wifi';
-import BathtubIcon from '@mui/icons-material/Bathtub';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import "./propertyPage.css";
 import { useState } from "react";
 
 const PropertyPage = () => {
@@ -59,32 +48,28 @@ const PropertyPage = () => {
   return (
     <div>
       <Navbar />
-      {/* <Header /> */}
       <div className="PropContainer">
         {open && (
           <div className="slider">
-            <CancelIcon
-              className="close"
-              onClick={() => setOpen(false)}
-            />
-            <ArrowCircleLeftIcon
-              className="arrow"
-              onClick={() => handleMove("l")}
-            />
+            <span className="close" onClick={() => setOpen(false)}>
+              <span className="material-symbols-outlined">cancel</span>
+            </span>
+            <span className="arrow" onClick={() => handleMove("l")}>
+              <span className="material-symbols-outlined">arrow_circle_left</span>
+            </span>
             <div className="sliderWrapper">
               <img src={photos[slideNumber].src} alt="" className="sliderImg" />
             </div>
-            <ArrowCircleRightIcon
-              className="arrow"
-              onClick={() => handleMove("r")}
-            />
+            <span className="arrow" onClick={() => handleMove("r")}>
+              <span className="material-symbols-outlined">arrow_circle_right</span>
+            </span>
           </div>
         )}
         <div className="PropWrapper">
           <button className="bookNow">Reserve or Book Now!</button>
           <h1 className="PropTitle">Cascade Plaza</h1>
           <div className="PropAddress">
-            <LocationOnIcon />
+            <span className="material-symbols-outlined">location_on</span>
             <span>Sunrise St 125 Juja</span>
           </div>
           <span className="PropDistance">
@@ -122,27 +107,27 @@ const PropertyPage = () => {
                 <div className="PropDetailsWrapper">
                   <div className="PropIcons">
                     <div className="iconWithText">
-                      <ApartmentIcon />
+                      <span className="material-symbols-outlined">apartment</span>
                       <span>Apartment</span>
                     </div>
                     <div className="iconWithText">
-                      <LocalFloristIcon />
+                      <span className="material-symbols-outlined">local_florist</span>
                       <span>Garden</span>
                     </div>
                     <div className="iconWithText">
-                      <WifiIcon />
+                      <span className="material-symbols-outlined">wifi</span>
                       <span>Wifi</span>
                     </div>
                     <div className="iconWithText">
-                      <BathtubIcon />
+                      <span className="material-symbols-outlined">bathtub</span>
                       <span>Washrooms</span>
                     </div>
                     <div className="iconWithText">
-                      <LocalParkingIcon />
+                      <span className="material-symbols-outlined">local_parking</span>
                       <span>Parking</span>
                     </div>
                     <div className="iconWithText">
-                      <VisibilityIcon />
+                      <span className="material-symbols-outlined">visibility</span>
                       <span>View</span>
                     </div>
                   </div>
@@ -159,14 +144,8 @@ const PropertyPage = () => {
               <span>
                 Top Location: Highly rated by recent guests (8.7/10).
               </span>
-              {/* <h1>Apppartments with:</h1>
-              <span>
-                Garden view
-                Inner courtyard view
-                Free underground parking on site
-              </span> */}
               <h2>
-                <b>$945</b>
+                {/* <b>$945</b> */}
               </h2>
               <button>Reserve or Book Now!</button>
             </div>
@@ -174,21 +153,20 @@ const PropertyPage = () => {
         </div>
         <div className="propInfo">
           <PropertyHeader/>
-          <div className="flex-container">
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-          </div>
-        </div>
-        {/* <Footer /> */}
-      </div>
-    </div>
-  );
-};
-
-export default PropertyPage;
+           <div className="flex-container">
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+           </div>
+         </div>
+         {/* <Footer /> */}
+       </div>
+     </div>
+   );
+ };
+ export default PropertyPage;
