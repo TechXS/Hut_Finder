@@ -47,7 +47,7 @@ const NavBar = () => {
             textDecoration: "none",
             fontSize: "1.5rem"
         }}>
-            <Link>
+            <Link to={'/'}>
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
