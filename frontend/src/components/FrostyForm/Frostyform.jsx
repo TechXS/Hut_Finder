@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
@@ -11,16 +11,29 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HomeIcon from '@mui/icons-material/Home';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const Frostyform = () => {
-    const handleChange = (event) => {
-      setLocation(event.target);
-      
-    };
-
     const [address, setAddress] = useState('');
     const [coordinates, setCoordinates] = useState(null);
-    
+    const [formData,setFormData] = useState({});
+    const [url, setUrl] = useState('/browse');
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData((prevState) => ({ ...prevState, [name]: value }));
+    };
+
+    useEffect(() => {
+        // Generate URL based on form data
+        let generatedUrl = '/browse';
+        const queryParams = Object.keys(formData).map(key => `${key}=${encodeURIComponent(formData[key])}`).join('&');
+        if (queryParams) {
+            generatedUrl += `?${queryParams}`;
+        }
+        setUrl(generatedUrl);
+    }, [formData]);
+
     const handleGeocode = async (e) => {
       e.preventDefault();
       try {
@@ -61,6 +74,7 @@ const Frostyform = () => {
                     padding:"1rem",
                     gap:"0.5rem"
                 }}
+                onChange={handleChange}
                 >
               <TextField
                   margin="normal"
@@ -132,14 +146,16 @@ const Frostyform = () => {
                       ),
                   }}
               />
-              <Button sx={{backgroundColor:'#07779a' , paddingX:"2rem",paddingY:"0.5rem",textTransform:"none"
-              ,fontSize:"17px",
-              "&:hover":{backgroundColor:"#0f586b"},}}
-                        startIcon={<SearchIcon />}
-                        variant='contained'
-                      disableElevation={true}
-                      disableFocusRipple={true}
-              >Search</Button>
+           <Link to={url}>
+               <Button sx={{backgroundColor:'#07779a' , paddingX:"2rem",paddingY:"0.5rem",textTransform:"none"
+                   ,fontSize:"17px",
+                   "&:hover":{backgroundColor:"#0f586b"},}}
+                       startIcon={<SearchIcon />}
+                       variant='contained'
+                       disableElevation={true}
+                       disableFocusRipple={true}
+               >Search</Button>
+           </Link>
 
           </Box>
   )
