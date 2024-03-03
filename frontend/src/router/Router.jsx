@@ -1,5 +1,5 @@
 import {createBrowserRouter} from "react-router-dom";
-import LandingLayout from "../layouts/LandingLayout";
+import LandingLayout from "../layouts/LandlordLayout.jsx";
 import Error from "../components/Error/Error";
 import AuthLayout from "../layouts/AuthLayout";
 import ForgotPassword from "../components/SignIn/ForgotPassword.jsx";
@@ -14,6 +14,11 @@ import CancelResetPassword from "../components/SignIn/CancelResetPassword.jsx";
 import PortalLayout from "../layouts/PortalLayout.jsx";
 import BrowseLayout from "../layouts/BrowseLayout.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
+import Property from "../pages/PropertyPage/AddProperty.jsx";
+import LandlordLayout from "../layouts/LandlordLayout.jsx";
+import SearchItemList from "../components/SearchItem/SearchItem.jsx";
+import Profile from "../components/profile/Profile.jsx";
+//import Profile from "../components/profile/ClientProfile.jsx";
 
 const router = createBrowserRouter([
     {
@@ -68,7 +73,55 @@ const router = createBrowserRouter([
         path: "/property",
         element: <PropertyLayout/>,
         errorElement: <Error/>,
+        
     },
+    //{
+    //    path: "/addproperty",
+    //    element: <Property/>,
+    //    errorElement: <Error/>,
+    //},
+    
+    {
+        path:"/landlord",
+        element: <LandlordLayout />,
+        children:[
+            //{
+            //      path:"/landlord/browse",
+            //      element:<BrowseLayout/>,
+            //    
+            //    },
+        //  {
+        //    index: true,
+        //    element: <Dashboard />
+        //  },
+        //  {
+        //    path:"/landlord/stats",
+        //    element: <Stats />,
+        //  
+        //  },
+        //  {
+        //    path:"/landlord/properties",
+        //    element: <List />,
+        //  
+        //  },
+        //  {
+        //    path:"/landlord/propertypage",
+        //    element: <Property />,
+        //  
+        //  },
+        {
+          path:"/landlord/profile",
+          element: <Profile />,
+        
+        },
+        //  {
+        //    path:"/landlord/complaints",
+        //    element: <ComplaintsPage />,
+        //  
+        //  },
+        ]
+      
+      },
 ]);
 
 export default router;
