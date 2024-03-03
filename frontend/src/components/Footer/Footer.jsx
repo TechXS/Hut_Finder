@@ -40,7 +40,7 @@ const Footer = ()=>{
         }
     ]
     return (
-        <Box sx={{
+        <Box component={"div"} id="contact_us" sx={{
             backgroundImage: `url(${wave})`,
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",

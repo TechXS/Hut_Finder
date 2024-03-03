@@ -73,27 +73,49 @@ const NavBar = () => {
             }}
         >
             {
-                navLinks.map((navLink,id)=>(
-                  <Link to={navLink.path} key={id}>
-                      <Box sx={{
-                          color:"#07779A",
-                          "&:hover" : {backgroundColor:"#bde1ea"},
-                          fontSize:"20px",
-                          fontWeight:"semibold",
-                          borderRadius:2,
-                          paddingY:"0.5rem",
-                          paddingX:"1rem",
-                          minWidth:"6rem",
-                          display:{
-                              xs:"none",
-                              sm:"flex"
-                          }
+                navLinks.map((navLink,id)=> {
+                       return  navLink.name === "Contact Us" ? (
+                            <a href={navLink.path} key={id}>
+                                <Box sx={{
+                                    color: "#07779A",
+                                    "&:hover": {backgroundColor: "#bde1ea"},
+                                    fontSize: "20px",
+                                    fontWeight: "semibold",
+                                    borderRadius: 2,
+                                    paddingY: "0.5rem",
+                                    paddingX: "1rem",
+                                    minWidth: "6rem",
+                                    display: {
+                                        xs: "none",
+                                        sm: "flex"
+                                    }
 
-                      }}>
-                          {navLink.name}
-                      </Box>
-                  </Link>
-                ))
+                                }}>
+                                    {navLink.name}
+                                </Box>
+                            </a>) : (
+                            <Link to={navLink.path} key={id}>
+                                <Box sx={{
+                                    color: "#07779A",
+                                    "&:hover": {backgroundColor: "#bde1ea"},
+                                    fontSize: "20px",
+                                    fontWeight: "semibold",
+                                    borderRadius: 2,
+                                    paddingY: "0.5rem",
+                                    paddingX: "1rem",
+                                    minWidth: "6rem",
+                                    display: {
+                                        xs: "none",
+                                        sm: "flex"
+                                    }
+
+                                }}>
+                                    {navLink.name}
+                                </Box>
+                            </Link>
+                        )
+                    }
+                )
             }
             <Link to="/auth/signin/client">
                 <Button
