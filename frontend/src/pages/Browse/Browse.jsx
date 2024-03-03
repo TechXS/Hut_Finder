@@ -1,22 +1,9 @@
 import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
-import SearchItem from "../../components/SearchItem/SearchItem"
-import Pagination from "../../components/Pagination/Pagination"
-import React, { useState } from 'react';
+import PropertyList from "../../components/PropertyList/PropertyList"
 
 const Browse = () => {
-    // State to manage the active page
-    const cards = [];
-    for (let i = 0; i < 100; i++){
-      cards.push(<SearchItem key={i} />)
-    }
-    const [activePage, setActivePage] = useState(1);
-    const [cardsPerPage, setCardsPerPage] = useState(6);
-    const lastCardIndex = activePage * cardsPerPage;
-    const firstCardIndex = lastCardIndex - cardsPerPage;
-    const currentCards = cards.slice(firstCardIndex, lastCardIndex);
-
   return (
     <div>   
       <Navbar/>
@@ -69,17 +56,7 @@ const Browse = () => {
             <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
-          {
-            currentCards.map((card, index) => (
-              <SearchItem key={index} />
-            ))
-          }
-          <Pagination
-            totalCards={cards.length}
-            cardsPerPage={cardsPerPage}
-            setActivePage={setActivePage}
-            activePage={activePage}
-          />
+          <PropertyList/>
           </div>
         </div>
       </div>
