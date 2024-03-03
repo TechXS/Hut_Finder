@@ -11,13 +11,13 @@ const createProperty = async (req, res) => {
     const unitTypes = data.p_units;
     const amenities = data.p_amenities;
 
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Landlord ID"});
+    }
+
     Property.create(data)
     .then((property) => {
         console.log('Property id\n', property._id);
-
-        if (!isValidObjectId(id)) {
-            return res.status(400).json({error: "Not Valid Landlord ID"});
-        }
 
            return Landlord.findByIdAndUpdate(
             {_id: id},

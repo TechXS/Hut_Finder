@@ -1,10 +1,10 @@
-const {Router} = require('express');
-const { createProperty, updateProperty, deleteProperty } = require('../controllers/propertyController');
-
-const router = Router();
-
-router.post('/:id/create', createProperty);
-router.delete('/:id/delete', deleteProperty);
-router.patch('/:id/update', updateProperty);
-
-module.exports = router;
+// const {Router} = require('express');
+// const { createProperty, updateProperty, deleteProperty } = require('../controllers/propertyController');
+//
+// const router = Router();
+//
+// // router.post('/:id', createProperty);
+// // router.delete('/:id', deleteProperty);
+// // router.patch('/:id', updateProperty);
+//
+// module.exports = router;
