@@ -4,6 +4,7 @@ import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
 import "./propertyPage.css";
 import { useState } from "react";
+import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 
 const PropertyPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -66,7 +67,6 @@ const PropertyPage = () => {
           </div>
         )}
         <div className="PropWrapper">
-          <button className="bookNow">Reserve or Book Now!</button>
           <h1 className="PropTitle">Cascade Plaza</h1>
           <div className="PropAddress">
             <span className="material-symbols-outlined">location_on</span>
@@ -144,9 +144,9 @@ const PropertyPage = () => {
               <span>
                 Top Location: Highly rated by recent guests (8.7/10).
               </span>
-              <h2>
-                {/* <b>$945</b> */}
-              </h2>
+              <div className="date">
+                <DateTimePicker/>
+              </div>
               <button>Reserve or Book Now!</button>
             </div>
           </div>
