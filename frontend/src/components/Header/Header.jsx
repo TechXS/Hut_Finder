@@ -37,8 +37,7 @@ const Header = () => {
         <div className="headerList">
           <div className="headerListItem">
             <select value={location} onChange={handleLocationChange}>
-            {/* <input type="text" placeholder="Search by Property name..." /> */}
-              <option value="location">Location</option>
+/              <option value="location">Location</option>
               <option value="gateA">Gate A</option>
               <option value="gateB">Gate B</option>
               <option value="gateC">Gate C</option>
