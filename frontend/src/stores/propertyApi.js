@@ -39,6 +39,19 @@ export const propertyApi = createApi({
                 body: payload,
             }),
         }),
+        updateProperty: builder.mutation({
+            query: ({id, payload}) => ({
+                url: `${id}`,
+                method: "PATCH",
+                body: payload,
+            }),
+        }), deleteProperty: builder.mutation({
+            query: ({id, payload}) => ({
+                url: `${id}`,
+                method: "DELETE",
+                body: payload,
+            }),
+        }),
     }),
 });
 
@@ -46,5 +59,7 @@ export const {
     useGetPropertiesQuery,
     useGetUnitsOfPropertyQuery,
     useCreatePropertyMutation,
+    useUpdatePropertyMutation,
+    useDeletePropertyMutation,
     useGetPropertyQuery
 } = propertyApi;

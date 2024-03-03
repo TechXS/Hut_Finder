@@ -67,7 +67,7 @@ const Frostyform = () => {
                   label='Location'
                   name="location"
                   type="text"
-                  sx={{width:"15rem", backdropFilter:"blur(7px)", position:"relative",
+                  sx={{width:"15rem", backdropFilter:"blur(7px)", position:"relative",    borderRadius:2, backgroundColor:"#FFFFFF",
               }}
                   InputProps={{
                       startAdornment: (
@@ -82,7 +82,7 @@ const Frostyform = () => {
                   label='Property'
                   name="property_name"
                   type="text"
-                  sx={{width:"15rem",backdropFilter:"blur(7px)"
+                  sx={{width:"15rem",backdropFilter:"blur(7px)",    borderRadius:2, backgroundColor:"#FFFFFF"
                   }}
                   InputProps={{
                       startAdornment: (
@@ -93,7 +93,7 @@ const Frostyform = () => {
                   }}
               />
 
-              <FormControl sx={{ width:"14.5rem" }}>
+              <FormControl sx={{ width:"14.5rem",     borderRadius:2,backgroundColor:"#FFFFFF" }}>
                   <InputLabel htmlFor="unit_type" id="unit_type">
                       Unit Type
                   </InputLabel>
@@ -121,9 +121,8 @@ const Frostyform = () => {
                   label='Price'
                   name="price"
                   type="text"
-                  sx={{width:"15rem","&.Mui-focused":{
-                          backgroundColor:"#FFFFFF"
-                      }
+                  sx={{width:"15rem",
+                          backgroundColor:"#FFFFFF",    borderRadius:2
                   }}
                   InputProps={{
                       startAdornment: (

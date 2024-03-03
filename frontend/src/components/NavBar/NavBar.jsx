@@ -35,6 +35,10 @@ const NavBar = () => {
                 zIndex: "999",
                 paddingY:"0.5rem",
                 paddingX:"2rem",
+                boxShadow:"  0 1px 2px 0 rgb(0 0 0 / 0.05)"
+                // borderBottom:"#b9b9b9",
+                // borderBottomWidth:"1px",
+                // borderBottomStyle:"solid"
             }}
       >
         <Box  sx={{
@@ -70,7 +74,7 @@ const NavBar = () => {
         >
             {
                 navLinks.map((navLink,id)=>(
-                  <Link to={navLink.path}>
+                  <Link to={navLink.path} key={id}>
                       <Box sx={{
                           color:"#07779A",
                           "&:hover" : {backgroundColor:"#bde1ea"},
