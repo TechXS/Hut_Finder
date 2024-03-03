@@ -1,6 +1,5 @@
 .searchItem {
     border: 1px solid lightgray;
-    padding: 30px;
     border-radius: 15px;
     display: flex;
     justify-content: space-between;
@@ -8,13 +7,17 @@
     margin-bottom: 20px;
     max-width: auto;
     background-color: white;
-
+    padding-right: 30px;
+    min-height: 285px;
+    min-width: 775px;
   }
   
   .brImg {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: auto;
     object-fit: cover;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
   }
   
   .brDesc {
@@ -76,6 +79,7 @@
   
   .brRating>span{
     font-weight: 500;
+    margin-top: 10px;
   }
   .brRating>button{
    background-color: #003580;
@@ -83,6 +87,7 @@
    padding: 5px;
    font-weight: bold;
    border: none;
+   margin-top: 10px;
   }
   
   .brDetailTexts{
@@ -109,4 +114,5 @@
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    margin-bottom: 10px;
   }

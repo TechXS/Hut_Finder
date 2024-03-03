@@ -96,7 +96,7 @@ const Browse = () => {
                 <label htmlFor="lift">Lift</label>
               </div>
             </div>
-            <button className="btn-search">Search</button>
+            {/* <button className="btn-search">Search</button> */}
           </div>
           <div className="browseResult">
           <PropertyList filterCondition={filterCondition} search={search}/>
