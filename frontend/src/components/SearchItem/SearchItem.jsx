@@ -31,7 +31,7 @@ const SearchItem = ({ properties }) => {
         <div className="brDetails">
           <div className="brRating">
             <span>Excellent</span>
-            <button>8.9</button>
+            <a>8.9</a>
           </div>
           <div className="brDetailTexts">
             <span className="brPrice">$112</span>
