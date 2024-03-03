@@ -2,8 +2,22 @@ import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
 import PropertyList from "../../components/PropertyList/PropertyList"
+import { useState } from 'react';
 
 const Browse = () => {
+  const [filterCondition, setfilterCondition] = useState([]);
+
+  const filterHandler = (event) => {
+    if (event.target.checked) {
+      setfilterCondition([...filterCondition, event.target.value])
+    } else {
+      setfilterCondition(
+        filterCondition.filter((filterTag) => filterTag !== event.target.value)
+      )
+    }
+    console.log("filterCondition", filterCondition)
+  }
+
   return (
     <div>   
       <Navbar/>
@@ -37,26 +51,46 @@ const Browse = () => {
             <div className="brItem">
               <label>Filters</label>
               <div className="filterItem">
-                <input type="checkbox" id="oceanView"/>
+                <input
+                  type="checkbox" 
+                  id="oceanView"
+                  value="Ocean View"
+                  onChange={filterHandler}
+                 />
                 <label htmlFor="oceanView">Ocean View</label>
               </div>
               <div className="filterItem">
-                <input type="checkbox" id="pool"/>
+                <input 
+                  type="checkbox" 
+                  id="pool"
+                  value="Pool"
+                  onChange={filterHandler}
+                  />
                 <label htmlFor="pool">Pool</label>
               </div>
               <div className="filterItem">
-                <input type="checkbox" id="undergroundParking"/>
+                <input 
+                  type="checkbox" 
+                  id="undergroundParking"
+                  value="Underground Parking"
+                  onChange={filterHandler}
+                  />
                 <label htmlFor="undergroundParking">Underground Parking</label>
               </div>
               <div className="filterItem">
-                <input type="checkbox" id="lift"/>
+                <input 
+                  type="checkbox" 
+                  id="lift"
+                  value="Lift"
+                  onChange={filterHandler}
+                  />
                 <label htmlFor="lift">Lift</label>
               </div>
             </div>
             <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
-          <PropertyList/>
+          <PropertyList filterCondition={filterCondition}/>
           </div>
         </div>
       </div>
