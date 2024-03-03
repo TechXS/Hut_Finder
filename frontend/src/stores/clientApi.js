@@ -1,9 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-export const propertyApi = createApi({
-    reducerPath: "propertyApi",
+export const clientApi = createApi({
+    reducerPath: "clientApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BACKEND_API_URL}/api/property/`,
+        baseUrl: `${import.meta.env.VITE_BACKEND_API_URL}/api/client/`,
         prepareHeaders: (headers) => {
             const accessToken = sessionStorage.getItem("token");
             if (accessToken) {
@@ -16,38 +16,37 @@ export const propertyApi = createApi({
     endpoints: (builder) => ({
         getProperties: builder.query({
             query: () => {
-                return {url: `client`};
+                return {url: `/properties`};
             },
         }),
         getProperty: builder.query({
-            query: (id) => {
-                return {url: `${id}`};
+            query: ({id,property_id}) => {
+                return {url: `/properties/${property_id}`};
             },
         }),
-        getUnitsOfProperty: builder.query({
+        getAppointments: builder.query({
             query: (id) => {
-                return {url: `client/${id}`};
-            },
-            transformResponse: (response) => {
-                return response.units;
+                return {url: `${id}/appointments`};
             },
         }),
-        createProperty: builder.mutation({
+
+        createAppointment: builder.mutation({
             query: ({id, payload}) => ({
-                url: `${id}`,
+                url: `{id}/appointments`,
                 method: "POST",
                 body: payload,
             }),
         }),
-        updateProperty: builder.mutation({
-            query: ({id, payload}) => ({
-                url: `${id}`,
+        addToWishList: builder.mutation({
+            query: ({id,property_id, payload}) => ({
+                url: `${id}/wishlist/${property_id}`,
                 method: "PATCH",
                 body: payload,
             }),
-        }), deleteProperty: builder.mutation({
-            query: ({id, payload}) => ({
-                url: `${id}`,
+        }),
+        removeFromWishlist: builder.mutation({
+            query: ({id,property_id, payload}) => ({
+                url: `${id}/wishlist/${property_id}`,
                 method: "DELETE",
                 body: payload,
             }),
@@ -57,9 +56,9 @@ export const propertyApi = createApi({
 
 export const {
     useGetPropertiesQuery,
-    useGetUnitsOfPropertyQuery,
-    useCreatePropertyMutation,
-    useUpdatePropertyMutation,
-    useDeletePropertyMutation,
-    useGetPropertyQuery
-} = propertyApi;
+    useGetPropertyQuery,
+    useGetAppointmentsQuery,
+    useCreateAppointmentMutation,
+    useAddToWishListMutation,
+    useRemoveFromWishlistMutation
+} = clientApi;

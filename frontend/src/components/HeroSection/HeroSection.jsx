@@ -13,15 +13,14 @@ const HeroSection = () => {
 
 
   return (
-    <div>
-      <Paper 
-      elevation={3} >
-        <Box 
-        height={"90vh"}
-        width={"100vw"}
+        <Box
+        minHeight={"90%"}
+        width={"100%"}
         display={'flex'}
         alignItems={'center'}
         justifyContent={'center'}
+        overflow={'auto'}
+        postion={"relative"}
         >
 
             <Box 
@@ -29,42 +28,53 @@ const HeroSection = () => {
             backgroundSize:'cover',
             backgroundRepeat:"none",
           }}
-            width={"85vw"}
-            height={"85vh"}
+            // width={"85vw"}
+            // height={"85vh"}
+                width={'90%'}
+            minHeight={'85vh'}
             borderRadius={"10px"}
             display={'flex'}
             justifyContent={'space-evenly'}
+            postion={"relative"}
             flexDirection={'column'}
             padding={'30px'}
             >
               <Box
-              //for the h2 text 
             display={'flex'}
             justifyContent={'space-between'}
             flexDirection={'column'}
-            height={'40vh'}
+            height={'40%'}
               >
-                <Typography variant="h1">
-                    Find Your best 
-                </Typography>
-                <Typography variant="h1">
-                    Real Estate
-                </Typography>
+             <Box>
+               <Typography variant="h1" sx={{
+                   fontWeight:"normal"
+               }}>
+                   Find Your best
+               </Typography>
+               <Typography variant="h1" sx={{ //#A3D9D9
+                   color:"#068585",
+                   fontWeight:"bold"
+               }}>
+                   Real Estate
+               </Typography>
+             </Box>
 
                 <Typography 
-                sx={{width:'40vw'}}
+                sx={{width: {
+                    xs:'90%',
+                        sm:'80%',
+                        md:"50%",
+                        lg:"40%"
+                    },
+                    position:"relative"
+                    }}
                 variant="p">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo distinctio voluptatum eveniet consequuntur, error vel provident minima sit quae inventore! Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dicta quaerat aliquam delectus accusamus, libero quam iste eveniet dolorum neque inventore!
+                    Discover your dream home effortlessly at Hut Finder. Our streamlined platform simplifies your search for the perfect property, offering a diverse range of options. From cozy urban apartments to luxurious countryside retreats, find your ideal home with advanced search filters and detailed listings
                 </Typography>
               </Box>
               <Frostyform />
             </Box>
-
-
             </Box>
-      </Paper>
-
-    </div>
   )
 }
 

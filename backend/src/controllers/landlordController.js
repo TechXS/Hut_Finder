@@ -16,12 +16,34 @@ const getAllProperties = async (req, res) => {
     }
 };
 
+//Get Landlord Data
+const getLandlordData = async (req, res) => {
+    const {id} = req.params;
+    try {
+        if (!isValidObjectId(id)) {
+            return res.status(404).json({
+                message: 'Landlord does not exist',
+                error: "Not Valid ID"
+            });
+        }
+
+        const landlord = await Landlord.findById(id)
+            .populate({path: "properties", populate: {path: "amenities units"}})
+            // .populate({path: "appointments", populate: {path: "amenities units"}})
+
+
+        res.json( landlord);
+    } catch (error) {
+        res.status(500).json({message: 'Could not retrieve landlord data', error: error.message});
+
+    }
+};
 // Get one Property
 const getSpecificProperty = async (req, res) => {
     const {id} = req.params;
-    const {location} = req.query();
+    // const {location} = req.query();
 
-    console.log(location);
+    // console.log(location);
 
     try {
         if (!isValidObjectId(id)) {
@@ -31,7 +53,9 @@ const getSpecificProperty = async (req, res) => {
             });
         }
 
-        const result = await Property.findOne({ _id: id }).where('location').within(location)
+        // const result = await Property.findOne({ _id: id }).where('location').within(location)
+        //
+        const result = await Property.findOne({ _id: id })
             .populate({
                 path: "units",
                 select: "name type price vacancies",
@@ -72,4 +96,4 @@ const getAllAppointments = (req, res) => {
 };
 
 
-module.exports = {getSpecificProperty, getAllProperties, createLandlord, getAllAppointments}
+module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments}
