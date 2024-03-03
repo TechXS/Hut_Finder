@@ -1,25 +1,42 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
+import { selectPropertyData, setPropertyData } from "../../stores/landlordSlice";
+import { useGetlPropertiesQuery } from "../../stores/landlordApi";
+import { useSelector } from "react-redux";
+
   
 const SearchItem = () => {
+  const propertyData = useSelector(selectPropertyData);
+  console.log("propData\n", propertyData);
+  const { data: properties, error, isLoading } = useGetlPropertiesQuery();
+  console.log("Property\n", property);
+  const firstProperty = property?.[0];
+  console.log("First Property\n", firstProperty);
+  console.log("Title\n", firstProperty?.name);
+  console.log("Amenities\n", firstProperty?.amenities[0].name);
+
+  
   return (
     <div className="searchItem">
+      {}
       <img
         src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
         alt=""
         className="brImg"
       />
       <div className="brDesc">
-        <h1 className="brTitle">Cascade plaza</h1>
+        <h1 className="brTitle">{firstProperty?.name}</h1>
         <span className="brDistance">500m from Juja City Mall</span>
-        <span className="brTaxiOp">Free wifi installation</span>
+        <span className="brTaxiOp">{firstProperty?.amenities[0].name}</span>
         <span className="brSubtitle">
-          1 bedroom • 2 bedroom • bedsitter • Studio
+          {firstProperty?.description}
         </span>
         <span className="brFeatures">
-          Laundry area • Underground packing • Rooftop oasis
+          {firstProperty?.units[0].name} • {firstProperty?.units[1].name}
         </span>
-        <span className="brCancelOp">Backup Generator </span>
+        <span className="brCancelOp">
+          {firstProperty?.amenities[2].name} 
+        </span>
         <span className="brCancelOpSubtitle">
           Join us today, your private party paradise awaits!!!
         </span>

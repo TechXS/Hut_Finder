@@ -32,16 +32,25 @@ const NavBar = () => {
         >
             <Typography
             sx={{padding:2}}
-            to={"/"}><Link>Home</Link></Typography>
+            >
+              <Link to="/">
+               Home
+              </Link>
+              </Typography>
             <Typography
             sx={{padding:2}}
-            to={"/"}><Link>Browse</Link></Typography>
+            >
+              <Link to="/browse">
+                Browse
+              </Link>
+            </Typography>
             <Typography
             sx={{padding:2}}
-            to={"/"}><Link>About us</Link></Typography>
-            <Typography
-            sx={{padding:2}}
-            to={"/"}><Link>Contacts</Link></Typography>
+            >
+              <Link>
+              Contacts
+              </Link>
+              </Typography>
             <Link to="/auth/signin/client">
                 <Button
                     sx={{backgroundColor:'#07779a'}}
