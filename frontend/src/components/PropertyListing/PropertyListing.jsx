@@ -5,10 +5,10 @@
     const listing = {
       _id: '1',
       imageUrls: [
-        'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
-        'https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1',
-        'https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1',
-        'https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1',
+        '../../../../public/images/unit4.jpg',
+        '../../../../public/images/unit2.jpg',
+        '../../../../public/images/unit3.jpg',
+        '../../../../public/images/unit1.jpg',
       ],
       name: 'Spacious House with a Balcony',
       offer: true,
