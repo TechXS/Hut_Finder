@@ -6,6 +6,7 @@ import { useState } from 'react';
 
 const Browse = () => {
   const [filterCondition, setfilterCondition] = useState([]);
+  const [search, setSearch] = useState("");
 
   const filterHandler = (event) => {
     if (event.target.checked) {
@@ -18,6 +19,10 @@ const Browse = () => {
     console.log("filterCondition", filterCondition)
   }
 
+  const searchHandler = (event) => {
+    setSearch(event.target.value)
+  }
+
   return (
     <div>   
       <Navbar/>
@@ -28,14 +33,18 @@ const Browse = () => {
             <h1 className="brtitle">Search</h1>
             <div className="brItem">
               <label>Search by Property name...</label>
-              <input type="text"/>
+              <input 
+                type="text"
+                onChange={searchHandler}
+                value={search}
+                />
             </div>
             <br/>
             <hr/>
             <br/>
             <div className="brItem">
               <label className="brtitle">Options</label>
-              <div className="brOptionItem">
+              {/* <div className="brOptionItem">
                 <span className="brOptionText">
                   Min price
                 </span>
@@ -48,7 +57,7 @@ const Browse = () => {
                 <input type="number" className="brOptionInput"/>
               </div>
             </div>
-            <div className="brItem">
+            <div className="brItem"> */}
               <label>Filters</label>
               <div className="filterItem">
                 <input
@@ -90,7 +99,7 @@ const Browse = () => {
             <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
-          <PropertyList filterCondition={filterCondition}/>
+          <PropertyList filterCondition={filterCondition} search={search}/>
           </div>
         </div>
       </div>
