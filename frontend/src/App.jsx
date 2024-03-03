@@ -63,7 +63,6 @@ const App = () => {
 
 
     if(!currentLocation){
-        console.log("1")
         getLocation()
     }
 
