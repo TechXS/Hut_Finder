@@ -1,11 +1,14 @@
 import { Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-
+import {useSelector} from "react-redux";
+import {selectCurrentLandlord} from "../../stores/landlordSlice";
 
 const NavBar = () => {
+    const landlord = useSelector(selectCurrentLandlord);
+
+    console.log(landlord)
     const navLinks = [
         {
             name:"Home",
@@ -36,9 +39,6 @@ const NavBar = () => {
                 paddingY:"0.5rem",
                 paddingX:"2rem",
                 boxShadow:"  0 1px 2px 0 rgb(0 0 0 / 0.05)"
-                // borderBottom:"#b9b9b9",
-                // borderBottomWidth:"1px",
-                // borderBottomStyle:"solid"
             }}
       >
         <Box  sx={{
@@ -64,7 +64,7 @@ const NavBar = () => {
                 alignItems:'center',
                 justifyContent:'space-around',
                 position:"relative",
-                width: {
+                width: landlord.name ? "10%" : {
                     sm:"70%",
                     md:"50%",
                     lg:"40%",
@@ -72,61 +72,77 @@ const NavBar = () => {
                 }
             }}
         >
-            {
-                navLinks.map((navLink,id)=> {
-                       return  navLink.name === "Contact Us" ? (
+            {landlord.name ? (
+                    <img src={landlord.imageUrl} alt={"Profile"} style={{
+                        fontSize: "20px",
+                        width: "60px",
+                        height: "60px",
+                        borderRadius: "50%",
+                        cursor: "pointer"
+                    }} />
+            ) : (
+                <>
+                    {navLinks.map((navLink, id) => (
+                        navLink.name === "Contact Us" ? (
                             <a href={navLink.path} key={id}>
-                                <Box sx={{
-                                    color: "#07779A",
-                                    "&:hover": {backgroundColor: "#bde1ea"},
-                                    fontSize: "20px",
-                                    fontWeight: "semibold",
-                                    borderRadius: 2,
-                                    paddingY: "0.5rem",
-                                    paddingX: "1rem",
-                                    minWidth: "6rem",
-                                    display: {
-                                        xs: "none",
-                                        sm: "flex"
-                                    }
-
-                                }}>
+                                <Box
+                                    sx={{
+                                        color: "#07779A",
+                                        "&:hover": { backgroundColor: "#bde1ea" },
+                                        fontSize: "20px",
+                                        fontWeight: "semibold",
+                                        borderRadius: 2,
+                                        paddingY: "0.5rem",
+                                        paddingX: "1rem",
+                                        minWidth: "6rem",
+                                        display: {
+                                            xs: "none",
+                                            sm: "flex"
+                                        }
+                                    }}
+                                >
                                     {navLink.name}
                                 </Box>
-                            </a>) : (
+                            </a>
+                        ) : (
                             <Link to={navLink.path} key={id}>
-                                <Box sx={{
-                                    color: "#07779A",
-                                    "&:hover": {backgroundColor: "#bde1ea"},
-                                    fontSize: "20px",
-                                    fontWeight: "semibold",
-                                    borderRadius: 2,
-                                    paddingY: "0.5rem",
-                                    paddingX: "1rem",
-                                    minWidth: "6rem",
-                                    display: {
-                                        xs: "none",
-                                        sm: "flex"
-                                    }
-
-                                }}>
+                                <Box
+                                    sx={{
+                                        color: "#07779A",
+                                        "&:hover": { backgroundColor: "#bde1ea" },
+                                        fontSize: "20px",
+                                        fontWeight: "semibold",
+                                        borderRadius: 2,
+                                        paddingY: "0.5rem",
+                                        paddingX: "1rem",
+                                        minWidth: "6rem",
+                                        display: {
+                                            xs: "none",
+                                            sm: "flex"
+                                        }
+                                    }}
+                                >
                                     {navLink.name}
                                 </Box>
                             </Link>
                         )
-                    }
-                )
-            }
-            <Link to="/auth/signin/client">
-                <Button
-                    sx={{
-                        backgroundColor:'#07779a',
-                        "&:hover" : {backgroundColor:"#0f586b"},
-                }}
-                    disableElevation={true}
-                    disableFocusRipple={true}
-                    variant='contained'>LOGIN</Button>
-            </Link>
+                    ))}
+                    <Link to="/auth/signin/client">
+                        <Button
+                            sx={{
+                                backgroundColor: '#07779a',
+                                "&:hover": { backgroundColor: "#0f586b" },
+                            }}
+                            disableElevation={true}
+                            disableFocusRipple={true}
+                            variant='contained'
+                        >
+                            LOGIN
+                        </Button>
+                    </Link>
+                </>
+            )}
+
         </Box>
       </Box>
   )
