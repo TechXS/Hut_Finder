@@ -23,6 +23,7 @@ import {properties} from "../utils/dataUtil.js";
 import {useCreatePropertyMutation} from "../stores/propertyApi.js";
 import {setErrorNotification, setSuccessNotification,} from "../stores/notificationSlice.js";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -208,6 +209,7 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
+                        <Imageupload/>
                     </FormControl>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
@@ -278,6 +280,7 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
+                        <Imageupload />
                     </FormControl>
 
                     {/*{unitData.length} {activeStep}*/}
