@@ -25,7 +25,7 @@ const ClientSignUp = () => {
     const [skip, setSkip] = useState(true);
     const [Loading, setLoading] = useState(false);
     const [signUpClient, {data: response, isLoading}] = useSignUpClientMutation();
-    const {data: properties} = useGetPropertiesQuery();
+    // const {data: properties} = useGetPropertiesQuery();
     const {
         data: units,
     } = useGetUnitsOfPropertyQuery(propertyId, {skip});
@@ -131,53 +131,6 @@ const ClientSignUp = () => {
                         autoComplete="current-password"
                         sx={{width: "50%", marginLeft: "2.5%"}}
                     />
-                </Grid>
-
-                <Grid
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginBottom: "8px",
-                    }}
-                >
-                    <FormControl sx={{width: "50%", marginRight: "2.5%"}}>
-                        <InputLabel htmlFor="property" id="propertyform">
-                            Select Property
-                        </InputLabel>
-                        <Select
-                            name="property"
-                            labelId="propertyform"
-                            onChange={handleInputChange}
-                            label="Select Property"
-                        >
-                            {properties &&
-                                properties.map((property) => (
-                                    <MenuItem key={property._id} value={property._id}>
-                                        {property.name}
-                                    </MenuItem>
-                                ))}
-                        </Select>
-                    </FormControl>
-
-                    <FormControl sx={{width: "50%", marginLeft: "2.5%"}}>
-                        <InputLabel htmlFor="unit" id="unitform">
-                            Select Unit
-                        </InputLabel>
-                        <Select
-                            name="unit"
-                            onChange={handleInputChange}
-                            label="Select Unit"
-                        >
-                            {units &&
-                                units.map((unit) => (
-                                    <MenuItem key={unit._id} value={unit._id}>
-                                        {unit.name}
-                                    </MenuItem>
-                                ))}
-                        </Select>
-                    </FormControl>
                 </Grid>
 
                 <TextField

@@ -1,0 +1,81 @@
+
+
+.header {
+    background-color: #0071c2;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+  }
+  
+  .headerContainer {
+    width: 100%;
+    max-width: 1024px;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .headerList {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    max-width: 1024px;
+    justify-content: center;
+  }
+  
+  .headerListItem {
+    padding-bottom: 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1024px;
+    gap: 30px;
+  }
+  
+  .searchBar {
+    width: 100%;
+    max-width: 1024px;
+    margin-bottom: 20px;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .searchBar input {
+    width: 100%;
+    max-width: 1024px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  .selectForm {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    width: 200px;
+    height: 100px;
+  }  
+  
+  .btn {
+    padding: 10px 20px;
+    background-color: #003580;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .btn:hover {
+    background-color: #002a66;
+  }
+ 

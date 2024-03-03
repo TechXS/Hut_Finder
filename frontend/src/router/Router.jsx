@@ -12,6 +12,11 @@ import ClientSignIn from "../components/SignIn/ClientSignIn.jsx";
 import ResetPassword from "../components/SignIn/ResetPassword.jsx";
 import CancelResetPassword from "../components/SignIn/CancelResetPassword.jsx";
 import PortalLayout from "../layouts/PortalLayout.jsx";
+import BrowseLayout from "../layouts/BrowseLayout.jsx";
+import Properties from "../pages/Properties.jsx";
+import AddProperty from "../pages/AddProperties.jsx";
+import Property from "../pages/Property.jsx";
+import PropertyLayout from "../layouts/PropertyLayout.jsx"
 
 const router = createBrowserRouter([
     {
@@ -57,6 +62,29 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "/browse",
+        element: <BrowseLayout/>,
+        errorElement: <Error/>,
+    },
+    {
+        path: "/property",
+        element: <PropertyLayout/>,
+        errorElement: <Error/>,
+    },
+    {
+        path:'/properties',
+        element: <Properties />
+
+    },
+    {
+        path: '/addproperty',
+        element: <AddProperty/>
+    },
+    {
+        path:'/property',
+        element: <Property />
+    }
 ]);
 
 export default router;

@@ -54,11 +54,13 @@ const clientSchema = new Schema(
             type: {
                 type: String,
                 enum: ['Point'],
-                required: true
+                default:'Point',
+                required: false
             },
             coordinates: {
                 type: [Number],
-                required: true
+                default: [null,null],
+                required: false
             },
         },
         reviews: [{
