@@ -7,7 +7,6 @@ const Header = () => {
   const [property, setProperty] = useState("properties");
   const [unitType, setUnitType] = useState("unitType");
   const [price, setPrice] = useState("price");
-  // const search = () => {}
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -38,6 +37,7 @@ const Header = () => {
         <div className="headerList">
           <div className="headerListItem">
             <select value={location} onChange={handleLocationChange}>
+            {/* <input type="text" placeholder="Search by Property name..." /> */}
               <option value="location">Location</option>
               <option value="gateA">Gate A</option>
               <option value="gateB">Gate B</option>
