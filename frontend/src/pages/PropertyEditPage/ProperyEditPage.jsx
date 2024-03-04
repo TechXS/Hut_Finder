@@ -15,7 +15,7 @@ import BathtubIcon from '@mui/icons-material/Bathtub';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useState } from "react";
-import { Button } from "@mui/base";
+import Button from '@mui/material/Button';
 import { Box, TextField } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
