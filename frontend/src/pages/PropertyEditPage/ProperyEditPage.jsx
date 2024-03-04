@@ -21,11 +21,13 @@ import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Imageupload from "../../components/FileUpload/Imageupload";
 import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListingEdit";
+import { useRef } from "react";
 
 const PropertyEditPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
+  const imageUploadRef1 = useRef();
   const [photos, setPhotos] = useState([
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
@@ -74,6 +76,7 @@ const PropertyEditPage = () => {
     }
 
   ])
+  const [formData, setFormData] = useState({})
   const  propertyname = 'Cascade Plaza'
   const  propertyDesc = 'Located a 5-minute walk from Juja city mall in Juja,Cascade Plaza is a spacious appartment with air conditioning and free WiFi installation. The units come with hardwood floors and feature a fully equipped kitchenette with sliding drawers, modern taps, and a private bathroom with shower. Popular points of interest near the apartment include Juja police station, Main Market Square and Aghakan  University Hospital. The nearest petrol station is Shell petrol, 16.1 km from Cascade Plaza, and the property offers a paid gabbage collection'
  
@@ -107,12 +110,26 @@ const PropertyEditPage = () => {
     setSlideNumber(newSlideNumber);
   };
 
+  const handleSubmit =(e)=>{
+    e.preventDefault();
+    //send form data images and other object  to the database 
+    console.log(formData)
+    imageUploadRef1.current.submitForm();
+    setclicked(!clicked)
+  }
+
+  const handleChange = (event) =>{
+    const {name, value } = event.target;
+    const newForm = (formData) =>({
+      ...formData, [name]: value,
+    })
+    setFormData(newForm)
+  }
+
   return (
     <div>
       <Navbar />
-      <Button onClick={()=>{setclicked(!clicked)}}>
-        Edit
-      </Button>
+      
       
 
 
@@ -128,15 +145,21 @@ const PropertyEditPage = () => {
 
      {clicked ? 
      <div>
-        <Box>
+        <Box
+        component={'form'}
+        >
+        <Button onClick={handleSubmit}>
+        Submit
+      </Button>
         <div className="PropWrapper">
           <TextField 
           className="PropTitle" 
-          name="name"
+          name="propertyName"
           defaultValue={propertyname}
           label='Propert name'
           variant="standard"
           sx={{margin:'10px'}}
+          onChange={handleChange}
           />
           <div className="PropAddress">
             <LocationOnIcon />
@@ -148,7 +171,7 @@ const PropertyEditPage = () => {
           <span className="PropPriceHighlight">
             Book an apointment with Agent to get a free tour of the Apartment
           </span>
-            <Imageupload />
+            <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit}/>
           <div className="PropImages">
             {photos.map((photos, i) => (
               <div className="PropImgWrapper" key={i}>
@@ -169,11 +192,13 @@ const PropertyEditPage = () => {
               <h1 className="PropTitle">Stay in the heart of City</h1>
               < TextField 
                 defaultValue={propertyDesc}
+                name='propertyDescription'
                 label='Propert description'
                 variant="standard"
                 sx={{margin:'10px'}}
                 className="PropDesc"
                 fullWidth
+                onChange={handleChange}
                 multiline
               />
                 
@@ -243,6 +268,9 @@ const PropertyEditPage = () => {
 
      <div>
         {/* <Header /> */}
+        <Button onClick={()=>{setclicked(!clicked)}}>
+        Edit
+      </Button>
       <div className="PropContainer">
         {open && (
           <div className="slider">

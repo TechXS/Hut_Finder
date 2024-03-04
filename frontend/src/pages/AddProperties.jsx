@@ -24,6 +24,7 @@ import {useCreatePropertyMutation} from "../stores/propertyApi.js";
 import {setErrorNotification, setSuccessNotification,} from "../stores/notificationSlice.js";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import { useRef } from 'react';
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -34,6 +35,10 @@ const AddProperty = () => {
     const {propertyData, propertyError, unitData, unit} = useSelector(propertyForm);
     const currentLandlord = useSelector(selectCurrentLandlord);
     const theme = useTheme();
+    const imageUploadRef1 = useRef();
+    const imageUploadRef2 = useRef();
+
+
     const [
         createProperty,
         {
@@ -112,9 +117,12 @@ const AddProperty = () => {
         event.preventDefault();
         dispatch(setPropertyFormUnits());
         if (activeStep < numberOfSteps) {
+            imageUploadRef2.current.submitForm();
             setSubmitForm(false)
             return handleNext();
         } else if (activeStep === numberOfSteps) {
+            imageUploadRef1.current.submitForm();
+            imageUploadRef2.current.submitForm();
             setSubmitForm(true)
         }
     };
@@ -209,7 +217,7 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
-                        <Imageupload/>
+                        <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit} />
                     </FormControl>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
@@ -280,7 +288,7 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
-                        <Imageupload />
+                        <Imageupload ref={imageUploadRef2} handleSubmit={handleSubmit} />
                     </FormControl>
 
                     {/*{unitData.length} {activeStep}*/}

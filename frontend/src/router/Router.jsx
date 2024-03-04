@@ -19,6 +19,7 @@ import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
+import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -88,8 +89,8 @@ const router = createBrowserRouter([
         element: <PropertyEditPage />
     },
     {
-        path:'/propertyl',
-        element: <Property />
+        path:'/propertyl' ,
+        element: <PropertyPage />
     },
     {
         path:'/upload',
