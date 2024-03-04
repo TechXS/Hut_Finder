@@ -17,6 +17,8 @@ import Properties from "../pages/Properties.jsx";
 import AddProperty from "../pages/AddProperties.jsx";
 import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -68,7 +70,7 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/property",
+        path: "/propertyc",
         element: <PropertyLayout/>,
         errorElement: <Error/>,
     },
@@ -82,8 +84,16 @@ const router = createBrowserRouter([
         element: <AddProperty/>
     },
     {
-        path:'/property',
+        path: '/editproperty',
+        element: <PropertyEditPage />
+    },
+    {
+        path:'/propertyl',
         element: <Property />
+    },
+    {
+        path:'/upload',
+        element:<Imageupload />
     }
 ]);
 

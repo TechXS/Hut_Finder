@@ -75,7 +75,9 @@ const createAppointment = async (req, res) => {
 const getAllProperties = async (req, res) => {
     const {data} = req.body;
     try {
-        const properties = await Property.find();
+        const properties = await Property.find()
+            .populate({ path: 'amenities', select: 'name icon' })
+            .populate({ path: 'units', select: 'name vacancies type' });
         res.status(200).json(properties);
     } catch (error) {
         console.error("Error getting properties:", error);
@@ -104,4 +106,21 @@ const getPropertyById = async (req, res) => {
         res.status(500).json({ message: 'Failed to retrieve property.' ,error:error.message  });
     }
 };
-module.exports = {addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById}
+
+//get appointments
+const getAllAppointments = (req, res) => {
+    const { id } = req.params
+    console.log("id", id)
+    Appointment.find({ landlord: id })
+        .populate({ path: 'property', select: 'name location' })
+        .populate({ path: 'client', select: 'name email' })
+        .then((appointments) => {
+            console.log("appointments\n", appointments)
+            res.status(200).json({ message: "Appointments fetched successfully\n", appointments });
+        })
+        .catch((err) => {
+            console.log("Error:\n", err.message)
+            res.status(400).json({ error: "Error fetching appointments" });
+        });
+};
+module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById}

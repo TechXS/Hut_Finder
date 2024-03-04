@@ -8,6 +8,7 @@ const Browse = () => {
   const [filterCondition, setfilterCondition] = useState([]);
   const [search, setSearch] = useState("");
 
+
   const filterHandler = (event) => {
     if (event.target.checked) {
       setfilterCondition([...filterCondition, event.target.value])

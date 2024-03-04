@@ -1,7 +1,6 @@
 
 .listingContainer {
     width: 100%;
-    /* max-width: 1024px; */
     max-width: 1280px;
     margin: 0 auto;
     padding-top: 10px;
@@ -13,19 +12,28 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;;
     margin-top: 20px;
   }
-  .listing-card img {
+  /* .listing-card img {
     width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 10px;
-  }
+  } */
   .listing-name {
     font-size: 18px;
     font-weight: bold;
     margin-bottom: 5px;
+  }
+  .listing-type {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    background-color:#0071C2;
+    color:rgb(255, 255, 255);
+    border-radius: 3px;
+    padding: 5px;
   }
   
   .listing-location {
