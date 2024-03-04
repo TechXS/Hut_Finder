@@ -20,7 +20,7 @@ const SearchItem = ({ properties }) => {
             </span>
             <span className="brFeatures">
               {property.units[0].type} • {property.units[1].type}
-            </span>
+</span>             
             <span className="brCancelOp">
               {property.amenities[0].name || property.amenities[1].name} 
             </span>

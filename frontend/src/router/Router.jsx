@@ -70,7 +70,7 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/propertyc",
+        path: "/property",
         element: <PropertyLayout/>,
         errorElement: <Error/>,
     },

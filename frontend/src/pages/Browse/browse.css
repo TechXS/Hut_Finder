@@ -2,10 +2,11 @@
     display: flex;
     justify-content: center;
     background-color: #f1f1f1;
-    height:100vh;
+    /* height:100vh;
     position:relative;
     overflow-y: auto;
-      width: 100%;
+      width: 100%; */
+
 }
 
 .browseWrapper {
@@ -45,6 +46,11 @@
     font-size: 16px;
     border-radius: 10px;
     height: 40px;
+    max-width: fit-content;
+}
+
+hr{
+    width: 230px;
 }
 
 .brOptionItem {
