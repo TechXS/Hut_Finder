@@ -24,7 +24,7 @@ const landlordSchema = new Schema(
             minLength: 6,
         },
         properties: [{type: Schema.Types.ObjectId, ref: "property"}],
-        requests: [{type: Schema.Types.ObjectId, ref: "request"}],
+        appointments: [{type: Schema.Types.ObjectId, ref: "appointment"}],
         requestMode: {
             type: Boolean,
             required: false,

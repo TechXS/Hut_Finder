@@ -7,25 +7,12 @@
  
   .PropWrapper {
     width: 100%;
-    max-width: 1024px;
+    max-width: 1280px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     position: relative;
   }
- 
-  .bookNow {
-    position: absolute;
-    top: 10px;
-    right: 0;
-    border: none;
-    padding: 10px 20px;
-    background-color: #0071c2;
-    color: white;
-    font-weight: bold;
-    border-radius: 5px;
-    cursor: pointer;
-  } 
   .PropTitle {
     font-size: 24px;
   }
@@ -62,6 +49,23 @@
     object-fit: cover;
     cursor: pointer;
   }
+  .ExtraImagesCounter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+  
+  .ExtraImagesCounterText {
+    padding: 5px 10px;
+  }
  
   .PropDetails {
     display: flex;
@@ -78,7 +82,40 @@
     font-size: 14px;
     margin-top: 20px;
   }
- 
+  .PropDetailsExtra {
+    padding-top: 10px;
+  
+  }
+  
+  .PropDetailsWrapper {
+    border-radius: 5px;
+    margin: 0; 
+  }
+  
+  .PropIcons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+
+    }
+  
+  .iconWithText {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: calc(100% / 8);
+    
+  }
+  
+  .iconWithText span {
+    margin-top: 5px;
+    padding: 8px;
+    color: #0071c2;
+
+  } 
   .PropDetailsPrice {
     flex: 1;
     background-color: #ebf3ff;
@@ -148,37 +185,10 @@
     cursor: pointer;
   } 
 
-  .PropDetailsExtra {
-    padding-top: 10px;
-  
-  }
-  
-  .PropDetailsWrapper {
-    border-radius: 5px;
-    margin: 0; 
-  }
-  
-  .PropIcons {
+ 
+  .flex-container{
     display: flex;
-    justify-content: space-between; 
-    }
-  
-  .iconWithText {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 2px solid #ccc;
-    width: 100px;
-    color: #0071c2;
-    border-radius: 3px;
-    padding-top: 5px;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
   }
-  
-  .iconWithText span {
-    margin-top: 5px;
-    padding: 8px;
-    color: #555;
-  }
-  .iconWithText svg {
-    font-size: 30px;
-}

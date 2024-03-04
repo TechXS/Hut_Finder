@@ -1,4 +1,3 @@
-import React from 'react';
 import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
@@ -10,7 +9,7 @@ const Browse = () => {
     <div>
       <Navbar/>
       <Header/>
-      <div className="browseContainer ">
+      <div className="browseContainer">
         <div className="browseWrapper">
           <div className="browseSearch">
             <h1 className="brtitle">Search</h1>
@@ -18,7 +17,6 @@ const Browse = () => {
               <label>Search by Property name...</label>
               <input type="text"/>
             </div>
-
             <div className="brItem">
               <label>Options</label>
               <div className="brOptionItem">
@@ -53,7 +51,7 @@ const Browse = () => {
                 <label htmlFor="lift">Lift</label>
               </div>
             </div>
-            <button>Search</button>
+            <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
             <SearchItemList items={sampleItems} />
@@ -69,4 +67,4 @@ const Browse = () => {
   )
 }
 
-export default Browse;
+export default Browse

@@ -1,10 +1,14 @@
 export const signUpValidation = (data) => {
+    console.log('1')
     return new Promise((resolve, reject) => {
         if (data.password.length < 6) {
+            console.log('2')
             reject({data: {message: "Password must be at least 6 characters"}});
         } else if (data.password !== data.confirm_password) {
+            console.log('3')
             reject({data: {message: "Password and Confirm Password do not match"}});
         } else if (!/^07\d{8}$/.test(data.phoneNumber)) {
+            console.log('4')
             reject({
                 data: {
                     message:
@@ -12,7 +16,15 @@ export const signUpValidation = (data) => {
                 }
             });
         } else {
-            resolve(data);
+            console.log('5')
+            const location = sessionStorage.getItem("location");
+            console.log(location)
+                const new_data = {...data,location:{
+                        type:"Point",
+                        coordinates:[location?.longitude ?? 0,location?.latitude ?? 0]
+                    }};
+                console.log(new_data)
+                resolve(new_data);
         }
     });
 };
@@ -62,3 +74,5 @@ export const updateProfileValidation = (data) => {
         }
     });
 };
+
+

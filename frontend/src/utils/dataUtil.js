@@ -18,6 +18,37 @@ export const getUnitType = (type) => {
         return "Four Bedroom";
     }
 };
+
+export const properties = [
+    {
+      type: "Select",
+      value: "undefined",
+    },
+    {
+      type: "Single Room",
+      value: "SR",
+    },
+    {
+      type: "Bedsitter",
+      value: "BD",
+    },
+    {
+      type: "One Bedroom",
+      value: "OBD",
+    },
+    {
+      type: "Two Bedroom",
+      value: "TWB",
+    },
+    {
+      type: "Three Bedroom",
+      value: "THB",
+    },
+    {
+      type: "Four Bedroom",
+      value: "FRB",
+    },
+  ];
 //TMS....
 
 // Comments images Imports
@@ -49,7 +80,7 @@ export const getUnitType = (type) => {
 //  ];
 ////Data being showed in the Property main page
  export const propertyData = [
-  
+
    {
        title: 'CASCADE APARTMENT 1',
         subtitle: 'Cascade Apartments off of Mombasa Road',
@@ -62,7 +93,7 @@ export const getUnitType = (type) => {
         description: '"100KM off main Road"',
         //icon: PersonIcon
     },
-    
+
     {
         title: 'CASCADE APARTMENT 3',
         subtitle: 'Cascade Apartments off of Mombasa Road',
@@ -75,9 +106,9 @@ export const getUnitType = (type) => {
         description: '"100KM off main Road"',
         //icon: PersonIcon
     },
-    
-    
-    
+
+
+
 ]
 
 export const propertyAdd = [
@@ -133,24 +164,24 @@ export const pricingData = [
         title: 'KSH 5000',
         subtitle: ' 31-50',
         description: 'For Owners with more than 30 Units but less than 50',
-        
+
     },
-    
+
     {
         title: 'KSH 20,000',
         subtitle: ' 51-100 Units',
         description: 'For Owners with more than 51 Units but less than 100',
-       
+
     },
     {
         title: 'KSH 30,000',
         subtitle: ' 101 + Units',
         description: ' KSH 30,000 is the base fee and additional 1% of Revenue is charged.',
-       
+
     },
-    
-    
-    
+
+
+
 ]
 
 // Sample array of items  for browse page
@@ -261,6 +292,6 @@ export const clientAppointmentsData = [
     {name:'JUJA APARTMENTS',unit :'2 Bedroom',phonenumber:'+2547789953',date:'21/04/2023',time:'14:00',status:'Confirmed' },
     {name:'TIFA APARTMENTS',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/03/2023' ,time:'14:00',status:'Pending'},
     {name:'MREEVES COMPLEX',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/02/2023' ,time:'14:00',status:'Confirmed'},
-    
+
     // Add more transaction objects as needed
   ];

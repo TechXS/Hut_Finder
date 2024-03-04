@@ -42,7 +42,7 @@ const ClientSignIn = () => {
             const userData = await signInClient({data: formData}).unwrap();
             localStorage.setItem("currentClient", JSON.stringify(userData));
             dispatch(setCurrentClient(userData));
-            navigate(`/client/dashboard`);
+            navigate(`/browse`);
             console.log(userData);
         } catch (e) {
             // console.error(e.data.message);
