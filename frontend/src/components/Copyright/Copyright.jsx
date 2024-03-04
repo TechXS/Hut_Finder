@@ -11,7 +11,7 @@ const Copyright = (props) => {
         >
             {"Copyright © "}
             <Link color="inherit" to="/">
-                TMS
+                Hut Finder
             </Link>{" "}
             {new Date().getFullYear()}
             {"."}

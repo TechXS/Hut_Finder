@@ -27,6 +27,20 @@ const clientSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "property",
         }],
+        preferences: {
+            amenities: [{
+                type: Schema.Types.ObjectId,
+                ref: "amenity",
+            }],
+            prices: {
+                type: Number,
+                ref: "price",
+            },
+            location: {
+                type: String,
+                ref: "location",
+            },
+        },
         publicId: {
             type: String,
             required: false,
@@ -35,10 +49,43 @@ const clientSchema = new Schema(
             type: String,
             required: false,
             default: "https://res.cloudinary.com/dlhv79tzp/image/upload/v1688329957/user-images/nsn2dlabvge32pbgoxhr.jpg",
-        }
+        },
+        location: {
+            type: {
+                type: String,
+                enum: ['Point'],
+                default:'Point',
+                required: false
+            },
+            coordinates: {
+                type: [Number],
+                default: [null,null],
+                required: false
+            },
+        },
+        reviews: [{
+            type: Schema.Types.ObjectId,
+            ref: "review",
+        }]
     },
     {timestamps: true}
 );
+//  method to the clientSchema for adding a property to the wishlist
+clientSchema.methods.addToWishList = async function (propertyId) {
+    try {
+      // Check if the propertyId is already in the wishlist
+      if (!this.wishlist.includes(propertyId)) {
+        this.wishlist.push(propertyId);
+        await this.save();
+        return { success: true, message: 'Property added to wishlist.' };
+      } else {
+        return { success: false, message: 'Property is already in the wishlist.' };
+      }
+    } catch (error) {
+      console.error('Error adding property to wishlist:', error);
+      return { success: false, message: 'Failed to add property to wishlist.' };
+    }
+  };
 
 // Mongoose Life hooks ---- before save
 clientSchema.pre("save", async function (next) {
