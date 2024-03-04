@@ -27,7 +27,8 @@ const App = () => {
 
     const theme = useMemo(
         () =>
-            createTheme(themePalette[prefersDarkMode ? 'dark' : 'light']),
+            // createTheme(themePalette[prefersDarkMode ? 'dark' : 'light']),
+            createTheme(themePalette['light']),
         [prefersDarkMode],
     );
 
@@ -62,7 +63,6 @@ const App = () => {
 
 
     if(!currentLocation){
-        console.log("1")
         getLocation()
     }
 

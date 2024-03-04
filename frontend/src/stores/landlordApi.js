@@ -1,9 +1,9 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-export const propertyApi = createApi({
-    reducerPath: "propertyApi",
+export const landlordApi = createApi({
+    reducerPath: "landlordApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${import.meta.env.VITE_BACKEND_API_URL}/api/property/`,
+        baseUrl: `${import.meta.env.VITE_BACKEND_API_URL}/api/landlord/`,
         prepareHeaders: (headers) => {
             const accessToken = sessionStorage.getItem("token");
             if (accessToken) {
@@ -16,22 +16,20 @@ export const propertyApi = createApi({
     endpoints: (builder) => ({
         getProperties: builder.query({
             query: () => {
-                return {url: `client`};
+                return {url: `${id}/properties`};
             },
         }),
         getProperty: builder.query({
-            query: (id) => {
-                return {url: `${id}`};
+            query: ({id,property_id}) => {
+                return {url: `${id}/properties/${property_id}`};
             },
         }),
-        getUnitsOfProperty: builder.query({
+        getAppointments: builder.query({
             query: (id) => {
-                return {url: `client/${id}`};
-            },
-            transformResponse: (response) => {
-                return response.units;
+                return {url: `${id}/appointments`};
             },
         }),
+
         createProperty: builder.mutation({
             query: ({id, payload}) => ({
                 url: `${id}`,
@@ -57,9 +55,9 @@ export const propertyApi = createApi({
 
 export const {
     useGetPropertiesQuery,
-    useGetUnitsOfPropertyQuery,
+    useGetPropertyQuery,
+    useGetAppointmentsQuery,
     useCreatePropertyMutation,
     useUpdatePropertyMutation,
-    useDeletePropertyMutation,
-    useGetPropertyQuery
-} = propertyApi;
+    useDeletePropertyMutation
+} = landlordApi;

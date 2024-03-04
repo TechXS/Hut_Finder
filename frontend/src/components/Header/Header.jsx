@@ -1,16 +1,12 @@
 import { useState } from 'react';
 import "./header.css";
+import SearchIcon from '@mui/icons-material/Search';
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("location");
   const [property, setProperty] = useState("properties");
   const [unitType, setUnitType] = useState("unitType");
   const [price, setPrice] = useState("price");
-
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -29,7 +25,6 @@ const Header = () => {
   };
 
   const handleReset = () => {
-    setSearchQuery("");
     setLocation("location");
     setProperty("properties");
     setUnitType("unitType");
@@ -38,19 +33,11 @@ const Header = () => {
 
   return (
     <div className="header">
-      <div className="searchBar">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={searchQuery}
-          onChange={handleSearchInputChange}
-        />
-      </div>
       <div className="headerContainer">
         <div className="headerList">
           <div className="headerListItem">
             <select value={location} onChange={handleLocationChange}>
-              <option value="location">Location</option>
+/              <option value="location">Location</option>
               <option value="gateA">Gate A</option>
               <option value="gateB">Gate B</option>
               <option value="gateC">Gate C</option>
@@ -84,6 +71,11 @@ const Header = () => {
               <option value="20001-30000">20001 - 30000</option>
             </select>
           </div>
+          <SearchIcon 
+          style={{ alignSelf: 'center' }}
+          onClick={() => console.log("searching...")}
+          sx={{ cursor: 'pointer' }}
+          />          
           <button className="btn" onClick={handleReset}>Reset</button>
         </div>
       </div>
