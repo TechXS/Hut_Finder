@@ -5,10 +5,10 @@
     const listing = {
       _id: '1',
       imageUrls: [
-        '../../../../public/images/unit4.jpg',
-        '../../../../public/images/unit2.jpg',
-        '../../../../public/images/unit3.jpg',
-        '../../../../public/images/unit1.jpg',
+        'images/unit4.jpg',
+        'images/unit2.jpg',
+        'images/unit3.jpg',
+        'images/unit1.jpg',
       ],
       name: 'Spacious House with a Balcony',
       offer: true,
