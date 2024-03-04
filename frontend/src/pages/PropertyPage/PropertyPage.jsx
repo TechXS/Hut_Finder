@@ -1,26 +1,19 @@
 import "./propertyPage.css";
 import Navbar from "../../components/NavBar/NavBar";
-// import Header from "../../components/header/Header";
-// import Footer from "../../components/Footer/Footer";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import CancelIcon from '@mui/icons-material/Cancel';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ApartmentIcon from '@mui/icons-material/Apartment';
-import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
-import WifiIcon from '@mui/icons-material/Wifi';
-import BathtubIcon from '@mui/icons-material/Bathtub';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import "./propertyPage.css";
 import { useState } from "react";
+import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 
 const PropertyPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
 
   const photos = [
+    {
+      src: "images/property3.jpg",
+    }, 
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
     },
@@ -34,11 +27,11 @@ const PropertyPage = () => {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
     },
     {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-    },
-    {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
-    },
+    }, 
+    {
+      src: "../../../public/images/property3.jpg",
+    }, 
   ];
 
   const handleOpen = (i) => {
@@ -48,43 +41,41 @@ const PropertyPage = () => {
 
   const handleMove = (direction) => {
     let newSlideNumber;
+    const numPhotos = photos.length;
+  
     if (direction === "l") {
-      newSlideNumber = slideNumber === 0 ? 5 : slideNumber - 1;
+      newSlideNumber = slideNumber === 0 ? numPhotos - 1 : slideNumber - 1;
     } else {
-      newSlideNumber = slideNumber === 5 ? 0 : slideNumber + 1;
+      newSlideNumber = slideNumber === numPhotos - 1 ? 0 : slideNumber + 1;
     }
+    
     setSlideNumber(newSlideNumber);
   };
 
   return (
     <div>
       <Navbar />
-      {/* <Header /> */}
       <div className="PropContainer">
         {open && (
           <div className="slider">
-            <CancelIcon
-              className="close"
-              onClick={() => setOpen(false)}
-            />
-            <ArrowCircleLeftIcon
-              className="arrow"
-              onClick={() => handleMove("l")}
-            />
+            <span className="close" onClick={() => setOpen(false)}>
+              <span className="material-symbols-outlined">cancel</span>
+            </span>
+            <span className="arrow" onClick={() => handleMove("l")}>
+              <span className="material-symbols-outlined">arrow_circle_left</span>
+            </span>
             <div className="sliderWrapper">
               <img src={photos[slideNumber].src} alt="" className="sliderImg" />
             </div>
-            <ArrowCircleRightIcon
-              className="arrow"
-              onClick={() => handleMove("r")}
-            />
+            <span className="arrow" onClick={() => handleMove("r")}>
+              <span className="material-symbols-outlined">arrow_circle_right</span>
+            </span>
           </div>
         )}
         <div className="PropWrapper">
-          <button className="bookNow">Reserve or Book Now!</button>
           <h1 className="PropTitle">Cascade Plaza</h1>
           <div className="PropAddress">
-            <LocationOnIcon />
+            <span className="material-symbols-outlined">location_on</span>
             <span>Sunrise St 125 Juja</span>
           </div>
           <span className="PropDistance">
@@ -94,7 +85,8 @@ const PropertyPage = () => {
             Book an apointment with Agent to get a free tour of the Apartment
           </span>
           <div className="PropImages">
-            {photos.map((photo, i) => (
+            {photos.slice(0, 6).map((photo, i) => (
+              console.log(photos),
               <div className="PropImgWrapper" key={i}>
                 <img
                   onClick={() => handleOpen(i)}
@@ -104,6 +96,11 @@ const PropertyPage = () => {
                 />
               </div>
             ))}
+            {photos.length > 6 && (
+            <div className="ExtraImagesCounter">
+              <span className="ExtraImagesCounterText">+{photos.length - 6} Photos</span>
+            </div>
+            )}
           </div>
           <div className="PropDetails">
             <div className="PropDetailsTexts">
@@ -122,28 +119,44 @@ const PropertyPage = () => {
                 <div className="PropDetailsWrapper">
                   <div className="PropIcons">
                     <div className="iconWithText">
-                      <ApartmentIcon />
+                      <span className="material-symbols-outlined">apartment</span>
                       <span>Apartment</span>
                     </div>
                     <div className="iconWithText">
-                      <LocalFloristIcon />
+                      <span className="material-symbols-outlined">local_florist</span>
                       <span>Garden</span>
                     </div>
                     <div className="iconWithText">
-                      <WifiIcon />
+                      <span className="material-symbols-outlined">wifi</span>
                       <span>Wifi</span>
                     </div>
                     <div className="iconWithText">
-                      <BathtubIcon />
+                      <span className="material-symbols-outlined">bathtub</span>
                       <span>Washrooms</span>
                     </div>
                     <div className="iconWithText">
-                      <LocalParkingIcon />
+                      <span className="material-symbols-outlined">local_parking</span>
                       <span>Parking</span>
                     </div>
                     <div className="iconWithText">
-                      <VisibilityIcon />
+                      <span className="material-symbols-outlined">visibility</span>
                       <span>View</span>
+                    </div>
+                    <div className="iconWithText">
+                      <span className="material-symbols-outlined">smoke_free</span>
+                      <span>Smoke Free</span>
+                    </div>
+                    <div className="iconWithText">
+                      <span className="material-symbols-outlined">fitness_center</span>
+                      <span>Gym</span>
+                    </div>
+                    <div className="iconWithText">
+                      <span className="material-symbols-outlined">pool</span>
+                      <span>Pool</span>
+                    </div>
+                    <div className="iconWithText">
+                      <span className="material-symbols-outlined">balcony</span>
+                      <span>Balcony</span>
                     </div>
                   </div>
                 </div>
@@ -159,36 +172,29 @@ const PropertyPage = () => {
               <span>
                 Top Location: Highly rated by recent guests (8.7/10).
               </span>
-              {/* <h1>Apppartments with:</h1>
-              <span>
-                Garden view
-                Inner courtyard view
-                Free underground parking on site
-              </span> */}
-              <h2>
-                <b>$945</b>
-              </h2>
+              <div className="date">
+                <DateTimePicker/>
+              </div>
               <button>Reserve or Book Now!</button>
             </div>
           </div>
         </div>
         <div className="propInfo">
           <PropertyHeader/>
-          <div className="flex-container">
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-            <PropertyListing />
-          </div>
-        </div>
-        {/* <Footer /> */}
-      </div>
-    </div>
-  );
-};
-
-export default PropertyPage;
+           <div className="flex-container">
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+             <PropertyListing />
+           </div>
+         </div>
+         {/* <Footer /> */}
+       </div>
+     </div>
+   );
+ };
+ export default PropertyPage;
