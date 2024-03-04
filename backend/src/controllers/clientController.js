@@ -75,7 +75,9 @@ const createAppointment = async (req, res) => {
 const getAllProperties = async (req, res) => {
     const {data} = req.body;
     try {
-        const properties = await Property.find();
+        const properties = await Property.find()
+            .populate({ path: 'amenities', select: 'name icon' })
+            .populate({ path: 'units', select: 'name vacancies type' });
         res.status(200).json(properties);
     } catch (error) {
         console.error("Error getting properties:", error);

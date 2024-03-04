@@ -1,7 +1,7 @@
 import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
-import PropertyList from "../../components/PropertyListing/PropertyListing"
+import PropertyList from "../../components/PropertyList/PropertyList"
 import { useState } from 'react';
 
 const Browse = () => {
