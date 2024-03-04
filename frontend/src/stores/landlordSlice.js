@@ -17,7 +17,7 @@ export const landlordSlice = createSlice({
     getDataError: null,
     getDataSuccess: null,
     forgotPassSuccess: null,
-  },
+  }, 
   reducers: {
     setCurrentLandlord: (state, action) => {
       state.loginForm.error = null;
