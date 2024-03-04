@@ -1,12 +1,13 @@
 import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
-import PropertyList from "../../components/PropertyList/PropertyList"
+import PropertyList from "../../components/PropertyListing/PropertyListing"
 import { useState } from 'react';
 
 const Browse = () => {
   const [filterCondition, setfilterCondition] = useState([]);
   const [search, setSearch] = useState("");
+
 
   const filterHandler = (event) => {
     if (event.target.checked) {
