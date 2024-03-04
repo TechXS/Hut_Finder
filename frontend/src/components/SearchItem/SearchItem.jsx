@@ -1,48 +1,45 @@
 import "./searchItem.css";
 
-import React from 'react';
-
-
-const SearchItem = ({ item }) => {
+const SearchItem = () => {
   return (
     <div className="searchItem">
-      <img src={item.imageUrl} alt="" className="brImg" />
+      <img
+        src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+        alt=""
+        className="brImg"
+      />
       <div className="brDesc">
-        <h1 className="brTitle">{item.title}</h1>
-        <span className="brDistance">{item.distance}</span>
-        <span className="brTaxiOp">{item.freeWifi}</span>
-        <span className="brSubtitle">{item.apartmentDescription}</span>
-        <span className="brFeatures">{item.features}</span>
-        <span className="brCancelOp">{item.backupGenerator}</span>
-        <span className="brCancelOpSubtitle">{item.partyParadise}</span>
+        <h1 className="brTitle">Cascade plaza</h1>
+        <span className="brDistance">500m from Juja City Mall</span>
+        <span className="brTaxiOp">Free wifi installation</span>
+        <span className="brSubtitle">
+          Spacious Apartment with Air conditioning
+        </span>
+        <span className="brFeatures">
+          Laundry area • Underground packing • Rooftop oasis
+        </span>
+        <span className="brCancelOp">Backup Generator </span>
+        <span className="brCancelOpSubtitle">
+          Join us today, your private party paradise awaits!!!
+        </span>
       </div>
       <div className="brDetails">
         <div className="brRating">
-          <span>{item.ratingLabel}</span>
-          <button>{item.rating}</button>
+          <span>Excellent</span>
+          <button>8.9</button>
         </div>
         <div className="brDetailTexts">
-          <span className="brPrice">{item.price}</span>
-          <span className="brTaxOp">{item.taxAndFees}</span>
-          <button className="brCheckButton">{item.availabilityButton}</button>
+          <span className="brPrice">$112</span>
+          <span className="brTaxOp">Includes taxes and fees</span>
+          <button className="brCheckButton">See availability</button>
         </div>
       </div>
     </div>
   );
 };
-
-const SearchItemList = ({ items }) => {
-  return (
-    <div>
-      {items.map((item, index) => (
-        <SearchItem key={index} item={item} />
-      ))}
-    </div>
-  );
-};
+export default SearchItem;
 
 
-export default SearchItemList;
 
 // import "./searchItem.css";
 

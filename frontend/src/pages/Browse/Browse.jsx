@@ -1,8 +1,7 @@
 import "./browse.css"
 import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
-import SearchItemList from "../../components/SearchItem/SearchItem"
-import { sampleItems } from "../../utils/dataUtil";
+import SearchItem from "../../components/SearchItem/SearchItem"
 
 const Browse = () => {
   return (
@@ -54,12 +53,12 @@ const Browse = () => {
             <button className="btn-search">Search</button>
           </div>
           <div className="browseResult">
-            <SearchItemList items={sampleItems} />
-            {/*<SearchItem />
             <SearchItem />
             <SearchItem />
             <SearchItem />
-  <SearchItem />*/}
+            <SearchItem />
+            <SearchItem />
+            <SearchItem />
           </div>
         </div>
       </div>
@@ -68,3 +67,4 @@ const Browse = () => {
 }
 
 export default Browse
+
