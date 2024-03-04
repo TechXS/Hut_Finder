@@ -17,6 +17,11 @@ import Properties from "../pages/Properties.jsx";
 import AddProperty from "../pages/AddProperties.jsx";
 import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
+// import Property from "../pages/PropertyPage/AddProperty.jsx";
+import LandlordLayout from "../layouts/LandlordLayout.jsx";
+import SearchItemList from "../components/SearchItem/SearchItem.jsx";
+//import Profile from "../components/profile/Profile.jsx"
+import Profile from "../components/profile/ClientProfile.jsx";
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
 
@@ -70,15 +75,71 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/propertyc",
+        path: "/property",
         element: <PropertyLayout/>,
         errorElement: <Error/>,
     },
-    {
-        path:'/properties',
-        element: <Properties />
+    //{
+    //    path: "/addproperty",
+    //    element: <Property/>,
+    //    errorElement: <Error/>,
+    //},
 
-    },
+    {
+        path:"/landlord",
+        element: <LandlordLayout />,
+        children:[
+            //{
+            //      path:"/landlord/browse",
+            //      element:<BrowseLayout/>,
+            //
+            //    },
+        //  {
+        //    index: true,
+        //    element: <Dashboard />
+        //  },
+        //  {
+        //    path:"/landlord/stats",
+        //    element: <Stats />,
+        //
+        //  },
+        //  {
+        //    path:"/landlord/properties",
+        //    element: <List />,
+        //
+        //  },
+        //  {
+        //    path:"/landlord/propertypage",
+        //    element: <Property />,
+        //
+        //  },
+        {
+          path:"/landlord/profile",
+          element: <Profile />,
+        },
+        //  {
+        //    path:"/landlord/complaints",
+        //    element: <ComplaintsPage />,
+        //
+        //  },
+        ]
+
+      },
+
+    //Eric
+    // {
+    //     path:'/properties',
+    //     element: <Properties />
+    //
+    // },
+    // {
+    //     path: '/addproperty',
+    //     element: <AddProperty/>
+    // },
+    // {
+    //     path:'/property',
+    //     element: <Property />
+    // }
     {
         path: '/addproperty',
         element: <AddProperty/>

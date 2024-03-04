@@ -12,5 +12,5 @@ const router = Router();
 router.use("/auth", authRoutes);
 router.use("/landlord", landlordRoutes);
 router.use("/client", clientRoutes);
-router.use("/property", propertyRoutes);
+// router.use("/property", propertyRoutes);
 module.exports = router;
