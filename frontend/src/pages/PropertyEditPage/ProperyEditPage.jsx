@@ -128,7 +128,7 @@ const PropertyEditPage = () => {
 
      {clicked ? 
      <div>
-        <Box>
+        <div className="PropContainer">
         <div className="PropWrapper">
           <TextField 
           className="PropTitle" 
@@ -228,7 +228,7 @@ const PropertyEditPage = () => {
             <ListingItemEdit />
           </div>
         </div>
-            </Box>
+            </div>
      </div>:
 
 

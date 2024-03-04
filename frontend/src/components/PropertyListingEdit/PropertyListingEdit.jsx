@@ -2,7 +2,7 @@ import { useState } from "react";
 import ImageuploadSingle from "../FileUpload/ImageUploadSingle";
 import "./PropertListingEdit.css";
 import { Box, TextField } from "@mui/material";
-import { Button } from "@mui/base";
+import Button from '@mui/material/Button';
 export default function ListingItemEdit() {
   const [listing, setListing] = useState({
     _id: '1',
