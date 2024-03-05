@@ -39,8 +39,20 @@ const AddProperty = () => {
     const theme = useTheme();
     const imageUploadRef1 = useRef();
     const imageUploadRef2 = useRef();
+    const [propertyImages, setPropertyImages] = useState([])
+    const [unitImages, setUnitImages] = useState([])
 
 
+
+    const updatePropertyImages = async (newImages) => {
+        setPropertyImages(newImages);
+        console.log('1stPropertyimages\n', propertyImages)
+    }
+    const updateUnitImages = async (newImages) => {
+        setUnitImages(newImages);
+        console.log('1stUnitimages\n', unitImages)
+    }
+    
     const [
         createProperty,
         {
@@ -55,6 +67,8 @@ const AddProperty = () => {
 
     useEffect(() => {
         (async () => {
+            console.log('updated property images', propertyImages)
+            console.log('updated unit images', unitImages)
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
                 console.log(propertyData)
                 try {
@@ -90,7 +104,7 @@ const AddProperty = () => {
                 }
             }
         })()
-    }, [propertyData, submitForm])
+    }, [propertyData, submitForm, propertyImages, unitImages]);
 
     useEffect(() => {
         if (isError) {
@@ -120,6 +134,8 @@ const AddProperty = () => {
         } else if (name === "vacancies" || name === "type" || name === "price") {
             dispatch(setUnitForm({[name]: value}))
         }
+        console.log('2propertyimages\n', propertyImages)
+        console.log('2unitimages\n', unitImages)
     };
 
 
@@ -139,7 +155,7 @@ const AddProperty = () => {
         }
     };
     console.log(submitForm)
-    
+
     return (
         <Box
             sx={{
@@ -230,7 +246,7 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
-                        <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit} />
+                        <Imageupload ref={imageUploadRef1} updatePropertyImages={updatePropertyImages}/>
                     </FormControl>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
@@ -296,7 +312,7 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
-                        <Imageupload ref={imageUploadRef2} handleSubmit={handleSubmit} />
+                        <Imageupload ref={imageUploadRef2} updateUnitImages={updateUnitImages}/>
                     </FormControl>
 
                     <LoadingButton
