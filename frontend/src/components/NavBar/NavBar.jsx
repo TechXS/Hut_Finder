@@ -4,6 +4,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {useSelector} from "react-redux";
 import {selectCurrentLandlord} from "../../stores/landlordSlice";
+import AccountMenu from '../Account_Icon/AccountIcon';
 
 const NavBar = () => {
     const landlord = useSelector(selectCurrentLandlord);
@@ -47,7 +48,7 @@ const NavBar = () => {
             textDecoration: "none",
             fontSize: "1.5rem"
         }}>
-            <Link to={'/'}>
+            <Link to='/'>
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
@@ -139,7 +140,9 @@ const NavBar = () => {
                         >
                             LOGIN
                         </Button>
+                        
                     </Link>
+                    <AccountMenu/>
                 </>
             )}
 

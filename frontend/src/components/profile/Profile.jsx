@@ -110,9 +110,9 @@ const Profile = () => {
             </div>
           </div>
         </div>
-        <div className="right">
+       {/* <div className="right">
           <Chart aspect={2 / 1} title="Revenue (Last 6 Months)" />
-        </div>
+  </div>*/}
       </div>
     </>
   );

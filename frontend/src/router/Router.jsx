@@ -20,10 +20,13 @@ import PropertyLayout from "../layouts/PropertyLayout.jsx"
 // import Property from "../pages/PropertyPage/AddProperty.jsx";
 import LandlordLayout from "../layouts/LandlordLayout.jsx";
 import SearchItemList from "../components/SearchItem/SearchItem.jsx";
-//import Profile from "../components/profile/Profile.jsx"
-import Profile from "../components/profile/ClientProfile.jsx";
-import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import Profile from "../components/profile/Profile.jsx"
+import ProfileClient from "../components/profile/ClientProfile.jsx"
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import Wish from "../components/Wishlist/Wishlist.jsx";
+import All_Appointments from "../components/Appointments/Appointments.jsx";
+import ClientLayout from "../layouts/ClientLayout.jsx";
 
 const router = createBrowserRouter([
     {
@@ -75,6 +78,28 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
+        path: "/client",
+        element: <ClientLayout/>,
+        errorElement: <Error/>,
+        children:[
+
+            {   
+                index: true,
+                path: "/client/profile",
+                element: <ProfileClient/>,
+            },
+            {   
+                path: "/client/wishlist",
+                element: <Wish/>,
+            },
+            {
+                path: "/client/appointments",
+                element: <All_Appointments/>,
+            },
+        ]
+        
+    },
+    {
         path: "/property",
         element: <PropertyLayout/>,
         errorElement: <Error/>,
@@ -103,11 +128,12 @@ const router = createBrowserRouter([
         //    element: <Stats />,
         //
         //  },
-        //  {
-        //    path:"/landlord/properties",
-        //    element: <List />,
-        //
-        //  },
+         {
+            index:true,
+           path:"/landlord/properties",
+           element: <AddProperty/>,
+    
+         },
         //  {
         //    path:"/landlord/propertypage",
         //    element: <Property />,
