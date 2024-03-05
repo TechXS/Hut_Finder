@@ -13,9 +13,13 @@ export const propertySlice = createSlice({
             number: "",
             type: "",
             price: "",
-        }
+        },
+        currentProperty: {}
     },
     reducers: {
+        setCurrentProperty: (state, action) => {
+            state.currentProperty = action.payload;
+        },
         setPropertyForm: (state, action) => {
             // state.propertyForm.data.unitTypes = [];
             state.propertyForm.data = {
@@ -55,6 +59,7 @@ export const propertySlice = createSlice({
 });
 
 export const {
+    setCurrentProperty,
     setPropertyError,
     setPropertyForm,
     setPropertyFormUnits,
@@ -70,5 +75,7 @@ export const propertyForm = (state) => {
         unit: state.property.unitForm
     };
 };
+
+export const selectCurrentProperty = (state) => state.property.currentProperty;
 
 export default propertySlice.reducer;

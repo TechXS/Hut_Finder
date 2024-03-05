@@ -5,10 +5,14 @@ import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
 import "./propertyPage.css";
 import { useState } from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+import { useSelector } from "react-redux";
+import { selectCurrentProperty } from "../../stores/propertySlice";
 
 const PropertyPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  // const { property } = useSelector(selectCurrentProperty);
+  // console.log("Property\n", property);
 
   const photos = [
     {
@@ -86,7 +90,6 @@ const PropertyPage = () => {
           </span>
           <div className="PropImages">
             {photos.slice(0, 6).map((photo, i) => (
-              console.log(photos),
               <div className="PropImgWrapper" key={i}>
                 <img
                   onClick={() => handleOpen(i)}

@@ -1,6 +1,6 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {getUnitType} from "../utils/dataUtil";
-
+ 
 export const clientSlice = createSlice({
     name: "client",
     initialState: {
@@ -47,10 +47,10 @@ export const clientSlice = createSlice({
         setClientData: (state, action) => {
             state.clientData = {
                 ...action.payload,
-                unit: {
-                    ...action.payload.unit,
-                    type: getUnitType(action.payload.unit.type),
-                },
+                // unit: {
+                //     ...action.payload.unit,
+                //     type: getUnitType(action.payload.unit.type),
+                // },
             };
             state.getDataError = null;
             state.getDataSuccess = null;

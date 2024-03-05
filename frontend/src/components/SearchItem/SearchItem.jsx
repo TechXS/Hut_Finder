@@ -1,7 +1,15 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import { setCurrentProperty } from "../../stores/propertySlice";
+
    
 const SearchItem = ({ properties }) => {  
+  // const dispatch = useDispatch();
+  // const handleClick = (property) => {
+  //   dispatch(setCurrentProperty(property));
+  //   console.log("Propertyclickkkk\n", property);
+  // }
   return (
     <>
       {properties && properties.map((property) => (
@@ -20,7 +28,7 @@ const SearchItem = ({ properties }) => {
             </span>
             <span className="brFeatures">
               {property.units[0].type} • {property.units[1].type}
-</span>             
+            </span>             
             <span className="brCancelOp">
               {property.amenities[0].name || property.amenities[1].name} 
             </span>
@@ -37,7 +45,12 @@ const SearchItem = ({ properties }) => {
             <span className="brPrice">$112</span>
             <span className="brTaxOp">Includes taxes and fees</span>
             <Link to="/property">
-              <button className="brCheckButton">See availability</button>
+              <button 
+                className="brCheckButton"
+                // onClick={() => handleClick(property)}
+              >
+                See availability
+              </button>
             </Link>       
           </div>
          </div>

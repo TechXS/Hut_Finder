@@ -8,7 +8,7 @@ const PropertyList = ( { filterCondition, search } ) => {
   const [activePage, setActivePage] = useState(1);
   const [cardsPerPage, setCardsPerPage] = useState(6);
   const [filteredProperties, setFilteredProperties] = useState([]);
-
+ 
   useEffect(() => {
     if (properties) {
       let filteredProperties = properties; 
