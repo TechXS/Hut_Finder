@@ -34,14 +34,14 @@ const AddProperty = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {propertyData, propertyError, unitData, unit} = useSelector(propertyForm);
-    console.log('properrtyData', propertyData);
+    // console.log('properrtyData', propertyData);
     const currentLandlord = useSelector(selectCurrentLandlord);
     const theme = useTheme();
     const imageUploadRef1 = useRef();
     const imageUploadRef2 = useRef();
     const [propertyImages, setPropertyImages] = useState([])
     const [unitImages, setUnitImages] = useState([])
-
+    const [unitImagesObject, setUnitImagesObject] = useState([])
 
 
     const updatePropertyImages = async (newImages) => {
@@ -52,7 +52,38 @@ const AddProperty = () => {
         setUnitImages(newImages);
         console.log('1stUnitimages\n', unitImages)
     }
-    
+
+
+    const createUnitImagesObject = (type, images) => {
+        // Check if an object with the same type already exists in the array
+        const existingObjectIndex = unitImagesObject.findIndex(obj => obj.type === type);
+
+        if (existingObjectIndex !== -1) {
+            // If exists, update the existing object with the new images
+            setUnitImagesObject(prevUnitImagesObject => [
+                ...prevUnitImagesObject.slice(0, existingObjectIndex),
+                {
+                    type,
+                    images: [
+                        ...prevUnitImagesObject[existingObjectIndex].images,
+                        ...images
+                    ]
+                },
+                ...prevUnitImagesObject.slice(existingObjectIndex + 1),
+            ]);
+        } else {
+            // If not exists, create a new object
+            setUnitImagesObject(prevUnitImagesObject => [
+                ...prevUnitImagesObject,
+                { type, images }
+            ]);
+        }
+
+        // Logging the updated unitImagesObject
+        // console.log('unitImagesObjec123456t\n', unitImagesObject);
+    };
+  
+
     const [
         createProperty,
         {
@@ -64,13 +95,44 @@ const AddProperty = () => {
         },
     ] = useCreatePropertyMutation();
 
+    // useEffect(() => {   
+    //     if (unit.type && unitImages.length > 0) {
+    //         createUnitImagesObject(unit.type, unitImages)
+    //     }
+    //     console.log('Use effect images\n', unitImagesObject)
+
+    // }, [activeStep]);
+
+    console.log('active step', activeStep);
+    // if(activeStep <= numberOfSteps){
+    //     if (unit.type && unitImages.length > 0) {
+    //         createUnitImagesObject(unit.type, unitImages)
+    //     }
+    //     console.log('Use effect images\n', unitImagesObject)
+    // }
 
     useEffect(() => {
         (async () => {
             console.log('updated property images', propertyImages)
             console.log('updated unit images', unitImages)
+            console.log('unitImagesObject\n', unitImagesObject)
+            // unitImagesObject[numberOfSteps - 1] = {type: unit.type, images: unitImages}
+
+
+
+            const formData = new FormData();
+            propertyImages.forEach((image) => {
+                formData.append("propertyImages", image);
+            })
+            unitImages.forEach((image) => {
+                formData.append("unitImages", image);
+            })
+            // Display the key/value pairs
+            // for (var pair of formData.entries()) {
+            //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
+            // }            
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
-                console.log(propertyData)
+                // console.log(propertyData)
                 try {
                     const location = await handleGeocode(propertyData.location);
                     const finalData = {...propertyData}
@@ -79,6 +141,8 @@ const AddProperty = () => {
                         coordinates: [location.longitude, location.latitude],
                     };
                     console.log('location', finalData.location)
+                    formData.append('data', JSON.stringify(finalData));
+                    console.log('formdata', formData);
                     const response = await createProperty({
                         id: currentLandlord._id,
                         payload: {data: finalData},
@@ -146,15 +210,23 @@ const AddProperty = () => {
         if (activeStep < numberOfSteps) {
             imageUploadRef2.current.submitForm();
             setSubmitForm(false)
+            if (unit.type && unitImages.length > 0) {
+                createUnitImagesObject(unit.type, unitImages)
+            }
+            console.log('Use effect images\n', unitImagesObject)
             return handleNext();
         } else if (activeStep === numberOfSteps) {
 
             imageUploadRef1.current.submitForm();
             imageUploadRef2.current.submitForm();
             setSubmitForm(true)
+            if (unit.type && unitImages.length > 0) {
+                createUnitImagesObject(unit.type, unitImages)
+            }
+            console.log('Use effect images\n', unitImagesObject)
         }
     };
-    console.log(submitForm)
+    // console.log(submitForm)
 
     return (
         <Box
