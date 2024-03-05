@@ -157,7 +157,7 @@ const PropertyPage = () => {
                     <div className="iconWithText">
                       <span className="material-symbols-outlined">balcony</span>
                       <span>Balcony</span>
-                    </div>
+                    </div>  
                   </div>
                 </div>
               </div>

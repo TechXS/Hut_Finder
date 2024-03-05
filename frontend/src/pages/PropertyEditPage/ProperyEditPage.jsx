@@ -113,19 +113,6 @@ const PropertyEditPage = () => {
       <Button onClick={()=>{setclicked(!clicked)}}>
         Edit
       </Button>
-      
-
-
-
-
-
-
-
-
-
-
-
-
      {clicked ? 
      <div>
         <Box>
@@ -230,17 +217,6 @@ const PropertyEditPage = () => {
         </div>
             </Box>
      </div>:
-
-
-
-
-
-
-
-
-
-
-
      <div>
         {/* <Header /> */}
       <div className="PropContainer">

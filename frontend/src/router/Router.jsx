@@ -15,10 +15,10 @@ import PortalLayout from "../layouts/PortalLayout.jsx";
 import BrowseLayout from "../layouts/BrowseLayout.jsx";
 import Properties from "../pages/Properties.jsx";
 import AddProperty from "../pages/AddProperties.jsx";
-import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
+import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
 
 const router = createBrowserRouter([
     {
@@ -89,7 +89,7 @@ const router = createBrowserRouter([
     },
     {
         path:'/propertyl',
-        element: <Property />
+        element: <PropertyPage />
     },
     {
         path:'/upload',

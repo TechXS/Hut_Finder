@@ -84,21 +84,16 @@
   }
   .PropDetailsExtra {
     padding-top: 10px;
-  
   }
-  
   .PropDetailsWrapper {
     border-radius: 5px;
-    margin: 0; 
+    margin: 0;
   }
-  
   .PropIcons {
     display: flex;
     flex-wrap: wrap;
     gap: 18px;
-
-    }
-  
+  }
   .iconWithText {
     display: flex;
     flex-direction: column;
@@ -107,14 +102,11 @@
     border: 1px solid #ccc;
     border-radius: 3px;
     width: calc(100% / 8);
-    
-  }
-  
+  } 
   .iconWithText span {
     margin-top: 5px;
     padding: 8px;
     color: #0071c2;
-
   } 
   .PropDetailsPrice {
     flex: 1;
