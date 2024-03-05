@@ -20,10 +20,12 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {useTheme} from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import {properties} from "../utils/dataUtil.js";
-import {useCreatePropertyMutation} from "../stores/propertyApi.js";
+import {useCreatePropertyMutation} from "../stores/landlordApi.js";
 import {setErrorNotification, setSuccessNotification,} from "../stores/notificationSlice.js";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import { useRef } from 'react';
+import { handleGeocode } from '../utils/geocode';
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -32,8 +34,13 @@ const AddProperty = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {propertyData, propertyError, unitData, unit} = useSelector(propertyForm);
+    console.log('properrtyData', propertyData);
     const currentLandlord = useSelector(selectCurrentLandlord);
     const theme = useTheme();
+    const imageUploadRef1 = useRef();
+    const imageUploadRef2 = useRef();
+
+
     const [
         createProperty,
         {
@@ -51,9 +58,16 @@ const AddProperty = () => {
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
                 console.log(propertyData)
                 try {
+                    const location = await handleGeocode(propertyData.location);
+                    const finalData = {...propertyData}
+                    finalData.location = {
+                        type: "Point",
+                        coordinates: [location.longitude, location.latitude],
+                    };
+                    console.log('location', finalData.location)
                     const response = await createProperty({
                         id: currentLandlord._id,
-                        payload: {data: propertyData},
+                        payload: {data: finalData},
                     }).unwrap();
 
                     dispatch(
@@ -61,7 +75,7 @@ const AddProperty = () => {
                             `Property ${response.name} created successfully`
                         )
                     );
-                    navigate("/landlord/properties");
+                    navigate("/");
                     setActiveStep(1);
                     setNumberOfSteps(1);
                     setSubmitForm(false)
@@ -103,22 +117,29 @@ const AddProperty = () => {
             dispatch(setPropertyForm({[name]: value}));
         } else if (name === "categories") {
             setNumberOfSteps(parseInt(value));
-        } else if (name === "number" || name === "type" || name === "price") {
+        } else if (name === "vacancies" || name === "type" || name === "price") {
             dispatch(setUnitForm({[name]: value}))
         }
     };
 
+
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
         dispatch(setPropertyFormUnits());
         if (activeStep < numberOfSteps) {
+            imageUploadRef2.current.submitForm();
             setSubmitForm(false)
             return handleNext();
         } else if (activeStep === numberOfSteps) {
+
+            imageUploadRef1.current.submitForm();
+            imageUploadRef2.current.submitForm();
             setSubmitForm(true)
         }
     };
-
+    console.log(submitForm)
+    
     return (
         <Box
             sx={{
@@ -209,7 +230,7 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
-                        <Imageupload/>
+                        <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit} />
                     </FormControl>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
@@ -250,20 +271,15 @@ const AddProperty = () => {
                     </FormControl>
 
                     <FormControl>
-                        <Typography sx={{}}>
-                            {" "}
-                            How many units do you have in this category ?
-                        </Typography>
+                        <Typography sx={{}}>How do many vacancies do you have in this unit?</Typography>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="number"
-                            label="Number of Units"
-                            name="number"
-                            type={"number"}
-                            aria-describedby="my-helper-text"
-                            value={unit.number}
+                            id="vacancies"
+                            label="No of Vacancies"
+                            name="vacancies"
+                            value={unit.vacancies}
 
                         />
                     </FormControl>
@@ -280,19 +296,8 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
-                        <Imageupload />
+                        <Imageupload ref={imageUploadRef2} handleSubmit={handleSubmit} />
                     </FormControl>
-
-                    {/*{unitData.length} {activeStep}*/}
-                    {/*<Button*/}
-                    {/*    fullWidth*/}
-                    {/*    type="submit"*/}
-                    {/*    variant="contained"*/}
-                    {/*    onClick={handleSubmit}*/}
-                    {/*    disabled={activeStep === numberOfSteps && numberOfSteps === unitData.length}*/}
-                    {/*>*/}
-                    {/*    Submit*/}
-                    {/*</Button>*/}
 
                     <LoadingButton
                         loading={fetchLoading}
@@ -301,9 +306,6 @@ const AddProperty = () => {
                         fullWidth
                         variant="contained"
                         onClick={handleSubmit}
-                        // disabled={
-                        //     activeStep === numberOfSteps && numberOfSteps === unitData.length
-                        // }
                     >
                         Submit
                     </LoadingButton>
@@ -330,7 +332,6 @@ const AddProperty = () => {
                                 {theme.direction === "rtl" ? (
                                     <KeyboardArrowLeft/>
                                 ) : (
-                                    // eslint-disable-next-line react/jsx-no-undef
                                     <KeyboardArrowRight/>
                                 )}
                             </Button>

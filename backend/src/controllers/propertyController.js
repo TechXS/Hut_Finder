@@ -8,8 +8,11 @@ const {isValidObjectId} = require("mongoose");
 const createProperty = async (req, res) => {
     const {id} = req.params;
     const { data } = req.body;
-    const unitTypes = data.p_units;
+    console.log('data:', data)
+    const unitTypes = data.unitTypes;
+    console.log('unitTypes:', unitTypes)
     const amenities = data.p_amenities;
+    console.log('amenities:', amenities)
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({error: "Not Valid Landlord ID"});
@@ -29,17 +32,17 @@ const createProperty = async (req, res) => {
                 Unit.create(unitType)
                     .then((unit) => {
                         console.log('created units:', unit._id);
-                        for (const amenity of unitType.u_special_amenities){
-                            Amenity.create(amenity)
-                            .then((amenity) => {
-                                console.log('created unit amenity\n', amenity._id);
-                                return Unit.findByIdAndUpdate(
-                                    {_id: unit._id},
-                                    {$push: {special_amenities: amenity._id}},
-                                    {new: true}
-                                )
-                            })
-                        }
+                        // for (const amenity of unitType.u_special_amenities){
+                        //     Amenity.create(amenity)
+                        //     .then((amenity) => {
+                        //         console.log('created unit amenity\n', amenity._id);
+                        //         return Unit.findByIdAndUpdate(
+                        //             {_id: unit._id},
+                        //             {$push: {special_amenities: amenity._id}},
+                        //             {new: true}
+                        //         )
+                        //     })
+                        // }
                     return Property.findByIdAndUpdate(
                             {_id: property._id},
                             {$push: {units: unit._id}},
@@ -53,24 +56,24 @@ const createProperty = async (req, res) => {
                         console.log("Error ",err.message);
                     })
             }
-            for (const amenity of amenities) {
-                Amenity.create(amenity)
-                .then((amenityResponse) => {
-                    console.log('success creating property amenity\n', amenityResponse._id);
+            // for (const amenity of amenities) {
+            //     Amenity.create(amenity)
+            //     .then((amenityResponse) => {
+            //         console.log('success creating property amenity\n', amenityResponse._id);
 
-                    return Property.findByIdAndUpdate(
-                        {_id: property._id},
-                        {$push: {amenities: amenityResponse._id}},
-                        {new: true}
-                    )
-                })
-                .then((response)=>{
-                    console.log("amenity creation success");
-                })
-                .catch((err) => {
-                    console.log("Error ",err.message);
-                })
-            }
+            //         return Property.findByIdAndUpdate(
+            //             {_id: property._id},
+            //             {$push: {amenities: amenityResponse._id}},
+            //             {new: true}
+            //         )
+            //     })
+            //     .then((response)=>{
+            //         console.log("amenity creation success");
+            //     })
+            //     .catch((err) => {
+            //         console.log("Error ",err.message);
+            //     })
+            // }
 
         })
         .catch((err) => {

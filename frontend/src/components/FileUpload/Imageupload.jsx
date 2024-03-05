@@ -1,19 +1,34 @@
 import { Box, Button, Input, Paper } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { useRef, useState } from 'react'
+import  { forwardRef, useRef, useState, useImperativeHandle } from 'react'
 
 
-const Imageupload = () => {
+const Imageupload =forwardRef((props, ref) => {
     const inputRef = useRef(null);
     const [images, setImages] = useState([])
     
-    const handleSubmit=()=>{
+    const handlePreview=()=>{
         inputRef.current.click();
     };
+
+
+    useImperativeHandle(ref, () => ({
+        submitForm: () => {
+            //put submit logic here
+
+
+
+          console.log(images)
+          setImages([])
+        },
+      }));
+
+
+
+
     const handleImageChange =(event)=>{
         const file = event.target.files[0];
         if (file){
-            console.log(file);
             setImages(prevImages => [...prevImages, file])
         }
     };
@@ -37,7 +52,7 @@ const Imageupload = () => {
                 <Button  
                 startIcon={<CloudUploadIcon />} 
                 variant="contained" 
-                onClick={handleSubmit}
+                onClick={handlePreview}
                 sx={{margin:'5px'}}>
                     Add Image
             </Button>
@@ -55,6 +70,6 @@ const Imageupload = () => {
         </Paper>
     </div>
   )
-}
+})
 
 export default Imageupload

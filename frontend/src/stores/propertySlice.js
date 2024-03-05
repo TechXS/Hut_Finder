@@ -10,8 +10,8 @@ export const propertySlice = createSlice({
             error: null,
         },
         unitForm: {
-            number: "",
             type: "",
+            vacancies: "",
             price: "",
         },
         currentProperty: {}
@@ -40,8 +40,8 @@ export const propertySlice = createSlice({
                 state.unitForm,
             ]
             state.unitForm = {
-                number: "",
                 type: "",
+                vacancies: "",
                 price: "",
             }
         },
