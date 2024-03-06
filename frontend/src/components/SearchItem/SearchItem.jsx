@@ -1,7 +1,15 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import { setCurrentProperty } from "../../stores/propertySlice";
+
    
-const SearchItem = ({ properties }) => {
+const SearchItem = ({ properties }) => {  
+  // const dispatch = useDispatch();
+  // const handleClick = (property) => {
+  //   dispatch(setCurrentProperty(property));
+  //   console.log("Propertyclickkkk\n", property);
+  // }
   return (
     <>
       {properties && properties.map((property) => (
@@ -12,7 +20,7 @@ const SearchItem = ({ properties }) => {
               className="brImg"
             />
             <div className="brDesc">
-            <h1 className="brTitle">{property.name}</h1>
+            <h1 className="brTitle">{property.name || ''}</h1>
             <span className="brDistance">500m from Juja City Mall</span>
             <span className="brTaxiOp">{property?.amenities[0]?.name ?? ""}</span>
             <span className="brSubtitle">

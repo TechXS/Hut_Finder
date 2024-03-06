@@ -7,12 +7,18 @@ const {isValidObjectId} = require("mongoose");
 //Create property
 const createProperty = async (req, res) => {
     const {id} = req.params;
+    console.log('id:', id)
     const { data } = req.body;
+    console.log('reqdata', req.data)
+    console.log('req.propertyImages:', req.propertyImages)
+    console.log('req files:', req.files)
     console.log('data:', data)
-    const unitTypes = data.unitTypes;
+    const parsedData = JSON.parse(data);
+    console.log('data:', parsedData)
+    const unitTypes = parsedData.data.unitTypes;
     console.log('unitTypes:', unitTypes)
-    const amenities = data.p_amenities;
-    console.log('amenities:', amenities)
+    // const amenities = data.p_amenities;
+    // console.log('amenities:', amenities)
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({error: "Not Valid Landlord ID"});

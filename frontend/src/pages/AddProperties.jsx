@@ -26,6 +26,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import { useRef } from 'react';
 import { handleGeocode } from '../utils/geocode';
+import { frmDta } from '../utils/formValidation.js';
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -44,13 +45,14 @@ const AddProperty = () => {
     const [unitImagesObject, setUnitImagesObject] = useState([])
 
 
+
     const updatePropertyImages = async (newImages) => {
         setPropertyImages(newImages);
-        console.log('1stPropertyimages\n', propertyImages)
+        // console.log('1stPropertyimages\n', propertyImages)
     }
     const updateUnitImages = async (newImages) => {
         setUnitImages(newImages);
-        console.log('1stUnitimages\n', unitImages)
+        // console.log('1stUnitimages\n', unitImages)
     }
 
 
@@ -113,39 +115,57 @@ const AddProperty = () => {
 
     useEffect(() => {
         (async () => {
-            console.log('updated property images', propertyImages)
-            console.log('updated unit images', unitImages)
-            console.log('unitImagesObject\n', unitImagesObject)
-            // unitImagesObject[numberOfSteps - 1] = {type: unit.type, images: unitImages}
-
-
-
-            const formData = new FormData();
-            propertyImages.forEach((image) => {
-                formData.append("propertyImages", image);
-            })
-            unitImages.forEach((image) => {
-                formData.append("unitImages", image);
-            })
-            // Display the key/value pairs
-            // for (var pair of formData.entries()) {
-            //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
-            // }            
+            // console.log('updated property images', propertyImages)
+            // console.log('updated unit images', unitImages)
+            // console.log('unitImagesObject\n', unitImagesObject)
+            // const formData = new FormData();
+            // propertyImages.forEach((image) => {
+            //     formData.append("propertyImages", image.name);
+            // });
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
-                // console.log(propertyData)
+                // console.log("propertyData\n", propertyData);
+                console.log('unit data\n', unitData)
                 try {
                     const location = await handleGeocode(propertyData.location);
+                    
                     const finalData = {...propertyData}
                     finalData.location = {
                         type: "Point",
                         coordinates: [location.longitude, location.latitude],
                     };
-                    console.log('location', finalData.location)
-                    formData.append('data', JSON.stringify(finalData));
-                    console.log('formdata', formData);
+                    const unitTypes = finalData.unitTypes.map((unit, index) => {
+                        const unitMatch = unitImagesObject.find((obj) => obj.type === unit.type);
+                        if (unitMatch) {
+                            // Return a new object with the updated properties
+                            return { ...unit, images: unitMatch.images };
+                        }
+                        // If no match is found, return the original object
+                        return unit;
+                    });
+                    
+                    console.log('updated unitTypes\n', unitTypes);
+                    
+                    finalData.unitTypes = unitTypes;
+                    console.log('finalData\n', finalData);
+
+                    // await finalData.unitTypes.forEach((unit) => {
+                    //     if (unit.images && Array.isArray(unit.images)){
+                    //         unit.images.forEach((image) => {
+                    //             formData.append(unit.type, image.name);
+                    //         })
+                    //     }
+                    // })
+                    // formData.append('data ', JSON.stringify(finalData));
+                    // // console.log('formdata', formData);
+                    // for (var pair of formData.entries()) {
+                    //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
+                    // }
+                    // const newFormData = JSON.stringify(formData);
+                    // console.log('newFormData', newFormData);
+                    const formData = await frmDta(finalData, propertyImages)
                     const response = await createProperty({
                         id: currentLandlord._id,
-                        payload: {data: finalData},
+                        payload: {data: formData},
                     }).unwrap();
 
                     dispatch(
@@ -198,8 +218,8 @@ const AddProperty = () => {
         } else if (name === "vacancies" || name === "type" || name === "price") {
             dispatch(setUnitForm({[name]: value}))
         }
-        console.log('2propertyimages\n', propertyImages)
-        console.log('2unitimages\n', unitImages)
+        // console.log('2propertyimages\n', propertyImages)
+        // console.log('2unitimages\n', unitImages)
     };
 
 
@@ -223,7 +243,7 @@ const AddProperty = () => {
             if (unit.type && unitImages.length > 0) {
                 createUnitImagesObject(unit.type, unitImages)
             }
-            console.log('Use effect images\n', unitImagesObject)
+            // console.log('Use effect images\n', unitImagesObject)
         }
     };
     // console.log(submitForm)
