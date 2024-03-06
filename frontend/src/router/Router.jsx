@@ -20,6 +20,7 @@ import PropertyLayout from "../layouts/PropertyLayout.jsx"
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
 import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
+import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const router = createBrowserRouter([
     {
@@ -95,6 +96,10 @@ const router = createBrowserRouter([
     {
         path:'/upload',
         element:<Imageupload />
+    },
+    {
+        path:'/addamenities',
+        element:<AddAmenities />
     }
 ]);
 

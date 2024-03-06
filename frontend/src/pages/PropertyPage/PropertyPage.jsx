@@ -86,7 +86,7 @@ const PropertyPage = () => {
           </span>
           <div className="PropImages">
             {photos.slice(0, 6).map((photo, i) => (
-              console.log(photos),
+              // console.log(photos),
               <div className="PropImgWrapper" key={i}>
                 <img
                   onClick={() => handleOpen(i)}

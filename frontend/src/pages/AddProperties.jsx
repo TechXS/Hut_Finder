@@ -25,6 +25,7 @@ import {setErrorNotification, setSuccessNotification,} from "../stores/notificat
 import LoadingButton from "@mui/lab/LoadingButton";
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import { useRef } from 'react';
+import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -217,8 +218,9 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
-                        <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit} />
                     </FormControl>
+                        <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                        <Imageupload  ref={imageUploadRef1} handleSubmit={handleSubmit} />
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
                 <Box
@@ -288,8 +290,9 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
-                        <Imageupload ref={imageUploadRef2} handleSubmit={handleSubmit} />
                     </FormControl>
+                        <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                        <Imageupload ref={imageUploadRef2} handleSubmit={handleSubmit} />
 
                     {/*{unitData.length} {activeStep}*/}
                     {/*<Button*/}

@@ -15,7 +15,7 @@ const Imageupload =forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         submitForm: () => {
             //put submit logic here
-
+            //send {propapi}  - send to the required backend 
 
 
           console.log(images)
@@ -40,7 +40,7 @@ const Imageupload =forwardRef((props, ref) => {
         component={'form'}
         display={'flex'}
         flexDirection={'column'}
-        sx={{margin:'20px', maxWidth:'450px'}}
+        sx={{ maxWidth:'450px'}}
         
         >
             <Box
