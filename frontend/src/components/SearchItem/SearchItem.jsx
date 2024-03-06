@@ -36,9 +36,9 @@ const SearchItem = ({ properties }) => {
           <div className="brDetailTexts">
             <span className="brPrice">$112</span>
             <span className="brTaxOp">Includes taxes and fees</span>
-            <Link to="/property">
+            <Link to={`/properties/${property._id}`}>
               <button className="brCheckButton">See availability</button>
-            </Link>       
+            </Link>
           </div>
          </div>
       </div>
