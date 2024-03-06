@@ -18,14 +18,16 @@ const SearchItem = ({ properties }) => {
             <span className="brSubtitle">
               {property.description}
             </span>
+            <span  className="brFeatures">
             {
-              property.units.map((unit) => (
-                <span className="brFeatures" key={unit._id}>
-                {/* {(property?.units[0]?.type ?? "")} • {property.units[1].type} */}
-                {(unit?.type ?? "")} •
-              </span>
+              property.units.map((unit, index) => (
+                <span  className="brFeatures" key={unit._id}>
+                  {unit.type} {" "}
+                  {index < property.units.length - 1 && ' • '}  {" "}
+                </span>
               ))
             }
+            </span>
             <span className="brCancelOp">
               {(property.amenities[0]?.name || property.amenities[1]?.name) ?? ""}
               {/* {(property.amenities[0?.name ? property.amenities[0]?.name : ""])} */}

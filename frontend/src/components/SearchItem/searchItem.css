@@ -57,6 +57,9 @@
   
   .brFeatures{
     font-size: 12px;
+    flex-direction: row;
+    display: flex;
+    gap: 0.5rem;
   }
   
   .brCancelOp{
