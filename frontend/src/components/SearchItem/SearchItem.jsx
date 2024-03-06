@@ -20,17 +20,23 @@ const SearchItem = ({ properties }) => {
               className="brImg"
             />
             <div className="brDesc">
-            <h1 className="brTitle">{property.name}</h1>
+            <h1 className="brTitle">{property.name || ''}</h1>
             <span className="brDistance">500m from Juja City Mall</span>
-            <span className="brTaxiOp">{property.amenities[0].name}</span>
+            {/* <span className="brTaxiOp">{property.amenities[0].name || ''}</span> */}
             <span className="brSubtitle">
               {property.description}
             </span>
-            <span className="brFeatures">
+           
               {property.units[0].type} • {property.units[1].type}
-            </span>             
+              {property.units.map((unit) => (
+                 <span className="brFeatures" key={unit._id}>
+                  {
+
+                  } 
+                  </span>
+              ))}
             <span className="brCancelOp">
-              {property.amenities[0].name || property.amenities[1].name} 
+              {/* {property.amenities[0].name || property.amenities[1].name || ''}  */}
             </span>
             <span className="brCancelOpSubtitle">
               Join us today, your private party paradise awaits!!!

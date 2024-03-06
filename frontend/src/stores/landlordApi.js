@@ -8,7 +8,9 @@ export const landlordApi = createApi({
             const accessToken = sessionStorage.getItem("token");
             if (accessToken) {
                 headers.set("authorization", `Bearer ${accessToken}`);
-                headers.set("Content-Type", "application/json");
+                // headers.set("Content-Type", "application/json");
+                // headers.set("Content-Type", "multipart/form-data");
+
             }
             return headers;
         },
