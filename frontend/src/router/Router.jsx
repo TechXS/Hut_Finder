@@ -70,14 +70,12 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/property",
+        path: "/properties/:id",
         element: <PropertyLayout/>,
-        errorElement: <Error/>,
     },
     {
         path:'/properties',
-        element: <Properties />
-
+        element: <Properties/>
     },
     {
         path: '/addproperty',

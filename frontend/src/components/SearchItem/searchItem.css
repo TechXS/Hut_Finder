@@ -48,10 +48,18 @@
   .brSubtitle{
     font-size: 12px;
     font-weight: bold;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   
   .brFeatures{
     font-size: 12px;
+    flex-direction: row;
+    display: flex;
+    gap: 0.5rem;
   }
   
   .brCancelOp{

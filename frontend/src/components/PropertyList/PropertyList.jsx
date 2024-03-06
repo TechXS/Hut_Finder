@@ -24,8 +24,7 @@ const PropertyList = ( { filterCondition, search } ) => {
         property.name.toLowerCase().includes(search.toLowerCase())
       );
     }
-    
-      console.log("Filtered Properties:", filteredProperties);
+
       setFilteredProperties(filteredProperties);
     }
   }, [properties, filterCondition, search]);

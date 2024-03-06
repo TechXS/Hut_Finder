@@ -37,7 +37,7 @@ export const clientApi = createApi({
 
         createAppointment: builder.mutation({
             query: ({id, payload}) => ({
-                url: `{id}/appointments`,
+                url: `${id}/appointments`,
                 method: "POST",
                 body: payload,
             }),
