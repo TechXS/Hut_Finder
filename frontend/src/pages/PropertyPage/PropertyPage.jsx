@@ -17,6 +17,7 @@ import {useSignUpClientMutation} from "../../stores/authApi.js";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {selectCurrentClient} from "../../stores/clientSlice.js";
 import {useDispatch, useSelector} from "react-redux";
+import { selectCurrentProperty } from "../../stores/propertySlice";
 
 const PropertyPage = () => {
   const client = useSelector(selectCurrentClient);
