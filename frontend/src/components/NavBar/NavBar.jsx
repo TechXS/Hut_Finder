@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import AccountMenu from '../Account_Icon/AccountIcon';
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentLandlord,setLandlordLogout} from "../../stores/landlordSlice.js";
 import {selectCurrentClient,setClientLogout} from "../../stores/clientSlice.js";
@@ -98,7 +99,7 @@ const NavBar = () => {
                 alignItems:'center',
                 justifyContent:'space-around',
                 position:"relative",
-                width: user.name ? "10%" : {
+                width: landlord.name ? "10%" : {
                     sm:"70%",
                     md:"50%",
                     lg:"40%",
@@ -199,7 +200,9 @@ const NavBar = () => {
                         >
                             LOGIN
                         </Button>
+
                     </Link>
+                    <AccountMenu/>
                 </>
             )}
 
