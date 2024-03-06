@@ -1,81 +1,66 @@
 import "./searchItem.css";
+import { Link } from "react-router-dom";
+// import { useDispatch } from "react-redux";
+// import { setCurrentProperty } from "../../stores/propertySlice";
 
-import React from 'react';
-
-
-const SearchItem = ({ item }) => {
+   
+const SearchItem = ({ properties }) => {  
+  // const dispatch = useDispatch();
+  // const handleClick = (property) => {
+  //   dispatch(setCurrentProperty(property));
+  //   console.log("Propertyclickkkk\n", property);
+  // }
   return (
-    <div className="searchItem">
-      <img src={item.imageUrl} alt="" className="brImg" />
-      <div className="brDesc">
-        <h1 className="brTitle">{item.title}</h1>
-        <span className="brDistance">{item.distance}</span>
-        <span className="brTaxiOp">{item.freeWifi}</span>
-        <span className="brSubtitle">{item.apartmentDescription}</span>
-        <span className="brFeatures">{item.features}</span>
-        <span className="brCancelOp">{item.backupGenerator}</span>
-        <span className="brCancelOpSubtitle">{item.partyParadise}</span>
+    <>
+      {properties && properties.map((property) => (
+        <div className="searchItem" key={property._id}>
+            <img
+              src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+              alt=""
+              className="brImg"
+            />
+            <div className="brDesc">
+            <h1 className="brTitle">{property.name || ''}</h1>
+            <span className="brDistance">500m from Juja City Mall</span>
+            <span className="brTaxiOp">{property?.amenities[0]?.name ?? ""}</span>
+            <span className="brSubtitle">
+              {property.description}
+            </span>
+            <span  className="brFeatures">
+            {
+              property.units.map((unit, index) => (
+                <span  className="brFeatures" key={unit._id}>
+                  {unit.type} {" "}
+                  {index < property.units.length - 1 && ' • '}  {" "}
+                </span>
+              ))
+            }
+            </span>
+            <span className="brCancelOp">
+              {(property.amenities[0]?.name || property.amenities[1]?.name) ?? ""}
+              {/* {(property.amenities[0?.name ? property.amenities[0]?.name : ""])} */}
+            </span>
+            <span className="brCancelOpSubtitle">
+              Join us today, your private party paradise awaits!!!
+            </span>
+          </div>
+        <div className="brDetails">
+          <div className="brRating">
+            <span>Excellent</span>
+            <a>8.9</a>
+          </div>
+          <div className="brDetailTexts">
+            {/*<span className="brPrice">$112</span>*/}
+            {/*<span className="brTaxOp">Includes taxes and fees</span>*/}
+            <Link to={`/properties/${property._id}`}>
+              <button className="brCheckButton">See availability</button>
+            </Link>
+          </div>
+         </div>
       </div>
-      <div className="brDetails">
-        <div className="brRating">
-          <span>{item.ratingLabel}</span>
-          <button>{item.rating}</button>
-        </div>
-        <div className="brDetailTexts">
-          <span className="brPrice">{item.price}</span>
-          <span className="brTaxOp">{item.taxAndFees}</span>
-          <button className="brCheckButton">{item.availabilityButton}</button>
-        </div>
-      </div>
-    </div>
+      ))
+      }
+    </>
   );
 };
-
-const SearchItemList = ({ items }) => {
-  return (
-    <div>
-      {items.map((item, index) => (
-        <SearchItem key={index} item={item} />
-      ))}
-    </div>
-  );
-};
-
-
-export default SearchItemList;
-
-// import "./searchItem.css";
-
-// const SearchItem = ({ retrievedItems }) => {
-//   return (
-//     <>
-//       {retrievedItems.map((item, index) => (
-//         <div key={index} className="searchItem">
-//           <img src={item.imageUrl} alt="" className="brImg" />
-//           <div className="brDesc">
-//             <h1 className="brTitle">{item.title}</h1>
-//             <span className="brDistance">{item.distance}</span>
-//             <span className="brTaxiOp">{item.taxiOption}</span>
-//             <span className="brSubtitle">{item.subtitle}</span>
-//             <span className="brFeatures">{item.features}</span>
-//             <span className="brCancelOp">{item.cancelOption}</span>
-//             <span className="brCancelOpSubtitle">{item.cancelOptionSubtitle}</span>
-//           </div>
-//           <div className="brDetails">
-//             <div className="brRating">
-//               <span>{item.ratingLabel}</span>
-//               <button>{item.ratingValue}</button>
-//             </div>
-//             <div className="brDetailTexts">
-//               <span className="brPrice">{item.price}</span>
-//               <span className="brTaxOp">{item.taxOption}</span>
-//               <button className="brCheckButton">{item.availabilityButton}</button>
-//             </div>
-//           </div>
-//         </div>
-//       ))}
-//     </>
-//   );
-// };
-
-// export default SearchItem;
+export default SearchItem;      

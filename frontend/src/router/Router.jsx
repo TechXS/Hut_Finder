@@ -17,13 +17,13 @@ import Properties from "../pages/Properties.jsx";
 import AddProperty from "../pages/AddProperties.jsx";
 import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
 // import Property from "../pages/PropertyPage/AddProperty.jsx";
 import LandlordLayout from "../layouts/LandlordLayout.jsx";
 import SearchItemList from "../components/SearchItem/SearchItem.jsx";
 import Profile from "../components/profile/Profile.jsx"
 import ProfileClient from "../components/profile/ClientProfile.jsx"
-import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
-import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import Wish from "../components/Wishlist/Wishlist.jsx";
 import All_Appointments from "../components/Appointments/Appointments.jsx";
 import ClientLayout from "../layouts/ClientLayout.jsx";
@@ -78,17 +78,46 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
+        path: "/properties/:id",
+        element: <PropertyLayout/>,
+    },
+    {
+        path:'/properties',
+        element: <Properties/>
+    },
+    {
+        path: "/landlord",
+        element: <LandlordLayout/>,
+        children: [
+            {
+                path: '/addproperty',
+                element: <AddProperty/>
+            },
+            {
+                path: '/editproperty',
+                element: <PropertyEditPage/>
+            },
+            {
+                path: '/propertyl',
+                element: <Property/>
+            },
+            {
+                path: '/upload',
+                element: <Imageupload/>
+            },]
+    },
+    {
         path: "/client",
         element: <ClientLayout/>,
         errorElement: <Error/>,
         children:[
 
-            {   
+            {
                 index: true,
                 path: "/client/profile",
                 element: <ProfileClient/>,
             },
-            {   
+            {
                 path: "/client/wishlist",
                 element: <Wish/>,
             },
@@ -97,91 +126,10 @@ const router = createBrowserRouter([
                 element: <All_Appointments/>,
             },
         ]
-        
-    },
-    {
-        path: "/property",
-        element: <PropertyLayout/>,
-        errorElement: <Error/>,
-    },
-    //{
-    //    path: "/addproperty",
-    //    element: <Property/>,
-    //    errorElement: <Error/>,
-    //},
 
-    {
-        path:"/landlord",
-        element: <LandlordLayout />,
-        children:[
-            //{
-            //      path:"/landlord/browse",
-            //      element:<BrowseLayout/>,
-            //
-            //    },
-        //  {
-        //    index: true,
-        //    element: <Dashboard />
-        //  },
-        //  {
-        //    path:"/landlord/stats",
-        //    element: <Stats />,
-        //
-        //  },
-         {
-            index:true,
-           path:"/landlord/properties",
-           element: <AddProperty/>,
-    
-         },
-        //  {
-        //    path:"/landlord/propertypage",
-        //    element: <Property />,
-        //
-        //  },
-        {
-          path:"/landlord/profile",
-          element: <Profile />,
-        },
-        //  {
-        //    path:"/landlord/complaints",
-        //    element: <ComplaintsPage />,
-        //
-        //  },
-        ]
+    },
 
-      },
 
-    //Eric
-    // {
-    //     path:'/properties',
-    //     element: <Properties />
-    //
-    // },
-    // {
-    //     path: '/addproperty',
-    //     element: <AddProperty/>
-    // },
-    // {
-    //     path:'/property',
-    //     element: <Property />
-    // }
-    {
-        path: '/addproperty',
-        element: <AddProperty/>
-    },
-    {
-        path: '/editproperty',
-        element: <PropertyEditPage />
-    },
-    {
-        path:'/propertyl',
-        element: <Property />
-    },
-    {
-        path:'/upload',
-        element:<Imageupload />
-    }
 ]);
 
 export default router;

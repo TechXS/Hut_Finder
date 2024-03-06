@@ -2,7 +2,7 @@ const Client = require('../models/clientModel')
 const {isValidObjectId,Types} = require("mongoose");
 const Property = require("../models/propertyModel");
 const Appointment = require("../models/appointmentModel");
-
+const Landlord = require('../models/landlordModel')
 
 // add to wishlist
 const addToWishList = async (req, res) => {
@@ -55,6 +55,12 @@ const removeFromWishlist = async (req, res) => {
 const createAppointment = async (req, res) => {
     try {
         const { data } = req.body;
+        const landlord = await Landlord.findOne({ properties: data.property }).select("_id");
+        if (!landlord) {
+            return res.status(404).json({ message: "Landlord not found for the given property" });
+        }
+
+        data.landlord = landlord._id;
 
         // Ensuring the required data is present in the request body
         if (!data.landlord || !data.property || !data.client || !data.date) {
@@ -75,7 +81,9 @@ const createAppointment = async (req, res) => {
 const getAllProperties = async (req, res) => {
     const {data} = req.body;
     try {
-        const properties = await Property.find();
+        const properties = await Property.find()
+            .populate({ path: 'amenities', select: 'name icon' })
+            .populate({ path: 'units', select: 'name vacancies type' });
         res.status(200).json(properties);
     } catch (error) {
         console.error("Error getting properties:", error);
@@ -92,7 +100,9 @@ const getPropertyById = async (req, res) => {
             return res.status(400).json({ error: 'Property does not exist' });
         }
 
-        const property = await Property.findById(id);
+        const property = await Property.findById(id)
+            .populate({ path: 'amenities', select: 'name icon' })
+            .populate({ path: 'units', populate:{path: 'special_amenities', select: 'name icon'} });;
 
         if (!property) {
             return res.status(404).json({ error: 'Property not found.' });

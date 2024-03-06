@@ -1,15 +1,50 @@
 import { Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {useSelector} from "react-redux";
-import {selectCurrentLandlord} from "../../stores/landlordSlice";
 import AccountMenu from '../Account_Icon/AccountIcon';
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentLandlord,setLandlordLogout} from "../../stores/landlordSlice.js";
+import {selectCurrentClient,setClientLogout} from "../../stores/clientSlice.js";
+import {useState} from "react";
+import {useLogoutMutation} from "../../stores/authApi.js";
+
+
 
 const NavBar = () => {
     const landlord = useSelector(selectCurrentLandlord);
+    const client = useSelector(selectCurrentClient);
+    const dispatch = useDispatch();
+    const [open,setOpen] = useState(false)
+    const navigate = useNavigate()
 
-    console.log(landlord)
+    const [logout, {data: response, isLoading}] = useLogoutMutation();
+
+    const user = (client ?? landlord )?? null
+
+    const handleOpen = ()=>{
+        console.log(open)
+        setOpen(!open)
+    }
+
+    const handleLogout = async ()=>{
+     try{
+
+         const data = {
+             role : client ? "client" : "landlord"
+         }
+         const appointmentData = await logout({data: data}).unwrap();
+         dispatch(setClientLogout())
+         dispatch(setLandlordLogout())
+         navigate('/')
+
+     }catch (e) {
+         console.error(e.message)
+     }
+    }
+
+    console.log(user)
     const navLinks = [
         {
             name:"Home",
@@ -48,7 +83,7 @@ const NavBar = () => {
             textDecoration: "none",
             fontSize: "1.5rem"
         }}>
-            <Link to='/'>
+            <Link to={'/'}>
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
@@ -73,14 +108,40 @@ const NavBar = () => {
                 }
             }}
         >
-            {landlord.name ? (
-                    <img src={landlord.imageUrl} alt={"Profile"} style={{
+            {user.name ? (
+                <>
+                    <img onClick={()=> handleOpen()} src={user.imageUrl} alt={"Profile"} style={{
                         fontSize: "20px",
                         width: "60px",
                         height: "60px",
                         borderRadius: "50%",
                         cursor: "pointer"
                     }} />
+                    {open && (                    <Box sx={{
+                        position:"absolute",
+                        paddingX:"2rem",
+                        paddingY:"1rem",
+                        top:"2.5rem",
+
+
+                    }}>
+                            <Button
+                                onClick={()=> handleLogout()}
+                                sx={{
+                                    backgroundColor: '#d2d0d0',
+                                    "&:hover": { backgroundColor: "#afb0b0" },
+                                    textTransform:"none",
+                                    color:"black"
+                                }}
+                                disableElevation={true}
+                                disableFocusRipple={true}
+                                variant='contained'
+                            >
+                                Logout
+                            </Button>
+                    </Box>)}
+                    </>
+
             ) : (
                 <>
                     {navLinks.map((navLink, id) => (
@@ -140,7 +201,7 @@ const NavBar = () => {
                         >
                             LOGIN
                         </Button>
-                        
+
                     </Link>
                     <AccountMenu/>
                 </>

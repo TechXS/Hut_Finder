@@ -1,17 +1,23 @@
 .searchItem {
     border: 1px solid lightgray;
-    padding: 10px;
-    border-radius: 5px;
+    border-radius: 15px;
     display: flex;
     justify-content: space-between;
     gap: 20px;
     margin-bottom: 20px;
+    max-width: auto;
+    background-color: white;
+    padding-right: 30px;
+    min-height: 285px;
+    min-width: 775px;
   }
   
   .brImg {
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: auto;
     object-fit: cover;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
   }
   
   .brDesc {
@@ -42,10 +48,18 @@
   .brSubtitle{
     font-size: 12px;
     font-weight: bold;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* number of lines to show */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   
   .brFeatures{
     font-size: 12px;
+    flex-direction: row;
+    display: flex;
+    gap: 0.5rem;
   }
   
   .brCancelOp{
@@ -71,15 +85,21 @@
     justify-content: space-between
   }
   
-  .brRating>span{
+  .brRating > span {
     font-weight: 500;
+    margin-top: 14  px;
+    margin-left: 45px; /* Adjust right margin */
   }
-  .brRating>button{
-   background-color: #003580;
-   color: white;
-   padding: 5px;
-   font-weight: bold;
-   border: none;
+  
+  .brRating > a {
+    background-color: #003580;
+    color: white;
+    padding: 5px;
+    font-weight: bold;
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+    /* margin-right: 10px; Adjust left margin */
   }
   
   .brDetailTexts{
@@ -106,4 +126,5 @@
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    margin-bottom: 10px;
   }

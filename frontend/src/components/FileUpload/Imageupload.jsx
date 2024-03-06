@@ -1,20 +1,45 @@
 import { Box, Button, Input, Paper } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { useRef, useState } from 'react'
+import  { forwardRef, useRef, useState, useImperativeHandle } from 'react'
 
 
-const Imageupload = () => {
+// eslint-disable-next-line react/display-name
+const Imageupload =forwardRef((props, ref) => {
     const inputRef = useRef(null);
     const [images, setImages] = useState([])
+    // console.log('child images\n', images)
     
-    const handleSubmit=()=>{
+    const handlePreview=()=>{
         inputRef.current.click();
     };
-    const handleImageChange =(event)=>{
+
+
+    useImperativeHandle(ref, () => ({
+        submitForm: () => {
+            //put submit logic here
+
+
+
+          console.log(images)
+          setImages([])
+        },
+      }));
+
+
+
+
+    const handleImageChange = async (event)=>{
         const file = event.target.files[0];
         if (file){
-            console.log(file);
             setImages(prevImages => [...prevImages, file])
+        }
+        if (props.updatePropertyImages){
+            props.updatePropertyImages([...images, file])
+            console.log('added property images')
+        }
+        if  (props.updateUnitImages){
+            props.updateUnitImages([...images, file])
+            console.log('added unit images')
         }
     };
 
@@ -37,7 +62,7 @@ const Imageupload = () => {
                 <Button  
                 startIcon={<CloudUploadIcon />} 
                 variant="contained" 
-                onClick={handleSubmit}
+                onClick={handlePreview}
                 sx={{margin:'5px'}}>
                     Add Image
             </Button>
@@ -55,6 +80,6 @@ const Imageupload = () => {
         </Paper>
     </div>
   )
-}
+})
 
 export default Imageupload
