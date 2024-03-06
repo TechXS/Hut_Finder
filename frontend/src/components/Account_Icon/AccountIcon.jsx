@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
+import {Box} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,45 +14,76 @@ import Logout from '@mui/icons-material/Logout';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import {Button} from "@mui/base";
+import {setClientLogout} from "../../stores/clientSlice.js";
+import {setLandlordLogout} from "../../stores/landlordSlice.js";
+import {useLogoutMutation} from "../../stores/authApi.js";
+import {useDispatch} from "react-redux";
 
-export default function AccountMenu() {
+export default function AccountMenu({user}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
+  const [logout, {data: response, isLoading}] = useLogoutMutation();
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogout = async (data)=>{
+    try{
+
+      const appointmentData = await logout({data: data}).unwrap();
+      dispatch(setClientLogout())
+      dispatch(setLandlordLogout())
+      navigate('/')
+
+    }catch (e) {
+      console.error(e.message)
+    }
+  }
+
   return (
     <React.Fragment>
       <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
         
         <Tooltip title="Account settings">
           <IconButton
-            onClick={handleClick}
-            size="small"
-            sx={{ ml: 2 }}
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
+              onClick={handleClick}
+              size="small"
+              sx={{ml: 2}}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            {/*<Avatar sx={{ width: 32, height: 32 }}>M</Avatar>*/}
+            <img src={user.imageUrl} alt={"Profile"} style={{
+              fontSize: "20px",
+              width: "60px",
+              height: "60px",
+              borderRadius: "50%",
+              cursor: "pointer"
+            }}/>
           </IconButton>
         </Tooltip>
       </Box>
       <Menu
-        anchorEl={anchorEl}
-        id="account-menu"
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        PaperProps={{
-          elevation: 0,
-          sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
             mt: 1.5,
             '& .MuiAvatar-root': {
               width: 32,
@@ -106,14 +137,14 @@ export default function AccountMenu() {
           </ListItemIcon>
           Settings
       </MenuItem>*/}
-      <Link to='/'>
+      <Box onClick={()=> handleLogout(user)}>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
         </MenuItem>
-        </Link>
+        </Box>
       </Menu>
     </React.Fragment>
   );
