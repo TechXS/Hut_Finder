@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import "./profile.scss";
-import Chart from "../../components/chart/Chart";
 //import Approval from '../Approval/Approval';
 import Datatable from '../Approval/Approval';
 
@@ -110,9 +109,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-       {/* <div className="right">
-          <Chart aspect={2 / 1} title="Revenue (Last 6 Months)" />
-  </div>*/}
       </div>
     </>
   );

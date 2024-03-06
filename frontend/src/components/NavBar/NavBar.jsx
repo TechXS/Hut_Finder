@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import {useSelector} from "react-redux";
 import AccountMenu from '../Account_Icon/AccountIcon';
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentLandlord,setLandlordLogout} from "../../stores/landlordSlice.js";

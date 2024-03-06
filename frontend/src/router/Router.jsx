@@ -90,19 +90,19 @@ const router = createBrowserRouter([
         element: <LandlordLayout/>,
         children: [
             {
-                path: '/addproperty',
+                path: '/landlord/addproperty',
                 element: <AddProperty/>
             },
             {
-                path: '/editproperty',
+                path: '/landlord/editproperty',
                 element: <PropertyEditPage/>
             },
             {
-                path: '/propertyl',
+                path: '/landlord/propertyl',
                 element: <Property/>
             },
             {
-                path: '/upload',
+                path: '/landlord/upload',
                 element: <Imageupload/>
             },]
     },
