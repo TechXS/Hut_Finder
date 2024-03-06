@@ -18,11 +18,17 @@ const SearchItem = ({ properties }) => {
             <span className="brSubtitle">
               {property.description}
             </span>
-            <span className="brFeatures">
-              {property.units[0].type} • {property.units[1].type}
-            </span>
+            {
+              property.units.map((unit) => (
+                <span className="brFeatures" key={unit._id}>
+                {/* {(property?.units[0]?.type ?? "")} • {property.units[1].type} */}
+                {(unit?.type ?? "")} •
+              </span>
+              ))
+            }
             <span className="brCancelOp">
               {(property.amenities[0]?.name || property.amenities[1]?.name) ?? ""}
+              {/* {(property.amenities[0?.name ? property.amenities[0]?.name : ""])} */}
             </span>
             <span className="brCancelOpSubtitle">
               Join us today, your private party paradise awaits!!!
