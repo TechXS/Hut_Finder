@@ -1,7 +1,7 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
    
-const SearchItem = ({ properties }) => {  
+const SearchItem = ({ properties }) => {
   return (
     <>
       {properties && properties.map((property) => (
@@ -14,7 +14,7 @@ const SearchItem = ({ properties }) => {
             <div className="brDesc">
             <h1 className="brTitle">{property.name}</h1>
             <span className="brDistance">500m from Juja City Mall</span>
-            <span className="brTaxiOp">{property.amenities[0].name}</span>
+            <span className="brTaxiOp">{property?.amenities[0]?.name ?? ""}</span>
             <span className="brSubtitle">
               {property.description}
             </span>
@@ -22,7 +22,7 @@ const SearchItem = ({ properties }) => {
               {property.units[0].type} • {property.units[1].type}
             </span>
             <span className="brCancelOp">
-              {property.amenities[0].name || property.amenities[1].name} 
+              {(property.amenities[0]?.name || property.amenities[1]?.name) ?? ""}
             </span>
             <span className="brCancelOpSubtitle">
               Join us today, your private party paradise awaits!!!
@@ -34,8 +34,8 @@ const SearchItem = ({ properties }) => {
             <a>8.9</a>
           </div>
           <div className="brDetailTexts">
-            <span className="brPrice">$112</span>
-            <span className="brTaxOp">Includes taxes and fees</span>
+            {/*<span className="brPrice">$112</span>*/}
+            {/*<span className="brTaxOp">Includes taxes and fees</span>*/}
             <Link to={`/properties/${property._id}`}>
               <button className="brCheckButton">See availability</button>
             </Link>
