@@ -1,12 +1,22 @@
 import "./dateTimePicker.css"
 import  { useState } from 'react';
+import {setAppointmentDate} from "../../stores/clientSlice.js";
+import {useDispatch} from "react-redux";
 
 const DateTimePicker = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+    const dispatch = useDispatch();
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
+    console.log(selectedDate)
   };
+    const handleInputChange = (event) => {
+        let {name, value} = event.target;
+        dispatch(setAppointmentDate({[name]: value}));
+    };
+
+
 
   return (
     <div className="datetime-picker">
@@ -14,35 +24,17 @@ const DateTimePicker = () => {
       <input
         id="date-input"
         type="date"
+        name={"date"}
         value={selectedDate.toISOString().slice(0, 10)}
-        onChange={(e) => {
-          const newDate = new Date(e.target.value);
-          const newDateTime = new Date(
-            selectedDate.getFullYear(),
-            selectedDate.getMonth(),
-            selectedDate.getDate(),
-            newDate.getHours(),
-            newDate.getMinutes()
-          );
-          handleDateChange(newDateTime);
-        }}
+        onChange={handleInputChange}
       />
       <label htmlFor="time-input">Select Time:</label>
       <input
         id="time-input"
         type="time"
+        name={"time"}
         value={selectedDate.toTimeString().slice(0, 5)}
-        onChange={(e) => {
-          const newTime = e.target.value.split(':');
-          const newDateTime = new Date(
-            selectedDate.getFullYear(),
-            selectedDate.getMonth(),
-            selectedDate.getDate(),
-            parseInt(newTime[0], 10),
-            parseInt(newTime[1], 10)
-          );
-          handleDateChange(newDateTime);
-        }}
+        onChange={handleInputChange}
       />
     </div>
   );
