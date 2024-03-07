@@ -3,29 +3,69 @@ const Landlord = require('../models/landlordModel');
 const Amenity = require('../models/amenityModel');
 const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
+const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
 
 //Create property
 const createProperty = async (req, res) => {
     const {id} = req.params;
     console.log('id:', id)
     const { data } = req.body;
-    console.log('reqdata', req.data)
-    console.log('req.propertyImages:', req.propertyImages)
-    console.log('req files:', req.files)
     console.log('data:', data)
+    console.log('req.body:', req.body)
+    // for (var pair of data.entries()) {
+    //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
+    // }
     const parsedData = JSON.parse(data);
-    console.log('data:', parsedData)
-    const unitTypes = parsedData.data.unitTypes;
+    console.log('Pdata:', parsedData)
+    const unitTypes = parsedData.unitTypes;
     console.log('unitTypes:', unitTypes)
+    // console.log('files:', req.files);
     // const amenities = data.p_amenities;
     // console.log('amenities:', amenities)
+    const propertyImages = req.files.propertyImages;
+    console.log('propertyImages:', propertyImages)
+    const unitImages = req.files.unitImages;
+    console.log('unitImages:', unitImages)
+    // for (const unitImage of unitImages){
+    //     console.log('\nunit image original name:\n', unitImage.originalname)
+    // }
+    // const stop = parsedData.data.unitTypes
+    // console.log('stop:', stop)
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({error: "Not Valid Landlord ID"});
     }
+    let pImageArray = [];
+    try
+    {    
+        for (const propertyImage of propertyImages){
+            const data = await uploadToCloudinary(propertyImage.path, "property-images");
+            pImageArray.push(data.url);
+        }
 
-    Property.create(data)
-    .then((property) => {
+        for (const unitImage of unitImages){
+            const data = await uploadToCloudinary(unitImage.path, "unit-images");
+            // uImageObjArray.push(data);
+            unitTypes.forEach((unit) => {
+                if (unit.type === unitImage.originalname){
+                    unit.images = unit.images || [];
+                    unit.images.push(data.url);
+                }
+            })
+        }
+        console.log('New unitTypes:', unitTypes)
+    }
+    catch (error){
+        console.log('Error uploading image:', error.message);
+        return res.status(400).json({error: "Error uploading images"});
+    }
+    
+
+    Property.create({
+        ...parsedData,
+        images: pImageArray
+    })
+    .then( async (property) => {
         console.log('Property id\n', property._id);
 
            return Landlord.findByIdAndUpdate(

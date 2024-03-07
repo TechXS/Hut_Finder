@@ -75,10 +75,10 @@ export const updateProfileValidation = (data) => {
     });
 };
 
-export const frmDta = (data, propertyImages) => {
+export const frmDta = (data, propertyImages, unitTypes) => {
     return new Promise((resolve, reject) => {
         try {
-            if (!data || !data.unitTypes) {
+            if (!data || !unitTypes) {
                 console.error('Invalid data structure:', data);
                 reject(new Error('Invalid data structure'));
                 return;
@@ -86,15 +86,14 @@ export const frmDta = (data, propertyImages) => {
 
             const formData = new FormData();
             propertyImages.forEach((image) => {
-                formData.append('propertyImages', image);
+                formData.append('propertyImages', image, image.name);
             });
 
-            console.log('data.unitTypes', data.unitTypes)
-            const unitTypes = data.unitTypes;
             unitTypes.forEach((unit) => {
                 if (unit.images && Array.isArray(unit.images)) {
                     unit.images.forEach((image) => {
-                        formData.append('unitImages', image);
+                        formData.append("unitImages", image, unit.type);
+                        formData.append(unit.type, image.name);
                     });
                 }
             });
