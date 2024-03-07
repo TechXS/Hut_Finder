@@ -92,7 +92,7 @@ export const frmDta = (data, propertyImages, unitTypes) => {
             unitTypes.forEach((unit) => {
                 if (unit.images && Array.isArray(unit.images)) {
                     unit.images.forEach((image) => {
-                        formData.append("unitImages", image, `unitImages[${unit.type}]`);
+                        formData.append("unitImages", image, unit.type);
                         formData.append(unit.type, image.name);
                     });
                 }
