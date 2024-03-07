@@ -98,20 +98,24 @@ const router = createBrowserRouter([
                 element: <PropertyEditPage/>
             },
             {
-                path: '/landlord/propertyl',
+                path: '/landlord/properties',
                 element: <Property/>
+            },
+            {
+                path: "/landlord/profile",
+                element: <Profile/>,
             },
             {
                 path: '/landlord/upload',
                 element: <Imageupload/>
-            },]
+            }
+            ]
     },
     {
         path: "/client",
         element: <ClientLayout/>,
         errorElement: <Error/>,
         children:[
-
             {
                 index: true,
                 path: "/client/profile",
