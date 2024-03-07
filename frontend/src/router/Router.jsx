@@ -29,6 +29,8 @@ import All_Appointments from "../components/Appointments/Appointments.jsx";
 import ClientLayout from "../layouts/ClientLayout.jsx";
 import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
 import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
+import Landlord_Dashboard from "../components/LandlordDashboard/Dashboard.jsx";
+import AddCard from "../pages/Properties.jsx";
 
 const router = createBrowserRouter([
     {
@@ -83,18 +85,24 @@ const router = createBrowserRouter([
         path: "/properties/:id",
         element: <PropertyLayout/>,
     },
-    {
-        path:'/properties',
-        element: <Properties/>
-    },
+    
     {
         path: "/landlord",
         element: <LandlordLayout/>,
         children: [
             {
+                path: '/landlord/dashboard',
+                element: <Landlord_Dashboard/>
+            },
+            {
+                path: '/landlord/addpropertypage',
+                element: <AddCard/>
+            },
+            {
                 path: '/landlord/addproperty',
                 element: <AddProperty/>
             },
+
             {
                 path: '/landlord/editproperty',
                 element: <PropertyEditPage/>

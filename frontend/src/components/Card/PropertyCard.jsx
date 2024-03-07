@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -5,14 +6,14 @@ import Typography from "@mui/material/Typography";
 import {Link} from "react-router-dom";
 import {selectLandlordData} from "../../stores/landlordSlice";
 import {useSelector} from "react-redux";
-import AddIcon from "@mui/icons-material/Add.js";
+import AddIcon from '@mui/icons-material/Add';
 
 const PropertyCard = ({data}) => {
     const {properties} = useSelector(selectLandlordData);
     return (
         <>
             <Box sx={{display: "flex", flexWrap: "wrap", gap: "20px"}}>
-                <Link to={`/landlord/properties/addProperty`}>
+                <Link to='/landlord/addproperty'>
                     <Card sx={{
                         height: "14rem",
                         minWidth: 275,
