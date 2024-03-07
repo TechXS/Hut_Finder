@@ -75,4 +75,38 @@ export const updateProfileValidation = (data) => {
     });
 };
 
+export const frmDta = (data, propertyImages) => {
+    return new Promise((resolve, reject) => {
+        try {
+            if (!data || !data.unitTypes) {
+                console.error('Invalid data structure:', data);
+                reject(new Error('Invalid data structure'));
+                return;
+            }
+
+            const formData = new FormData();
+            propertyImages.forEach((image) => {
+                formData.append('propertyImages', image);
+            });
+
+            console.log('data.unitTypes', data.unitTypes)
+            const unitTypes = data.unitTypes;
+            unitTypes.forEach((unit) => {
+                if (unit.images && Array.isArray(unit.images)) {
+                    unit.images.forEach((image) => {
+                        formData.append('unitImages', image);
+                    });
+                }
+            });
+
+            formData.append('data', JSON.stringify(data));
+            resolve(formData);
+        } catch (error) {
+            console.error('Error in frmDta:', error);
+            reject(error);
+        }
+    });
+};
+
+
 

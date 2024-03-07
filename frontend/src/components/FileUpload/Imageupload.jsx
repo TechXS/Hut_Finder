@@ -1,12 +1,14 @@
 import { Box, Button, Input, Paper } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { forwardRef, useRef, useState, useImperativeHandle } from 'react'
+import  { forwardRef, useRef, useState, useImperativeHandle } from 'react'
 
 
+// eslint-disable-next-line react/display-name
 const Imageupload =forwardRef((props, ref) => {
     const inputRef = useRef(null);
     const [images, setImages] = useState([])
-    
+    // console.log('child images\n', images)
+
     const handlePreview=()=>{
         inputRef.current.click();
     };
@@ -15,7 +17,7 @@ const Imageupload =forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         submitForm: () => {
             //put submit logic here
-            //send {propapi}  - send to the required backend 
+
 
 
           console.log(images)
@@ -26,10 +28,18 @@ const Imageupload =forwardRef((props, ref) => {
 
 
 
-    const handleImageChange =(event)=>{
+    const handleImageChange = async (event)=>{
         const file = event.target.files[0];
         if (file){
             setImages(prevImages => [...prevImages, file])
+        }
+        if (props.updatePropertyImages){
+            props.updatePropertyImages([...images, file])
+            console.log('added property images')
+        }
+        if  (props.updateUnitImages){
+            props.updateUnitImages([...images, file])
+            console.log('added unit images')
         }
     };
 
@@ -40,7 +50,7 @@ const Imageupload =forwardRef((props, ref) => {
         component={'form'}
         display={'flex'}
         flexDirection={'column'}
-        sx={{ maxWidth:'450px'}}
+        sx={{margin:'20px', maxWidth:'450px'}}
         
         >
             <Box

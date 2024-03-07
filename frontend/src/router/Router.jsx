@@ -19,6 +19,14 @@ import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
 import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
+// import Property from "../pages/PropertyPage/AddProperty.jsx";
+import LandlordLayout from "../layouts/LandlordLayout.jsx";
+import SearchItemList from "../components/SearchItem/SearchItem.jsx";
+import Profile from "../components/profile/Profile.jsx"
+import ProfileClient from "../components/profile/ClientProfile.jsx"
+import Wish from "../components/Wishlist/Wishlist.jsx";
+import All_Appointments from "../components/Appointments/Appointments.jsx";
+import ClientLayout from "../layouts/ClientLayout.jsx";
 import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
 import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
@@ -72,35 +80,62 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/propertyc",
+        path: "/properties/:id",
         element: <PropertyLayout/>,
-        errorElement: <Error/>,
     },
     {
         path:'/properties',
-        element: <Properties />
+        element: <Properties/>
+    },
+    {
+        path: "/landlord",
+        element: <LandlordLayout/>,
+        children: [
+            {
+                path: '/landlord/addproperty',
+                element: <AddProperty/>
+            },
+            {
+                path: '/landlord/editproperty',
+                element: <PropertyEditPage/>
+            },
+            {
+                path: '/landlord/properties',
+                element: <Property/>
+            },
+            {
+                path: "/landlord/profile",
+                element: <Profile/>,
+            },
+            {
+                path: '/landlord/upload',
+                element: <Imageupload/>
+            }
+            ]
+    },
+    {
+        path: "/client",
+        element: <ClientLayout/>,
+        errorElement: <Error/>,
+        children:[
+            {
+                index: true,
+                path: "/client/profile",
+                element: <ProfileClient/>,
+            },
+            {
+                path: "/client/wishlist",
+                element: <Wish/>,
+            },
+            {
+                path: "/client/appointments",
+                element: <All_Appointments/>,
+            },
+        ]
 
     },
-    {
-        path: '/addproperty',
-        element: <AddProperty/>
-    },
-    {
-        path: '/editproperty',
-        element: <PropertyEditPage />
-    },
-    {
-        path:'/propertyl' ,
-        element: <PropertyPage />
-    },
-    {
-        path:'/upload',
-        element:<Imageupload />
-    },
-    {
-        path:'/addamenities',
-        element:<AddAmenities />
-    }
+
+
 ]);
 
 export default router;
