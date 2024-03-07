@@ -4,10 +4,13 @@ import SearchItem from "../../components/SearchItem/SearchItem";
 import Pagination from "../../components/Pagination/Pagination";
 
 const PropertyList = ( { filterCondition, search } ) => {
-  const { data: properties, error, isLoading } = useGetPropertiesQuery();
   const [activePage, setActivePage] = useState(1);
   const [cardsPerPage, setCardsPerPage] = useState(6);
   const [filteredProperties, setFilteredProperties] = useState([]);
+
+  const currentLocation = sessionStorage.getItem("location")
+
+  const { data: properties, error, isLoading } = useGetPropertiesQuery(currentLocation);
  
   useEffect(() => {
     if (properties) {

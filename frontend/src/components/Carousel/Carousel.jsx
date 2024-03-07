@@ -19,7 +19,7 @@ const Carousel = ({ data }) => {
   return (
     <div className="carousel">
       <div className="carousel-images">
-        {data.map((item, index) => (
+        {data && data.map((item, index) => (
           <img
             key={index}
             src={item.src}
@@ -35,7 +35,7 @@ const Carousel = ({ data }) => {
         &#10095;
       </button>
       <div className="indicators">
-        {data.map((_, index) => (
+        {data && data.map((_, index) => (
           <span
             key={index}
             className={index === currentIndex ? 'active' : ''}

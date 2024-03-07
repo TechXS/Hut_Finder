@@ -15,8 +15,8 @@ export const clientApi = createApi({
     }), 
     endpoints: (builder) => ({
         getProperties: builder.query({
-            query: () => {
-                return {url: `/properties`};
+            query: (location) => {
+                return {url: `/properties?location=${location}`};
             },
         }),
         // getProperty: builder.query({
