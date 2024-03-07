@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import {Link, useNavigate} from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import AccountMenu from '../Account_Icon/AccountIcon';
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentLandlord,setLandlordLogout} from "../../stores/landlordSlice.js";
 import {selectCurrentClient,setClientLogout} from "../../stores/clientSlice.js";
@@ -19,7 +20,8 @@ const NavBar = () => {
 
     const [logout, {data: response, isLoading}] = useLogoutMutation();
 
-    const user = (client ?? landlord )?? null
+    var user = (client ?? landlord )?? null
+    user = {...user,role: user && client ? "client" : landlord ? "landlord" : ""}
 
     const handleOpen = ()=>{
         console.log(open)
@@ -108,36 +110,37 @@ const NavBar = () => {
         >
             {user.name ? (
                 <>
-                    <img onClick={()=> handleOpen()} src={user.imageUrl} alt={"Profile"} style={{
-                        fontSize: "20px",
-                        width: "60px",
-                        height: "60px",
-                        borderRadius: "50%",
-                        cursor: "pointer"
-                    }} />
-                    {open && (                    <Box sx={{
-                        position:"absolute",
-                        paddingX:"2rem",
-                        paddingY:"1rem",
-                        top:"2.5rem",
+                    <AccountMenu user={user}/>
+                    {/*<img onClick={()=> handleOpen()} src={user.imageUrl} alt={"Profile"} style={{*/}
+                    {/*    fontSize: "20px",*/}
+                    {/*    width: "60px",*/}
+                    {/*    height: "60px",*/}
+                    {/*    borderRadius: "50%",*/}
+                    {/*    cursor: "pointer"*/}
+                    {/*}} />*/}
+                    {/*{open && (                    <Box sx={{*/}
+                    {/*    position:"absolute",*/}
+                    {/*    paddingX:"2rem",*/}
+                    {/*    paddingY:"1rem",*/}
+                    {/*    top:"2.5rem",*/}
 
 
-                    }}>
-                            <Button
-                                onClick={()=> handleLogout()}
-                                sx={{
-                                    backgroundColor: '#d2d0d0',
-                                    "&:hover": { backgroundColor: "#afb0b0" },
-                                    textTransform:"none",
-                                    color:"black"
-                                }}
-                                disableElevation={true}
-                                disableFocusRipple={true}
-                                variant='contained'
-                            >
-                                Logout
-                            </Button>
-                    </Box>)}
+                    {/*}}>*/}
+                    {/*        <Button*/}
+                    {/*            onClick={()=> handleLogout()}*/}
+                    {/*            sx={{*/}
+                    {/*                backgroundColor: '#d2d0d0',*/}
+                    {/*                "&:hover": { backgroundColor: "#afb0b0" },*/}
+                    {/*                textTransform:"none",*/}
+                    {/*                color:"black"*/}
+                    {/*            }}*/}
+                    {/*            disableElevation={true}*/}
+                    {/*            disableFocusRipple={true}*/}
+                    {/*            variant='contained'*/}
+                    {/*        >*/}
+                    {/*            Logout*/}
+                    {/*        </Button>*/}
+                    {/*</Box>)}*/}
                     </>
 
             ) : (
@@ -199,7 +202,9 @@ const NavBar = () => {
                         >
                             LOGIN
                         </Button>
+
                     </Link>
+
                 </>
             )}
 

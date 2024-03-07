@@ -8,7 +8,7 @@ const Imageupload =forwardRef((props, ref) => {
     const inputRef = useRef(null);
     const [images, setImages] = useState([])
     // console.log('child images\n', images)
-    
+
     const handlePreview=()=>{
         inputRef.current.click();
     };
