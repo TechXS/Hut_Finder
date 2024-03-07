@@ -73,7 +73,8 @@ const AddProperty = () => {
                 },
                 ...prevUnitImagesObject.slice(existingObjectIndex + 1),
             ]);
-        } else {
+        }
+         else {
             // If not exists, create a new object
             setUnitImagesObject(prevUnitImagesObject => [
                 ...prevUnitImagesObject,
@@ -145,7 +146,7 @@ const AddProperty = () => {
                     
                     console.log('updated unitTypes\n', unitTypes);
                     
-                    finalData.unitTypes = unitTypes;
+                    // finalData.unitTypes = unitTypes;
                     console.log('finalData\n', finalData);
 
                     // await finalData.unitTypes.forEach((unit) => {
@@ -162,11 +163,14 @@ const AddProperty = () => {
                     // }
                     // const newFormData = JSON.stringify(formData);
                     // console.log('newFormData', newFormData);
-                    const formData = await frmDta(finalData, propertyImages)
+                    const formData = await frmDta(finalData, propertyImages, unitTypes)
+                    for (var pair of formData.entries()) {
+                        console.log('key: ',pair[0], 'value: ' , pair[1]); 
+                    }    
                     const response = await createProperty({
                         id: currentLandlord._id,
-                        payload: {data: formData},
-                    }).unwrap();
+                        payload: formData,
+                    }).unwrap();     
 
                     dispatch(
                         setSuccessNotification(
