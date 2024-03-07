@@ -54,6 +54,12 @@ const Frostyform = () => {
       }
     };
 
+    const handleSubmit =(e)=>{
+     e.preventDefault();
+     const {lat, lng}= handleGeocode(formData.location);
+     console.log(formData);   
+    }
+
   return (
           <Box
                 component="form"
@@ -154,6 +160,7 @@ const Frostyform = () => {
                        variant='contained'
                        disableElevation={true}
                        disableFocusRipple={true}
+                       onClick={handleSubmit}
                >Search</Button>
            </Link>
 

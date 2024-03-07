@@ -35,6 +35,7 @@ const App = () => {
 
 
     const getLocation = () => {
+        console.log("Location")
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -63,6 +64,7 @@ const App = () => {
 
 
     if(!currentLocation){
+
         getLocation()
     }
 

@@ -1,15 +1,63 @@
 import { Box } from '@mui/material';
+<<<<<<< HEAD
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import {useSelector} from "react-redux";
 import {selectCurrentLandlord} from "../../stores/landlordSlice.js";
+=======
+import {Link, useNavigate} from 'react-router-dom';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import AccountMenu from '../Account_Icon/AccountIcon';
+import {useDispatch, useSelector} from "react-redux";
+import {selectCurrentLandlord,setLandlordLogout} from "../../stores/landlordSlice.js";
+import {selectCurrentClient,setClientLogout} from "../../stores/clientSlice.js";
+import {useState} from "react";
+import {useLogoutMutation} from "../../stores/authApi.js";
+
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
 
 
 const NavBar = () => {
     const landlord = useSelector(selectCurrentLandlord);
+<<<<<<< HEAD
 
     console.log(landlord)
+=======
+    const client = useSelector(selectCurrentClient);
+    const dispatch = useDispatch();
+    const [open,setOpen] = useState(false)
+    const navigate = useNavigate()
+
+    const [logout, {data: response, isLoading}] = useLogoutMutation();
+
+    var user = (client ?? landlord )?? null
+    user = {...user,role: user && client ? "client" : landlord ? "landlord" : ""}
+
+    const handleOpen = ()=>{
+        console.log(open)
+        setOpen(!open)
+    }
+
+    const handleLogout = async ()=>{
+     try{
+
+         const data = {
+             role : client ? "client" : "landlord"
+         }
+         const appointmentData = await logout({data: data}).unwrap();
+         dispatch(setClientLogout())
+         dispatch(setLandlordLogout())
+         navigate('/')
+
+     }catch (e) {
+         console.error(e.message)
+     }
+    }
+
+    console.log(user)
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
     const navLinks = [
         {
             name:"Home",
@@ -65,7 +113,11 @@ const NavBar = () => {
                 alignItems:'center',
                 justifyContent:'space-around',
                 position:"relative",
+<<<<<<< HEAD
                 width: landlord.name ? "10%" : {
+=======
+                width: user.name ? "10%" : {
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
                     sm:"70%",
                     md:"50%",
                     lg:"40%",
@@ -73,6 +125,7 @@ const NavBar = () => {
                 }
             }}
         >
+<<<<<<< HEAD
             {landlord.name ? (
                     <img src={landlord.imageUrl} alt={"Profile"} style={{
                         fontSize: "20px",
@@ -81,6 +134,43 @@ const NavBar = () => {
                         borderRadius: "50%",
                         cursor: "pointer"
                     }} />
+=======
+            {user.name ? (
+                <>
+                    <AccountMenu user={user}/>
+                    {/*<img onClick={()=> handleOpen()} src={user.imageUrl} alt={"Profile"} style={{*/}
+                    {/*    fontSize: "20px",*/}
+                    {/*    width: "60px",*/}
+                    {/*    height: "60px",*/}
+                    {/*    borderRadius: "50%",*/}
+                    {/*    cursor: "pointer"*/}
+                    {/*}} />*/}
+                    {/*{open && (                    <Box sx={{*/}
+                    {/*    position:"absolute",*/}
+                    {/*    paddingX:"2rem",*/}
+                    {/*    paddingY:"1rem",*/}
+                    {/*    top:"2.5rem",*/}
+
+
+                    {/*}}>*/}
+                    {/*        <Button*/}
+                    {/*            onClick={()=> handleLogout()}*/}
+                    {/*            sx={{*/}
+                    {/*                backgroundColor: '#d2d0d0',*/}
+                    {/*                "&:hover": { backgroundColor: "#afb0b0" },*/}
+                    {/*                textTransform:"none",*/}
+                    {/*                color:"black"*/}
+                    {/*            }}*/}
+                    {/*            disableElevation={true}*/}
+                    {/*            disableFocusRipple={true}*/}
+                    {/*            variant='contained'*/}
+                    {/*        >*/}
+                    {/*            Logout*/}
+                    {/*        </Button>*/}
+                    {/*</Box>)}*/}
+                    </>
+
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
             ) : (
                 <>
                     {navLinks.map((navLink, id) => (
@@ -140,7 +230,13 @@ const NavBar = () => {
                         >
                             LOGIN
                         </Button>
+<<<<<<< HEAD
                     </Link>
+=======
+
+                    </Link>
+
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
                 </>
             )}
 
@@ -149,4 +245,8 @@ const NavBar = () => {
   )
 }
 
+<<<<<<< HEAD
 export default NavBar
+=======
+export default NavBar
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9

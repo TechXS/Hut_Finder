@@ -13,7 +13,7 @@ import BathtubIcon from '@mui/icons-material/Bathtub';
 import LocalParkingIcon from '@mui/icons-material/LocalParking';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useState } from "react";
-import { Button } from "@mui/base";
+import Button from '@mui/material/Button';
 import { Box, TextField } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -21,6 +21,10 @@ import Imageupload from "../../components/FileUpload/Imageupload";
 import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListingEdit";
 import { useRef } from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+<<<<<<< HEAD
+=======
+import AddAmenities from "../../components/AddAmenities/AddAmenities";
+>>>>>>> 5ad0b72a42ef3a98be4fd3dfe31987c17146aba9
 
 const PropertyEditPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -216,6 +220,10 @@ const PropertyEditPage = () => {
                         <DeleteIcon fontSize="inherit" />
                         </IconButton>
                         </div>))}
+                      </div>
+                      <div style={{marginTop:'20px'}}>
+
+                        <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
                       </div>
                     </div>
                   </div>
