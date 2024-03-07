@@ -34,32 +34,6 @@ const Frostyform = () => {
         setUrl(generatedUrl);
     }, [formData]);
 
-    ////add to the handle submit function then send lat and lng to the backend for location filter, 
-    const handleGeocode = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.opencagedata.com/geocode/v1/json?q=${formData.location}&key=207d121f6a144cd7b1b049fb9497f409`
-        );
-  
-        const { results } = response.data;
-        if (results.length > 0) {
-          const { lat, lng } = results[0].geometry;
-          setCoordinates({ latitude: lat, longitude: lng });
-          console.log(lat,lng);
-        } else {
-          console.error('Location not found');
-        }
-      } catch (error) {
-        console.error('Error fetching geocode data', error);
-      }
-    };
-
-    const handleSubmit =(e)=>{
-     e.preventDefault();
-     const {lat, lng}= handleGeocode(formData.location);
-     console.log(formData);   
-    }
-
   return (
           <Box
                 component="form"
@@ -160,7 +134,7 @@ const Frostyform = () => {
                        variant='contained'
                        disableElevation={true}
                        disableFocusRipple={true}
-                       onClick={handleSubmit}
+                       // onClick={handleSubmit}
                >Search</Button>
            </Link>
 
@@ -169,19 +143,3 @@ const Frostyform = () => {
 }
 
 export default Frostyform
-
-
-{/*  <form onSubmit={handleGeocode}>*/}
-{/*  <input*/}
-{/*    type="text"*/}
-{/*    value={address}*/}
-{/*    onChange={(e) => setAddress(e.target.value)}*/}
-{/*  />*/}
-{/*  <button type="submit">Geocode</button>*/}
-{/*</form>*/}
-{/*{coordinates && (*/}
-{/*  <div>*/}
-{/*    <p>Latitude: {coordinates.latitude}</p>*/}
-{/*    <p>Longitude: {coordinates.longitude}</p>*/}
-{/*  </div>*/}
-{/*)}*/}

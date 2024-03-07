@@ -4,6 +4,7 @@ import Header from "../../components/Header/Header"
 import PropertyList from "../../components/PropertyList/PropertyList"
 import { useState } from 'react';
 
+
 const Browse = () => {
   const [filterCondition, setfilterCondition] = useState([]);
   const [search, setSearch] = useState("");
