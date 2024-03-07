@@ -73,6 +73,7 @@ const AddProperty = () => {
                 },
                 ...prevUnitImagesObject.slice(existingObjectIndex + 1),
             ]);
+            setUnitImages([])
         }
          else {
             // If not exists, create a new object
@@ -80,6 +81,7 @@ const AddProperty = () => {
                 ...prevUnitImagesObject,
                 { type, images }
             ]);
+            setUnitImages([])
         }
 
         // Logging the updated unitImagesObject
