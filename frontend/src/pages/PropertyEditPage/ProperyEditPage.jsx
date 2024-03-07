@@ -20,6 +20,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Imageupload from "../../components/FileUpload/Imageupload";
 import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListingEdit";
 import { useRef } from "react";
+import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+import AddAmenities from "../../components/AddAmenities/AddAmenities";
 
 const PropertyEditPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -215,6 +217,10 @@ const PropertyEditPage = () => {
                         <DeleteIcon fontSize="inherit" />
                         </IconButton>
                         </div>))}
+                      </div>
+                      <div style={{marginTop:'20px'}}>
+
+                        <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
                       </div>
                     </div>
                   </div>

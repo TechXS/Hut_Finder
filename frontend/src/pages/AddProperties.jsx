@@ -139,7 +139,7 @@ const AddProperty = () => {
                 position: "relative",
                 gap: "10rem",
                 maxWidth: "80%",
-                marginX: "auto",
+                marginX: "auto",           
             }}
         >
             <Paper
@@ -235,7 +235,7 @@ const AddProperty = () => {
                         position: "relative",
                     }}
                 >
-                    <FormControl fullWidth>
+                    <FormControl fullWidth >
                         <InputLabel htmlFor="type">Unit Type</InputLabel>
                         <Select
                             required

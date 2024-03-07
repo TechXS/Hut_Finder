@@ -4,7 +4,8 @@ import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
 import "./propertyPage.css";
 import { useState } from "react";
-import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+
+
 
 const PropertyPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
