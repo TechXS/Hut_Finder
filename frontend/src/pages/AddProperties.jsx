@@ -27,6 +27,7 @@ import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import { useRef } from 'react';
 import { handleGeocode } from '../utils/geocode';
 import { frmDta } from '../utils/formValidation.js';
+import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -84,7 +85,7 @@ const AddProperty = () => {
         // Logging the updated unitImagesObject
         // console.log('unitImagesObjec123456t\n', unitImagesObject);
     };
-  
+
 
     const [
         createProperty,
@@ -97,7 +98,7 @@ const AddProperty = () => {
         },
     ] = useCreatePropertyMutation();
 
-    // useEffect(() => {   
+    // useEffect(() => {
     //     if (unit.type && unitImages.length > 0) {
     //         createUnitImagesObject(unit.type, unitImages)
     //     }
@@ -127,7 +128,7 @@ const AddProperty = () => {
                 console.log('unit data\n', unitData)
                 try {
                     const location = await handleGeocode(propertyData.location);
-                    
+
                     const finalData = {...propertyData}
                     finalData.location = {
                         type: "Point",
@@ -142,9 +143,9 @@ const AddProperty = () => {
                         // If no match is found, return the original object
                         return unit;
                     });
-                    
+
                     console.log('updated unitTypes\n', unitTypes);
-                    
+
                     finalData.unitTypes = unitTypes;
                     console.log('finalData\n', finalData);
 
@@ -158,7 +159,7 @@ const AddProperty = () => {
                     // formData.append('data ', JSON.stringify(finalData));
                     // // console.log('formdata', formData);
                     // for (var pair of formData.entries()) {
-                    //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
+                    //     console.log('key: ',pair[0], 'value: ' , pair[1]);
                     // }
                     // const newFormData = JSON.stringify(formData);
                     // console.log('newFormData', newFormData);
@@ -223,7 +224,7 @@ const AddProperty = () => {
     };
 
 
-    
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         dispatch(setPropertyFormUnits());

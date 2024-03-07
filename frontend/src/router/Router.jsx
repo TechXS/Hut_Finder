@@ -27,6 +27,8 @@ import ProfileClient from "../components/profile/ClientProfile.jsx"
 import Wish from "../components/Wishlist/Wishlist.jsx";
 import All_Appointments from "../components/Appointments/Appointments.jsx";
 import ClientLayout from "../layouts/ClientLayout.jsx";
+import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
+import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const router = createBrowserRouter([
     {
