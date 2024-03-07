@@ -22,21 +22,23 @@ const SearchItem = ({ properties }) => {
             <div className="brDesc">
             <h1 className="brTitle">{property.name || ''}</h1>
             <span className="brDistance">500m from Juja City Mall</span>
-            {/* <span className="brTaxiOp">{property.amenities[0].name || ''}</span> */}
+            <span className="brTaxiOp">{property?.amenities[0]?.name ?? ""}</span>
             <span className="brSubtitle">
               {property.description}
             </span>
-           
-              {property.units[0].type} • {property.units[1].type}
-              {property.units.map((unit) => (
-                 <span className="brFeatures" key={unit._id}>
-                  {
-
-                  } 
-                  </span>
-              ))}
+            <span  className="brFeatures">
+            {
+              property.units.map((unit, index) => (
+                <span  className="brFeatures" key={unit._id}>
+                  {unit.type} {" "}
+                  {index < property.units.length - 1 && ' • '}  {" "}
+                </span>
+              ))
+            }
+            </span>
             <span className="brCancelOp">
-              {/* {property.amenities[0].name || property.amenities[1].name || ''}  */}
+              {(property.amenities[0]?.name || property.amenities[1]?.name) ?? ""}
+              {/* {(property.amenities[0?.name ? property.amenities[0]?.name : ""])} */}
             </span>
             <span className="brCancelOpSubtitle">
               Join us today, your private party paradise awaits!!!
@@ -48,16 +50,11 @@ const SearchItem = ({ properties }) => {
             <a>8.9</a>
           </div>
           <div className="brDetailTexts">
-            <span className="brPrice">$112</span>
-            <span className="brTaxOp">Includes taxes and fees</span>
-            <Link to="/property">
-              <button 
-                className="brCheckButton"
-                // onClick={() => handleClick(property)}
-              >
-                See availability
-              </button>
-            </Link>       
+            {/*<span className="brPrice">$112</span>*/}
+            {/*<span className="brTaxOp">Includes taxes and fees</span>*/}
+            <Link to={`/properties/${property._id}`}>
+              <button className="brCheckButton">See availability</button>
+            </Link>
           </div>
          </div>
       </div>

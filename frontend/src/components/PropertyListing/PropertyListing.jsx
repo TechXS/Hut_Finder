@@ -1,7 +1,7 @@
   import Carousel from '../Carousel/Carousel';
   import './propertyListing.css';
   
-  export default function PropertyListing() {
+  export default function PropertyListing({unit}) {
     const listing = {
       _id: '1',
       imageUrls: [
@@ -24,9 +24,9 @@
     };
   
     // Format image data for the Carousel component
-    const carouselData = listing.imageUrls.map((imageUrl) => ({
-      src: imageUrl,
-      alt: listing.name,
+    const carouselData = unit.images.map((url) => ({
+      src: url,
+      alt: unit.name,
     }));
   
     return (
@@ -35,18 +35,18 @@
           <Carousel data={carouselData} /> {/* Render the Carousel component */}
         </div>
         <div className="listing-details">
-          <p className="listing-name">{listing.name}</p>
-          <p className="listing-type">{listing.bedrooms}</p>
+          <p className="listing-name">{unit.name}</p>
+          <p className="listing-type">{unit.type}</p>
           <div className="listing-desc">
-            <p className="listing-price">{listing.price}</p>
-            <p className="listing-info">{listing.info}</p>
+            <p className="listing-price">Ksh {unit.price.toLocaleString()}</p>
+            <p className="listing-info">Available : {unit.vacancies}</p>
           </div>
           <div className="listing-features">
-            <div className="feature">{listing.view}</div>
-            <div className="feature">{listing.floor}</div>
-            <div className="feature">{listing.internet}</div>
-            <div className="feature">{listing.water}</div>
-            <div className="feature">{listing.electricity}</div>
+            {
+              unit.special_amenities.map((special_amenity,index)=> (
+                  <div className="feature">{special_amenity.name}</div>
+              ))
+            }
           </div>
         </div>
       </div>

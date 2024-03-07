@@ -18,6 +18,7 @@ export const clientSlice = createSlice({
         getDataSuccess: null,
         paymentData: [],
         forgotPassSuccess: null,
+        appointmentDate:null
     },
     reducers: {
         setCurrentClient: (state, action) => {
@@ -27,6 +28,9 @@ export const clientSlice = createSlice({
             state.signupForm.data = {};
             state.forgotPassSuccess = null;
             state.currentClient = {...action.payload, role: "Client"};
+        },
+        setAppointmentDate:(state,action)=>{
+          state.appointmentDate = {...state.appointmentDate,...action.payload}
         },
         setLoginForm: (state, action) => {
             state.loginForm.error = null;
@@ -92,7 +96,8 @@ export const {
     setGetDataError,
     setGetDataSuccess,
     setClientData,
-    setForgotPassSuccess
+    setForgotPassSuccess,
+    setAppointmentDate
 } = clientSlice.actions;
 
 export const loginForm = (state) => {
@@ -126,4 +131,6 @@ export const selectClientData = (state) => {
 export const selectGetDataError = (state) => state.client.getDataError;
 export const selectGetDataSuccess = (state) => state.client.getDataSuccess
 export const selectForgotPassSuccess = (state) => state.client.forgotPassSuccess;
+export const selectAppointmentDate = (state) => state.client.appointmentDate;
+
 export default clientSlice.reducer;
