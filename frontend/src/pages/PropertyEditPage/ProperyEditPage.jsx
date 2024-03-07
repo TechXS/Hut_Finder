@@ -28,6 +28,7 @@ const PropertyEditPage = () => {
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
   const imageUploadRef1 = useRef();
+  const amenityUploadRef = useRef();
   const [photos, setPhotos] = useState([
     {
       src: "../../../public/images/property3.jpg",
@@ -77,6 +78,7 @@ const PropertyEditPage = () => {
 
   ])
   const [formData, setFormData] = useState({})
+  console.log(formData)
   const  propertyname = 'Cascade Plaza'
   const  propertyDesc = 'Located a 5-minute walk from Juja city mall in Juja,Cascade Plaza is a spacious appartment with air conditioning and free WiFi installation. The units come with hardwood floors and feature a fully equipped kitchenette with sliding drawers, modern taps, and a private bathroom with shower. Popular points of interest near the apartment include Juja police station, Main Market Square and Aghakan  University Hospital. The nearest petrol station is Shell petrol, 16.1 km from Cascade Plaza, and the property offers a paid gabbage collection'
  
@@ -89,6 +91,10 @@ const PropertyEditPage = () => {
   const handlePhotoDelete = (index) => {
     if (index >= 0 && photos.length > index) {
       const updatedPhotos = photos.filter((_, i) => i !== index);
+      //photo to be deleted 
+      console.log(photos[index])
+
+
       setPhotos(updatedPhotos);
     }
   };
@@ -96,6 +102,10 @@ const PropertyEditPage = () => {
   const handleAmenitiesDelete = (index) => {
     if (index >= 0 && amenities.length > index) {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
+
+      //amenity to be deleted
+      console.log(amenities[index])
+
       setAmenities(updatedAmenities);
     }
   };
@@ -118,6 +128,8 @@ const PropertyEditPage = () => {
     //send form data images and other object  to the database 
     console.log(formData)
     imageUploadRef1.current.submitForm();
+    amenityUploadRef.current.submitForm();
+
     setclicked(!clicked)
   }
 
@@ -220,7 +232,7 @@ const PropertyEditPage = () => {
                       </div>
                       <div style={{marginTop:'20px'}}>
 
-                        <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                        <AddAmenities ref={amenityUploadRef} handleSubmit={handleSubmit}/>
                       </div>
                     </div>
                   </div>
