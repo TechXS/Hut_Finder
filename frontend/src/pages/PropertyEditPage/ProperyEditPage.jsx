@@ -2,9 +2,9 @@ import "./PropertEditPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import CancelIcon from '@mui/icons-material/Cancel';
+// import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
+// import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+// import CancelIcon from '@mui/icons-material/Cancel';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ApartmentIcon from '@mui/icons-material/Apartment';
 import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Imageupload from "../../components/FileUpload/Imageupload";
 import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListingEdit";
 import { useRef } from "react";
+import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 
 const PropertyEditPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -229,12 +230,6 @@ const PropertyEditPage = () => {
                   <span>
                     Top Location: Highly rated by recent guests (8.7/10).
                   </span>
-                  {/* <h1>Apppartments with:</h1>
-                  <span>
-                    Garden view
-                    Inner courtyard view
-                    Free underground parking on site
-                  </span> */}
                   <h2>
                     <b>$945</b>
                   </h2>
@@ -403,7 +398,7 @@ const PropertyEditPage = () => {
             {/* <Footer /> */}
           </div>
         </div>
-      }
+      } 
     </div>
   </>
   );
