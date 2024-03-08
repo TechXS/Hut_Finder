@@ -7,7 +7,7 @@ const {isValidObjectId} = require("mongoose");
 //Get all Properties
 const getAllProperties = async (req, res) => {
     try {
-        const result = await Property.find().populate({path: "units", select: "name type price vacancies",})
+        const result = await Property.find().populate({path: "units"})
             .populate({path: "amenities", select: "name icon"})
         res.json(result);
     } catch (error) {
@@ -101,8 +101,7 @@ const getSpecificProperty = async (req, res) => {
         //
         const result = await Property.findOne({ _id: id })
             .populate({
-                path: "units",
-                select: "name type price vacancies",
+                path: "units"
             })
             .populate({path: "amenities", select: "name icon"})
         res.json(result);
