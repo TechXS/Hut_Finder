@@ -1,3 +1,5 @@
+
+
 export const getUnitType = (type) => {
     if (type === "SR") {
         return "Single Room";
@@ -96,10 +98,10 @@ export const unitTypes = {
     ,
 }
 
-//import AccountIcon from "../Icons/AccountIcon"
-//import MonetizationDueIcon from "../Icons/MonetizationDueIcon"
-//import MonetizationIcon from "../Icons/MonetizationIcon"
-//import PersonIcon from "../Icons/PersonIcon"
+import AccountIcon from "../Icons/AccountIcon"
+import MonetizationDueIcon from "../Icons/MonetizationDueIcon"
+import MonetizationIcon from "../Icons/MonetizationIcon"
+import PersonIcon from "../Icons/PersonIcon"
 import AddIcon from '@mui/icons-material/Add';
 
 //TMS....
@@ -161,6 +163,34 @@ export const propertyData = [
     },
 
 
+]
+
+export const widgetData = [
+    {
+        title: "TOTAL APPOINTMENTS",
+        isMoney: false,
+        link: "See all appointments",
+         amount: 100,
+         percentage : 20,
+         icon: MonetizationIcon
+    },
+    {
+        title: "TOTAL APARTMENTS",
+        isMoney: false,
+        link: "View all the rent",
+        amount: 100,
+        percentage : 20,
+        icon:  AccountIcon
+    },
+    {
+        title: "AVAILABLE UNITS",
+        isMoney: false,
+        link: "View total rent due",
+        amount: 100,
+        percentage : 20,
+        icon:   AccountIcon
+    },
+    
 ]
 
 export const propertyAdd = [

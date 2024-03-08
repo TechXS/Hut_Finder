@@ -7,6 +7,7 @@ import HolidayVillageSharpIcon from "@mui/icons-material/HolidayVillageSharp";
 import Grid from "@mui/material/Grid";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import { Link } from "react-router-dom";
 import {
     propertyForm,
     setClearPropertyData,
@@ -27,7 +28,7 @@ import Imageupload from "../components/FileUpload/Imageupload.jsx";
 import { useRef } from 'react';
 import { handleGeocode } from '../utils/geocode';
 import { frmDta } from '../utils/formValidation.js';
-import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
+//import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -256,7 +257,9 @@ const AddProperty = () => {
     // console.log(submitForm)
 
     return (
+        
         <Box
+    
             sx={{
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -269,6 +272,14 @@ const AddProperty = () => {
                 marginX: "auto",
             }}
         >
+            <div className="backbutton">
+                {" "}
+                <Link to="/landlord/addpropertypage">
+                    <Button variant="contained" color="secondary">
+                        Back
+                    </Button>
+                </Link>
+            </div>
             <Paper
                 elevation={5}
                 sx={{

@@ -1,5 +1,5 @@
 import {RouterProvider} from "react-router-dom";
-import router from "./router/Router";
+import router from "./router/Router.jsx";
 import {useDispatch} from "react-redux";
 import {setCurrentLandlord} from "./stores/landlordSlice";
 import {setCurrentClient} from "./stores/clientSlice";

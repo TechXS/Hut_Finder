@@ -19,13 +19,15 @@ const Sidebar = () => {
             <div className="center">
                 <ul>
                     <p className="title">MAIN</p>
+                    <Link to="/landlord/dashboard">
                     <li>
                         {/*<DashboardIcon className="icon"/>*/}
-                       <Link to="/landlord">
+                       
                        <span>Dashboard</span>
-                       </Link> 
+                       
                     </li>
-                    <Link to="/landlord/properties">
+                    </Link> 
+                    <Link to="/landlord/addpropertypage">
                     <li>
                         {/*<OtherHousesIcon className="icon"/>*/}
                         
@@ -33,10 +35,7 @@ const Sidebar = () => {
                         
                     </li>
                     </Link>
-                    <li>
-                        {/*<QueryStatsIcon className="icon"/>*/}
-                        <span>Stats</span>
-                    </li>
+                    
                     <p className="title">USER</p>
                     <Link to='/landlord/profile'>
                     <li>
@@ -44,10 +43,7 @@ const Sidebar = () => {
                         <span>Profile</span>
                     </li>
                     </Link>
-                    <li>
-                        {/*<SettingsSuggestSharpIcon className="icon"/>*/}
-                        <span>Settings</span>
-                    </li>
+                    
                     <Link to='/'>
                     <li>
                         <ExitToAppOutlinedIcon className="icon"/>
