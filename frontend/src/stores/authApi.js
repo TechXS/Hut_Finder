@@ -29,7 +29,7 @@ export const authApi = createApi({
             transformResponse: (response) => {
                 console.log(response);
                 sessionStorage.setItem("token", response.token);
-                return response.result;
+                return {...response.result,role:"landlord"};
             },
         }),
         signInClient: builder.mutation({
@@ -41,7 +41,7 @@ export const authApi = createApi({
             transformResponse: (response) => {
                 console.log(response);
                 sessionStorage.setItem("token", response.token);
-                return response.result;
+                return {...response.result,role:"client"};
             },
         }),
         logout: builder.mutation({

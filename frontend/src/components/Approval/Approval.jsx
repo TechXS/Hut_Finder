@@ -2,8 +2,13 @@ import "./approval.scss";
 import { DataGrid } from "@mui/x-data-grid";
 import { userColumns, userRows } from "../../utils/dataapproval.jsx";
 import { useEffect, useState } from "react";
+import {selectLandlordData} from "../../stores/landlordSlice.js"
+import {useSelector} from "react-redux";
 
 const Datatable = () => {
+
+    const {appointments} = useSelector(selectLandlordData)
+
     const [pageSize, setPageSize] = useState(5);
 
     useEffect(() => {

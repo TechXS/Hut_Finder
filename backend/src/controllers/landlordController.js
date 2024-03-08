@@ -18,7 +18,7 @@ const getAllProperties = async (req, res) => {
 
 //Get Landlord Data
 const getLandlordData = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
     try {
         if (!isValidObjectId(id)) {
             return res.status(404).json({
@@ -28,16 +28,60 @@ const getLandlordData = async (req, res) => {
         }
 
         const landlord = await Landlord.findById(id)
-            .populate({path: "properties", populate: {path: "amenities units"}})
-            // .populate({path: "appointments", populate: {path: "amenities units"}})
+            .populate({ path: "properties", populate: { path: "amenities units" } })
+            .populate({ path: "appointments", populate: { path: "amenities units" } });
 
+        // Compute additional attributes
+        let totalVacantUnits = 0;
+        let totalProperties = 0;
+        let totalPendingAppointments = 0;
 
-        res.json( landlord);
+        landlord.properties.forEach(property => {
+            property.units.forEach(unit => {
+                if (unit.availability_status === "AVAILABLE") {
+                    totalVacantUnits+= unit.vacancies;
+                }
+            });
+        });
+
+        totalProperties = landlord.properties.length;
+        totalPendingAppointments = landlord.appointments.filter(appointment => appointment.status === "PENDING").length;
+
+        // Add computed attributes to landlord object
+        const modifiedLandlord = {
+            ...landlord.toObject(),
+            totalVacantUnits,
+            totalProperties,
+            totalPendingAppointments
+        };
+
+        res.json(modifiedLandlord);
     } catch (error) {
-        res.status(500).json({message: 'Could not retrieve landlord data', error: error.message});
-
+        res.status(500).json({ message: 'Could not retrieve landlord data', error: error.message });
     }
 };
+
+// const getLandlordData = async (req, res) => {
+//     const {id} = req.params;
+//     try {
+//         if (!isValidObjectId(id)) {
+//             return res.status(404).json({
+//                 message: 'Landlord does not exist',
+//                 error: "Not Valid ID"
+//             });
+//         }
+//
+//         const landlord = await Landlord.findById(id)
+//             .populate({path: "properties", populate: {path: "amenities units"}})
+//             .populate({path: "appointments", populate: {path: "amenities units"}})
+//
+//
+//         res.json( landlord);
+//     } catch (error) {
+//         res.status(500).json({message: 'Could not retrieve landlord data', error: error.message});
+//
+//     }
+// };
 // Get one Property
 const getSpecificProperty = async (req, res) => {
     const {id} = req.params;

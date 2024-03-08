@@ -1,11 +1,12 @@
 import "./dateTimePicker.css"
 import  { useState } from 'react';
-import {setAppointmentDate} from "../../stores/clientSlice.js";
-import {useDispatch} from "react-redux";
+import {setAppointmentDate,selectAppointmentDate} from "../../stores/clientSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
 const DateTimePicker = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
     const dispatch = useDispatch();
+    const apointmentDate = useSelector(selectAppointmentDate)
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -25,7 +26,7 @@ const DateTimePicker = () => {
         id="date-input"
         type="date"
         name={"date"}
-        value={selectedDate.toISOString().slice(0, 10)}
+        value={apointmentDate?.date ?? new Date().toISOString().slice(0, 10)}
         onChange={handleInputChange}
       />
       <label htmlFor="time-input">Select Time:</label>
@@ -33,7 +34,7 @@ const DateTimePicker = () => {
         id="time-input"
         type="time"
         name={"time"}
-        value={selectedDate.toTimeString().slice(0, 5)}
+        value={apointmentDate?.time ?? new Date().toTimeString().slice(0, 5)}
         onChange={handleInputChange}
       />
     </div>

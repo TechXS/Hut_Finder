@@ -7,7 +7,7 @@
     console.log(unit)
   
     // Format image data for the Carousel component
-    const carouselData = unit && unit.images.map((url) => ({
+    const carouselData = unit && unit.images && unit.images.map((url) => ({
       src: url,
       alt:  unitTypes[unit.type].type ,
     }));
@@ -28,7 +28,7 @@
               </div>
               <div className="listing-features">
                 {
-                  unit.special_amenities.map((special_amenity, index) => (
+                  unit?.special_amenities?.map((special_amenity, index) => (
                       <div className="feature">{special_amenity.name}</div>
                   ))
                 }

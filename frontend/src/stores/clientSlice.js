@@ -27,7 +27,7 @@ export const clientSlice = createSlice({
             state.signupForm.error = null;
             state.signupForm.data = {};
             state.forgotPassSuccess = null;
-            state.currentClient = {...action.payload, role: "Client"};
+            state.currentClient = {...action.payload, role: "client"};
         },
         setAppointmentDate:(state,action)=>{
           state.appointmentDate = {...state.appointmentDate,...action.payload}
