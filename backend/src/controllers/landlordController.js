@@ -112,6 +112,51 @@ const getAllLandlordProperties = (req, res) => {
     });
 
 }
+//update landlord
+const updateLandlord = (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+    console.log("data", data);
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Client ID"});
+    }
+
+    Landlord.findOneAndUpdate(
+        {_id: id}, 
+        {$set: data}, 
+        {returnOriginal: false}
+        )
+        .then((response) => {
+            res.status(200).json(response);
+            console.log("Landlord updated successfully", response);
+        })
+        .catch((err) => {
+            res.status(400).json({error: "Error updating landlord"});
+            console.log("Error updating landlord", err.message);
+        })
+}
 
 
-module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments, getAllLandlordProperties};
+//upload image
+const uploadImage = async (req, res) => {
+    const { id } = req.params;
+    const file = req.file;
+    console.log("file", file);
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ error: 'Invalid request.' });
+    }
+
+    try {
+        const result = await uploadToCloudinary(file.path, "hutFinder-profileImages");
+        const landLord = await Landlord.findByIdAndUpdate(id, { profile_picture: result.url }, { new: true });
+        res.status(200).json(landLord);
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        res.status(500).json({ error: 'Failed to upload image.' });
+    }
+}
+
+
+module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments, getAllLandlordProperties, updateLandlord, uploadImage};

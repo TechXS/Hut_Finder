@@ -41,7 +41,7 @@ export const landlordApi = createApi({
         }),
         updateProperty: builder.mutation({
             query: ({id, payload}) => ({
-                url: `${id}`,
+                url: `${id}/property`,
                 method: "PATCH",
                 body: payload,
             }),

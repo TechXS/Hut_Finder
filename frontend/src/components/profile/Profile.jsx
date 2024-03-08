@@ -50,12 +50,18 @@ const Profile = () => {
       setIsEditing(!isEditing);
     } else {
       try {
-          const response = await updateProfileValidation(editedFields)
+        if (validateFields(editedFields)) {
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+        } else {
+          alert('Please fill in all the fields with valid values.');
+          return;
+        }
+          // const response = await updateProfileValidation(editedFields)
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
           const newProfile = await updateProfile({
               id: Landlord._id,
               layout: "landlord",
-              payload: {data: response}
+              payload: {data: editedFields}
           }).unwrap()
           setIsEditing(!isEditing);
           localStorage.setItem("currentLandlord", JSON.stringify(newProfile));
@@ -67,6 +73,26 @@ const Profile = () => {
       }
      }
     };
+
+    const validateFields = fields => {
+      for (const key in fields) {
+        if (Object.prototype.hasOwnProperty.call(fields, key)) {
+          if (!fields[key]) {
+            return false; // Field is empty
+          }
+          if (key === 'email' && !isValidEmail(fields[key])) {
+            return false; 
+          }
+        }
+      }
+      return true;
+    };
+  
+    const isValidEmail = email => {
+      //email validation logic
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+  
 
 
   const handleFieldChange = (field, value) => {
@@ -93,7 +119,7 @@ const Profile = () => {
       );
     }
   };
-  const upload = async (file, name) => {
+  const upload = async (file) => {
     const formData = new FormData();
     formData.append("userImage", file, file.name);
     try {
@@ -102,12 +128,13 @@ const Profile = () => {
           layout: "landlord", 
           payload: formData
         }).unwrap()
-        localStorage.setItem("currentLandlord", JSON.stringify(response));
+        setProfilePicture(response.data.url);
+        // localStorage.setItem("currentLandlord", JSON.stringify(response));
         // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
         // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
     } catch (e) {
         console.log(e)
-        // console.log(e.data.message)
+        console.log(e.data.message)
         // dispatch(setGetDataError(`Failed to update landlord Profile Image`));
         // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"}  Profile Image`));
     }
