@@ -100,6 +100,15 @@ const Browse = () => {
                   />
                 <label htmlFor="lift">Washrooms</label>
               </div>
+              <div className="filterItem">
+                <input 
+                  type="checkbox" 
+                  id="lift"
+                  value="Bike Storage"
+                  onChange={filterHandler}
+                  />
+                <label htmlFor="lift">Washrooms</label>
+              </div>
             </div>
             {/* <button className="btn-search">Search</button> */}
           </div>
