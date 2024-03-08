@@ -31,8 +31,8 @@ const Browse = () => {
   return (
     <div>   
       <Navbar/>
-      <Header/>
-      <div className="browseContainer">
+      {/* <Header/> */}
+      <div className="browseContainer" style={{paddingTop:'20px'}}>
         <div className="browseWrapper">
           <div className="browseSearch">
             <h1 className="brtitle">Search</h1>
@@ -68,10 +68,10 @@ const Browse = () => {
                 <input
                   type="checkbox" 
                   id="oceanView"
-                  value="Ocean View"
+                  value="Parking"
                   onChange={filterHandler}
                  />
-                <label htmlFor="oceanView">Ocean View</label>
+                <label htmlFor="oceanView">Parking</label>
               </div>
               <div className="filterItem">
                 <input 
@@ -86,19 +86,19 @@ const Browse = () => {
                 <input 
                   type="checkbox" 
                   id="undergroundParking"
-                  value="Underground Parking"
+                  value="Wifi"
                   onChange={filterHandler}
                   />
-                <label htmlFor="undergroundParking">Underground Parking</label>
+                <label htmlFor="undergroundParking">Wifi</label>
               </div>
               <div className="filterItem">
                 <input 
                   type="checkbox" 
                   id="lift"
-                  value="Lift"
+                  value="Washrooms"
                   onChange={filterHandler}
                   />
-                <label htmlFor="lift">Lift</label>
+                <label htmlFor="lift">Washrooms</label>
               </div>
             </div>
             {/* <button className="btn-search">Search</button> */}

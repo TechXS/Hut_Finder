@@ -222,8 +222,40 @@ const updateProperty = (req, res) => {
     })
 }
 
+//create amenity
+const createAmenity = (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+    const amenities = data.amenities;
+    console.log('amenities:', amenities)
 
-       
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Property ID"});
+    }
+    for (const amenity of amenities) {
+        Amenity.create(amenity)
+        .then((amenityResponse) => {
+            console.log('success creating property amenity\n', amenityResponse._id);
+
+            return Property.findByIdAndUpdate(
+                {_id: id},
+                {$push: {amenities: amenityResponse._id}},
+                {new: true}
+            )
+        })
+        .then((response)=>{
+            console.log("amenity creation success");
+            res.status(200).json({message: "Amenity created successfully"});
+        })
+        .catch((err) => {
+            console.log("Error ",err.message);
+            res.status(400).json({error: "Error creating amenity"});
+        })
+    }
+
+
+
+}      
     
 
-module.exports = {createProperty, updateProperty, deleteProperty}
+module.exports = {createProperty, updateProperty, deleteProperty,createAmenity}
