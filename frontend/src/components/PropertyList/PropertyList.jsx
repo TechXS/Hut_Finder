@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useGetPropertiesQuery } from "../../stores/clientApi.js";
 import SearchItem from "../../components/SearchItem/SearchItem";
 import Pagination from "../../components/Pagination/Pagination";
+import {Box,CircularProgress} from "@mui/material";
 
 const PropertyList = ( { filterCondition, search } ) => {
   const [activePage, setActivePage] = useState(1);
@@ -11,6 +12,8 @@ const PropertyList = ( { filterCondition, search } ) => {
   const currentLocation = sessionStorage.getItem("location")
 
   const { data: properties, error, isLoading } = useGetPropertiesQuery(currentLocation);
+
+  console.log(properties)
  
   useEffect(() => {
     if (properties) {
@@ -33,7 +36,9 @@ const PropertyList = ( { filterCondition, search } ) => {
   }, [properties, filterCondition, search]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return  <Box sx={{ display: 'flex' }}>
+      <CircularProgress />
+    </Box>;
   }
 
   if (error) {

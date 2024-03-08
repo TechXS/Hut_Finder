@@ -1,27 +1,28 @@
 import "./searchItem.css";
 import { Link } from "react-router-dom";
+import {properties, unitTypes} from "../../utils/dataUtil.js";
 // import { useDispatch } from "react-redux";
 // import { setCurrentProperty } from "../../stores/propertySlice";
 
-   
-const SearchItem = ({ properties }) => {  
+const SearchItem = ({ properties }) => {
   // const dispatch = useDispatch();
   // const handleClick = (property) => {
   //   dispatch(setCurrentProperty(property));
   //   console.log("Propertyclickkkk\n", property);
   // }
+  const defaultImage ="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
   return (
     <>
       {properties && properties.map((property) => (
         <div className="searchItem" key={property._id}>
             <img
-              src="https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+              src={property.images[0] ?? defaultImage}
               alt=""
               className="brImg"
             />
             <div className="brDesc">
             <h1 className="brTitle">{property.name || ''}</h1>
-            <span className="brDistance">500m from Juja City Mall</span>
+            <span className="brDistance">{property.location.city && property.location.country ? `${property.location.city}, ${property.location.country}` : property.location.city ?? property.location.country ?? property.location.continent ?? property.location.formatted}</span>
             <span className="brTaxiOp">{property?.amenities[0]?.name ?? ""}</span>
             <span className="brSubtitle">
               {property.description}
@@ -30,7 +31,7 @@ const SearchItem = ({ properties }) => {
             {
               property.units.map((unit, index) => (
                 <span  className="brFeatures" key={unit._id}>
-                  {unit.type} {" "}
+                  {unitTypes[unit.type].type} {" "}
                   {index < property.units.length - 1 && ' • '}  {" "}
                 </span>
               ))
