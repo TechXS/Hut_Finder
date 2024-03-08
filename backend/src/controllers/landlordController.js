@@ -31,6 +31,11 @@ const getLandlordData = async (req, res) => {
             .populate({ path: "properties", populate: { path: "amenities units" } })
             .populate({ path: "appointments", populate: { path: "amenities units" } });
 
+        console.log(id)
+        const appointments = await     Appointment.find({ landlord: id })
+            .populate({ path: 'property', select: 'name location' })
+            .populate({ path: 'client', select: 'name email phoneNumber' });
+
         // Compute additional attributes
         let totalVacantUnits = 0;
         let totalProperties = 0;
@@ -45,14 +50,15 @@ const getLandlordData = async (req, res) => {
         });
 
         totalProperties = landlord.properties.length;
-        totalPendingAppointments = landlord.appointments.filter(appointment => appointment.status === "PENDING").length;
+        totalPendingAppointments = appointments.length;
 
         // Add computed attributes to landlord object
         const modifiedLandlord = {
             ...landlord.toObject(),
             totalVacantUnits,
             totalProperties,
-            totalPendingAppointments
+            totalPendingAppointments,
+            appointments:appointments
         };
 
         res.json(modifiedLandlord);
