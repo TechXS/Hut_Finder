@@ -2,47 +2,72 @@ import { useState } from 'react';
 import "./profile.scss";
 //import Approval from '../Approval/Approval';
 import Datatable from '../Approval/Approval';
+import { useSelector } from 'react-redux';
+import { selectCurrentLandlord, selectGetDataError } from '../../stores/landlordSlice';
+import {useUpdateProfileMutation, useUploadProfileImageMutation} from '../../stores/userApi';
+import { updateProfileValidation } from '../../utils/formValidation';
+import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
 
 const Profile = () => {
+  const Landlord = useSelector(selectCurrentLandlord);
+  console.log('Landlord\n', Landlord);
+  const error = useSelector(selectGetDataError);
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
+  const [profilePicture, setProfilePicture] = useState(null);
   const [savedFields, setSavedFields] = useState({
-    email: "natalie@gmail.com",
-    phone: "0712847343",
-    address: "Mwabe St. 24 Garden City. Nairobi",
-    Role: "Landlord",
+    email: Landlord?.email,
+    phone: Landlord?.phoneNumber,
+    Role: Landlord?.role
   });
+  const [updateProfile, {
+    data: updateResponse,
+    isLoading: updateLoading,
+    isError: updateIsError,
+    error: updateError
+  }] = useUpdateProfileMutation()
 
-  const handleEditClick = () => {
-    if (isEditing) {
-      if (validateFields(editedFields)) {
-        setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-      } else {
-        alert('Please fill in all the fields with valid values.');
-        return;
+  const [uploadProfileImage, {
+    data: uploadResponse,
+    isLoading: uploadLoading,
+    isError: uploadIsError,
+    error: uploadError
+  }] = useUploadProfileImageMutation()
+
+
+
+  const handleEditClick = async () => {
+    // if (isEditing) {
+    //   if (validateFields(editedFields)) {
+        // setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+    //   } else {
+    //     alert('Please fill in all the fields with valid values.');
+    //     return;
+    //   }
+    // }
+    // setIsEditing(!isEditing);
+    if (isEditing === false) {
+      setIsEditing(!isEditing);
+    } else {
+      try {
+          const response = await updateProfileValidation(editedFields)
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+          const newProfile = await updateProfile({
+              id: Landlord._id,
+              layout: "landlord",
+              payload: {data: response}
+          }).unwrap()
+          setIsEditing(!isEditing);
+          localStorage.setItem("currentLandlord", JSON.stringify(newProfile));
+          // dispatch(setSuccessNotification(`${newProfile.name}${newProfile.name.substring(-1, 0) === "s" ? "'" : "'s"} data updated `));
+      } catch (e) {
+          console.log(e.data.message)
+          // dispatch(setGetDataError(`Failed to update landlord data`));
+          // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"} data`));
       }
-    }
-    setIsEditing(!isEditing);
-  };
+     }
+    };
 
-  const validateFields = fields => {
-    for (const key in fields) {
-      if (Object.prototype.hasOwnProperty.call(fields, key)) {
-        if (!fields[key]) {
-          return false; // Field is empty
-        }
-        if (key === 'email' && !isValidEmail(fields[key])) {
-          return false; 
-        }
-      }
-    }
-    return true;
-  };
-
-  const isValidEmail = email => {
-    //email validation logic
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
 
   const handleFieldChange = (field, value) => {
     setEditedFields(prevFields => ({ ...prevFields, [field]: value }));
@@ -68,6 +93,29 @@ const Profile = () => {
       );
     }
   };
+  const upload = async (file, name) => {
+    const formData = new FormData();
+    formData.append("userImage", file, file.name);
+    try {
+        const response = await uploadProfileImage({
+          id: Landlord._id, 
+          layout: "landlord", 
+          payload: formData
+        }).unwrap()
+        localStorage.setItem("currentLandlord", JSON.stringify(response));
+        // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
+        // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
+    } catch (e) {
+        console.log(e)
+        // console.log(e.data.message)
+        // dispatch(setGetDataError(`Failed to update landlord Profile Image`));
+        // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"}  Profile Image`));
+    }
+  }
+
+  const handleFileUpload = (file, name) => {
+    upload(file, name)
+  };
 
   return (
     <>
@@ -83,13 +131,32 @@ const Profile = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            <img
-              src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
+            {/* <img
+              src={Landlord?.imageUrl}
               alt=""
               className="itemImg"
             />
+            <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/> */}
+            {
+              isEditing ? (
+                <>
+                  <img
+                    src={Landlord?.imageUrl}
+                    alt=""
+                    className="itemImg"
+                  />
+                  <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/>
+                </>
+              ) : (
+                <img
+                  src={Landlord?.imageUrl}
+                  alt=""
+                  className="itemImg"
+                />
+              )
+            }
             <div className="details">
-              <h1 className="itemTitle">Natalie Halle</h1>
+              <h1 className="itemTitle">{Landlord?.name}</h1>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}
@@ -97,10 +164,6 @@ const Profile = () => {
               <div className="detailItem">
                 <span className="itemKey">Phone:</span>
                 {renderFieldValue("phone", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Address:</span>
-                {renderFieldValue("address", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Role:</span>

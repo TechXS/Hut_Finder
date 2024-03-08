@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import "./profile.scss";
+import { useSelector } from 'react-redux';
+import { selectCurrentClient, selectGetDataError } from '../../stores/clientSlice';
+import { useUpdateProfileMutation, useUploadProfileImageMutation } from '../../stores/userApi';
+import { updateProfileValidation } from '../../utils/formValidation';
+import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
 //import MuiAlert from '@mui/material/Alert';
 //import CustomizedSnackbars from '../Alerts/SnackBar';
 
@@ -10,30 +15,62 @@ import StickyHeadTable from '../table/ClientAppointments';
 import { clientAppointmentsData } from '../../utils/dataUtil';
 
 const ProfileClient = () => {
+  const Client = useSelector(selectCurrentClient);
+  console.log('Client\n', Client);
+  const error = useSelector(selectGetDataError);
+  const [profilePicture, setProfilePicture] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [savedFields, setSavedFields] = useState({
-    email: "natalie@gmail.com",
-    phone: "0712847343",
-    address: "Mwabe St. 24 Garden City. Nairobi",
-    Role: "Tenant",
-    propertyName:"Cascade Apartments",
-    unitType:"2 Bedroom",
-    houseNumber:"C9",
-    landLord: "J.M.Kariuki",
+    email: Client?.email,
+    phoneNumber: Client?.phoneNumber,
+    Role: Client?.role,
     
   });
+  const [updateProfile, {
+    data: updateResponse,
+    isLoading: updateLoading,
+    isError: updateIsError,
+    error: updateError
+  }] = useUpdateProfileMutation()
+
+  const [uploadProfileImage, {
+    data: uploadResponse,
+    isLoading: uploadLoading,
+    isError: uploadIsError,
+    error: uploadError
+  }] = useUploadProfileImageMutation()
 
   const handleEditClick = () => {
-    if (isEditing) {
-      if (validateFields(editedFields)) {
+    // if (isEditing) {
+
+    // }
+    // setIsEditing(!isEditing);
+    if (isEditing === false) {
+      setIsEditing(!isEditing);
+    } else {
+      try {
+        console.log('Edited fields:', editedFields)
+        // const response = updateProfileValidation(editedFields)
+        if (validateFields(editedFields)) {
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+        } else {
+          alert('Please fill in all the fields with valid values.');
+          return;
+        }
+        console.log('Update response:', editedFields);
         setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-      } else {
-        alert('Please fill in all the fields with valid values.');
-        return;
+        const newProfile = updateProfile({
+          id: Client._id,
+          layout: "client",
+          payload: { data: editedFields }
+        }).unwrap()
+        setIsEditing(!isEditing);
+        localStorage.setItem("currentClient", JSON.stringify(newProfile));
+      } catch (error) {
+        console.error('Failed to update profile', error);
       }
     }
-    setIsEditing(!isEditing);
   };
 
   const validateFields = fields => {
@@ -80,6 +117,30 @@ const ProfileClient = () => {
       );
     }
   };
+  const upload = async (file) => {
+    const formData = new FormData();
+    console.log('ufile', file)
+    formData.append("hutFinder-profileImages", file, file.name);
+    for (var pair of formData.entries()) {
+      console.log('key: ',pair[0], 'value: ' , pair[1]);
+  }
+    try {
+      const response = await uploadProfileImage({
+        id: Client._id,
+        layout: "client",
+        payload: formData
+      
+      }).unwrap()
+      console.log('Upload response:', response);
+      setProfilePicture(response.data.url);
+    } catch (error) {
+      console.error('Failed to upload profile image', error);
+    }
+  }
+
+  const handleFileUpload = (file) => {
+    upload(file)
+  };
 
   return (
     <>
@@ -96,24 +157,38 @@ const ProfileClient = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            <img
+            {/* <img
               src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
               alt=""
               className="itemImg"
-            />
+            /> */}
+            {
+              isEditing ? (
+                <>
+                  <img
+                    src={Client?.imageUrl}
+                    alt=""
+                    className="itemImg"
+                  />
+                  <ImageuploadSingle onFileUpload={handleFileUpload} url={Client.imageUrl}/>  
+                </>
+              ) : (
+                <img
+                  src={Client?.imageUrl}
+                  alt=""
+                  className="itemImg"
+                />
+              )
+            }
             <div className="details">
-              <h1 className="itemTitle">Natalie Halle</h1>
+              <h1 className="itemTitle">{Client?.name}</h1>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Phone:</span>
-                {renderFieldValue("phone", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Address:</span>
-                {renderFieldValue("address", true)}
+                {renderFieldValue("phoneNumber", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Role:</span>

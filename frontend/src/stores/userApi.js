@@ -12,7 +12,7 @@ export const userApi = createApi({
       }
       return headers;
     },
-  }),
+  }), 
   endpoints: (builder) => ({
     updateProfile: builder.mutation({
       query: ({ id, layout, payload }) => ({

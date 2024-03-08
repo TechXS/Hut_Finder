@@ -95,5 +95,23 @@ const getAllAppointments = (req, res) => {
         });
 };
 
+//get landlord properties
+const getAllLandlordProperties = (req, res) => {
+    const { id } = req.params
+    console.log('id', id)
+    Landlord.findById(id)
+    .populate({path: "properties", select: "name location images", populate: {path: "amenities units"}})
+    .then((landlord) => {
+        const properties = landlord.properties;
+        console.log("properties\n", properties)
+        res.status(200).json({ message: "Properties fetched successfully\n", properties });
+    })
+    .catch((err) => {
+        console.log("Error:\n", err.message)
+        res.status(400).json({ error: "Error fetching properties" });
+    });
 
-module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments}
+}
+
+
+module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments, getAllLandlordProperties};

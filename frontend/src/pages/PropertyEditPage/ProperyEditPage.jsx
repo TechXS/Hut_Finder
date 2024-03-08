@@ -22,8 +22,20 @@ import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListin
 import { useRef } from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 import AddAmenities from "../../components/AddAmenities/AddAmenities";
+import { useGetPropertiesQuery } from "../../stores/landlordApi";
+import { selectCurrentLandlord } from "../../stores/landlordSlice";
+import { useSelector } from "react-redux";
 
 const PropertyEditPage = () => {
+
+  const landlord = useSelector(selectCurrentLandlord);
+  console.log('landlord', landlord)
+  const id = landlord._id;
+  console.log('id', id)
+  const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(id);
+  console.log('properties\n', properties)
+
+
   const [slideNumber, setSlideNumber] = useState(0);
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);

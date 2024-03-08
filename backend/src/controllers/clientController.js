@@ -3,6 +3,7 @@ const {isValidObjectId,Types} = require("mongoose");
 const Property = require("../models/propertyModel");
 const Appointment = require("../models/appointmentModel");
 const Landlord = require('../models/landlordModel')
+const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
 
 // add to wishlist
 const addToWishList = async (req, res) => {
@@ -131,4 +132,74 @@ const getAllAppointments = (req, res) => {
             res.status(400).json({ error: "Error fetching appointments" });
         });
 };
-module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById}
+
+//update client
+const updateClient = (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+    console.log("data", data);
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Client ID"});
+    }
+
+    Client.findOneAndUpdate(
+        {_id: id}, 
+        {$set: data}, 
+        {returnOriginal: false}
+        )
+        .then((response) => {
+            res.status(200).json(response);
+            console.log("Client updated successfully", response);
+        })
+        .catch((err) => {
+            res.status(400).json({error: "Error updating client"});
+            console.log("Error updating client", err.message);
+        })
+}
+
+//upload image
+const uploadImage = async (req, res) => {
+    const { id } = req.params;
+    const file = req.file;
+    console.log("file", file);
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({ error: 'Invalid request.' });
+    }
+
+    try {
+        const result = await uploadToCloudinary(file.path, "hutFinder-profileImages");
+        const client = await Client.findByIdAndUpdate(id, { profile_picture: result.url }, { new: true });
+        res.status(200).json(client);
+    } catch (error) {
+        console.error('Error uploading image:', error);
+        res.status(500).json({ error: 'Failed to upload image.' });
+    }
+}
+
+const deleteImage = async (req, res) => {
+    const { id } = req.params;
+    const { layout } = req.query;
+
+    if (!isValidObjectId(id) || !layout) {
+        return res.status(400).json({ error: 'Invalid request.' });
+    }
+
+    try {
+        const client = await Client.findById(id);
+        const result = await removeFromCloudinary(client.profile_picture, layout);
+
+        if (result) {
+            client.profile_picture = '';
+            await client.save();
+        }
+
+        res.status(200).json(client);
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        res.status(500).json({ error: 'Failed to delete image.' });
+    }
+}
+
+module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById,updateClient,uploadImage}
