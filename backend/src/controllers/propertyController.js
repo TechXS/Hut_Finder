@@ -245,11 +245,11 @@ const createAmenity = (req, res) => {
         })
         .then((response)=>{
             console.log("amenity creation success");
-            res.status(200).json({message: "Amenity created successfully"});
+            // res.status(200).json({message: "Amenity created successfully"});
         })
         .catch((err) => {
             console.log("Error ",err.message);
-            res.status(400).json({error: "Error creating amenity"});
+            // res.status(400).json({error: "Error creating amenity"});
         })
     }
 

@@ -107,7 +107,7 @@ const Browse = () => {
                   value="Bike Storage"
                   onChange={filterHandler}
                   />
-                <label htmlFor="lift">Washrooms</label>
+                <label htmlFor="lift">Bike Storage</label>
               </div>
             </div>
             {/* <button className="btn-search">Search</button> */}
