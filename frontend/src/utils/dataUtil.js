@@ -16,35 +16,85 @@ export const getUnitType = (type) => {
 
 export const properties = [
     {
-      type: "Select",
-      value: "undefined",
+        type: "Select",
+        value: "undefined",
     },
     {
-      type: "Single Room",
-      value: "SR",
+        type: "Single Room",
+        value: "SR",
+        "SR": "Single Room"
     },
     {
-      type: "Bedsitter",
-      value: "BD",
+        type: "Bedsitter",
+        value: "BD",
+        "BD": "Bedsitter"
     },
     {
-      type: "One Bedroom",
-      value: "OBD",
+        type: "One Bedroom",
+        value: "OBD",
+        "OBD": "One Bedroom"
     },
     {
-      type: "Two Bedroom",
-      value: "TWB",
+        type: "Two Bedroom",
+        value: "TWB",
+        "TWB": "Two Bedroom"
     },
     {
-      type: "Three Bedroom",
-      value: "THB",
+        type: "Three Bedroom",
+        value: "THB",
+        "THB": "Three Bedroom"
     },
     {
-      type: "Four Bedroom",
-      value: "FRB",
+        type: "Four Bedroom",
+        value: "FRB",
+        "FRB": "Four Bedroom"
     },
-  ];
+];
 
+export const unitTypes = {
+    "none": {
+        type: "Select",
+        value:
+            "undefined",
+    }
+    ,
+    "SR": {
+        type: "Single Room",
+        value:
+            "SR"
+    }
+    ,
+    "BD": {
+        type: "Bedsitter",
+        value:
+            "BD",
+    }
+    ,
+    "OBD": {
+        type: "One Bedroom",
+        value:
+            "OBD"
+    }
+    ,
+    "TWB": {
+        type: "Two Bedroom",
+        value:
+            "TWB",
+    }
+    ,
+    "THB": {
+        type: "Three Bedroom",
+        value:
+            "THB",
+    }
+    ,
+    "FRB": {
+        type: "Four Bedroom",
+        value:
+            "FRB",
+    }
+    ,
+}
 
 //import AccountIcon from "../Icons/AccountIcon"
 //import MonetizationDueIcon from "../Icons/MonetizationDueIcon"
@@ -111,7 +161,6 @@ export const propertyData = [
     },
 
 
-
 ]
 
 export const propertyAdd = [
@@ -120,10 +169,9 @@ export const propertyAdd = [
         isMoney: false,
         link: "View total rent due",
         amount: 100,
-        percentage : 20,
-        icon:   AddIcon
+        percentage: 20,
+        icon: AddIcon
     }]
-
 
 
 //export const properties = [
@@ -182,7 +230,6 @@ export const pricingData = [
         description: ' KSH 30,000 is the base fee and additional 1% of Revenue is charged.',
 
     },
-
 
 
 ]
@@ -290,11 +337,46 @@ export const wishlistItems = [
 //Client Appointments data
 
 export const clientAppointmentsData = [
-    {name:'MIMO APARTMENTS',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/06/2023',time:'14:00',status:'Confirmed' },
-    {name:'MKB2 COMPLEX',unit :'Bedsitter',phonenumber:'+2547789953',date:'18/05/2023',time:'14:00',status:'Rejected' },
-    {name:'JUJA APARTMENTS',unit :'2 Bedroom',phonenumber:'+2547789953',date:'21/04/2023',time:'14:00',status:'Confirmed' },
-    {name:'TIFA APARTMENTS',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/03/2023' ,time:'14:00',status:'Pending'},
-    {name:'MREEVES COMPLEX',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/02/2023' ,time:'14:00',status:'Confirmed'},
+    {
+        name: 'MIMO APARTMENTS',
+        unit: 'Bedsitter',
+        phonenumber: '+2547789953',
+        date: '21/06/2023',
+        time: '14:00',
+        status: 'Confirmed'
+    },
+    {
+        name: 'MKB2 COMPLEX',
+        unit: 'Bedsitter',
+        phonenumber: '+2547789953',
+        date: '18/05/2023',
+        time: '14:00',
+        status: 'Rejected'
+    },
+    {
+        name: 'JUJA APARTMENTS',
+        unit: '2 Bedroom',
+        phonenumber: '+2547789953',
+        date: '21/04/2023',
+        time: '14:00',
+        status: 'Confirmed'
+    },
+    {
+        name: 'TIFA APARTMENTS',
+        unit: 'Bedsitter',
+        phonenumber: '+2547789953',
+        date: '21/03/2023',
+        time: '14:00',
+        status: 'Pending'
+    },
+    {
+        name: 'MREEVES COMPLEX',
+        unit: 'Bedsitter',
+        phonenumber: '+2547789953',
+        date: '21/02/2023',
+        time: '14:00',
+        status: 'Confirmed'
+    },
 
     // Add more transaction objects as needed
 ];
