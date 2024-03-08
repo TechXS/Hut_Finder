@@ -5,17 +5,17 @@ const appointmentSchema = new Schema(
   {
     landlord: {
       type: Schema.Types.ObjectId,
-      ref: 'Landlord',
+      ref: 'landlord',
       required: true,
     }, 
     property: {
       type: Schema.Types.ObjectId,
-      ref: 'Property',
+      ref: 'property',
       required: true,
     },
     client: {
       type: Schema.Types.ObjectId,
-      ref: 'Client',
+      ref: 'client',
       required: true,
     },
     date: {

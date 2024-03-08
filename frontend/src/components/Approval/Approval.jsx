@@ -39,15 +39,19 @@ const Datatable = () => {
     return (
         <div className="datatable">
             <div className="databaseTitle">Appointment Approval Database</div>
-            <div style={{ height: `${tableHeight}px`, width: "100%" }}>
-                <DataGrid
-                    rows={userRows}
-                    columns={userColumns.concat(actionColumn)}
-                    pageSize={pageSize}
-                    pageSizeOptions={[5]}
-                    checkboxSelection
-                />
-            </div>
+            { appointments ? (
+                <div style={{ height: `${tableHeight}px`, width: "100%" }}>
+                    <DataGrid
+                        rows={appointments}
+                        getRowId={(row) => row._id}
+                        columns={userColumns.concat(actionColumn)}
+                        pageSize={pageSize}
+                        pageSizeOptions={[5]}
+                        checkboxSelection
+                    />
+                </div>
+            ) :
+                (<div>No appointments Available</div>)}
         </div>
     );
 };
