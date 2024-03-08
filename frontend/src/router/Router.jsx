@@ -95,21 +95,20 @@ const router = createBrowserRouter([
                 element: <Landlord_Dashboard/>
             },
             {
-                path: '/landlord/addpropertypage',
+                path: '/landlord/properties',
                 element: <AddCard/>
             },
             {
                 path: '/landlord/addproperty',
                 element: <AddProperty/>
             },
-
             {
                 path: '/landlord/editproperty',
                 element: <PropertyEditPage/>
             },
             {
-                path: '/landlord/properties',
-                element: <Property/>
+                path: '/landlord/properties/:id',
+                element: <PropertyEditPage/>
             },
             {
                 path: "/landlord/profile",

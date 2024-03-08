@@ -108,22 +108,28 @@ export default function AccountMenu({user}) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <Link to='/client/profile'>
-        <MenuItem onClick={handleClose} style={{gap:8}}>
-          <AccountCircleIcon/> Profile
-        </MenuItem>
-        </Link>
-        <Link to='/client/appointments'>
-        <MenuItem onClick={handleClose} style={{gap:8}}>
-          <MeetingRoomIcon/>Appointments
-        </MenuItem>
-        </Link>
+        {
+          user && user.role === 'client' && (
+              <>
+                <Link to='/client/profile'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <AccountCircleIcon/> Profile
+                  </MenuItem>
+                </Link>
+                <Link to='/client/appointments'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <MeetingRoomIcon/>Appointments
+                  </MenuItem>
+                </Link>
 
-        <Link to='/client/wishlist'>
-        <MenuItem onClick={handleClose} style={{gap:8}}>
-          <BeenhereIcon/>   Wishlist
-        </MenuItem>
-        </Link>
+                <Link to='/client/wishlist'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <BeenhereIcon/>   Wishlist
+                  </MenuItem>
+                </Link>
+              </>
+            )
+        }
         {/*<Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>

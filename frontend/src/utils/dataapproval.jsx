@@ -1,20 +1,22 @@
 export const userColumns = [
     { field: "id", headerName: "ID", width: 70 },
-    { field: "username", headerName: "Name", width: 150 },
-    { field: "contact", headerName: "Contact", width: 120 },
-    { field: "unit", headerName: "UnitType", width: 100 },
-    {
-        field: "status",
-        headerName: "Status",
-        width: 160,
-        renderCell: (params) => {
-            return (
-                <div className={`cellWithStatus ${params.row.status}`}>
-                    {params.row.status}
-                </div>
-            );
-        },
-    },
+    { field: "name", headerName: "Name", width: 150 ,valueGetter: (params) => params.row.client?.name},
+    { field: "phoneNumber", headerName: "Contact", width: 120 ,valueGetter: (params) => params.row.client?.phoneNumber},
+    { field: "email", headerName: "Email", width: 120 ,valueGetter: (params) => params.row.client?.email},
+    { field: "property", headerName: "Property Name", width: 120 ,valueGetter: (params) => params.row.property?.name}
+    // { field: "unit", headerName: "UnitType", width: 100 },
+    // {
+    //     field: "status",
+    //     headerName: "Status",
+    //     width: 160,
+    //     renderCell: (params) => {
+    //         return (
+    //             <div className={`cellWithStatus ${params.row.status}`}>
+    //                 {params.row.status}
+    //             </div>
+    //         );
+    //     },
+    // },
 ];
 
 export const userRows = [
