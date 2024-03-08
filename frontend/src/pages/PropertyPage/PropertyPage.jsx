@@ -2,7 +2,6 @@ import "./propertyPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import "./propertyPage.css";
 import {useEffect, useState} from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 import {useCreateAppointmentMutation, useGetPropertiesQuery, useGetPropertyQuery} from "../../stores/clientApi.js";

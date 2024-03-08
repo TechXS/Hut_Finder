@@ -22,6 +22,8 @@ import ListingItemEdit from "../../components/PropertyListingEdit/PropertyListin
 import { useRef } from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 import AddAmenities from "../../components/AddAmenities/AddAmenities";
+import { selectCurrentLandlord } from "../../stores/landlordSlice";
+import {useDispatch, useSelector} from "react-redux";
 
 const PropertyEditPage = () => {
   const [slideNumber, setSlideNumber] = useState(0);
@@ -32,21 +34,27 @@ const PropertyEditPage = () => {
   const [photos, setPhotos] = useState([
     {
       src: "../../../public/images/property3.jpg",
+      alt:'hello'
     },
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
+      alt:'hello'
     },
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
+      alt:'hello'
     },
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
+      alt:'hello'
     },
     {
       src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
+      alt:'hello'
     },
     {
       src: "../../../public/images/property3.jpg",
+      alt:'hello'
     },
   ])
 
@@ -81,7 +89,8 @@ const PropertyEditPage = () => {
   console.log(formData)
   const  propertyname = 'Cascade Plaza'
   const  propertyDesc = 'Located a 5-minute walk from Juja city mall in Juja,Cascade Plaza is a spacious appartment with air conditioning and free WiFi installation. The units come with hardwood floors and feature a fully equipped kitchenette with sliding drawers, modern taps, and a private bathroom with shower. Popular points of interest near the apartment include Juja police station, Main Market Square and Aghakan  University Hospital. The nearest petrol station is Shell petrol, 16.1 km from Cascade Plaza, and the property offers a paid gabbage collection'
- 
+  const Landlord = useSelector(selectCurrentLandlord);
+
 
   const handleOpen = (i) => {
     setSlideNumber(i);

@@ -84,8 +84,12 @@ const router = createBrowserRouter([
         element: <PropertyLayout/>,
     },
     {
+        path:'property/:id',
+        element:<PropertyPage />
+    },
+    {
         path:'/properties',
-        element: <Properties/>
+        element: <Properties />
     },
     {
         path: "/landlord",
