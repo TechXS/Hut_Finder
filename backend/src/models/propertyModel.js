@@ -35,4 +35,6 @@ const propertySchema = new Schema(
     {timestamps: true}
 );
 
+propertySchema.index({ location: "2dsphere" });
+
 module.exports = model("property", propertySchema);

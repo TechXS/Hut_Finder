@@ -79,11 +79,48 @@ const createAppointment = async (req, res) => {
 
 // Get all properties
 const getAllProperties = async (req, res) => {
-    const {data} = req.body;
+    const { data } = req.body;
+    let { location } = req.query;
+
+    location = JSON.parse(location);
+
     try {
-        const properties = await Property.find()
+        let properties;
+       if (location){
+           properties = await Property.aggregate([
+               {
+                   "$geoNear": {
+                       "near": {
+                           "type": "Point",
+                           "coordinates": [location.longitude, location.latitude]
+                       },
+                       "spherical": true,
+                       "distanceField": "dis"
+                   }
+               },
+               { "$sort": { "dis": 1 } },
+               {
+                   "$lookup": {
+                       "from": "amenities",
+                       "localField": "amenities",
+                       "foreignField": "_id",
+                       "as": "amenities"
+                   }
+               },
+               {
+                   "$lookup": {
+                       "from": "units",
+                       "localField": "units",
+                       "foreignField": "_id",
+                       "as": "units"
+                   }
+               }
+           ]);
+       }else {
+           properties = await Property.find( {})
             .populate({ path: 'amenities', select: 'name icon' })
             .populate({ path: 'units', select: 'name vacancies type' });
+       }
         res.status(200).json(properties);
     } catch (error) {
         console.error("Error getting properties:", error);

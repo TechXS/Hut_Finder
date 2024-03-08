@@ -1,14 +1,15 @@
   import Carousel from '../Carousel/Carousel';
   import './propertyListing.css';
+  import {unitTypes} from "../../utils/dataUtil.js";
   
   export default function PropertyListing({unit}) {
 
     console.log(unit)
   
     // Format image data for the Carousel component
-    const carouselData = unit?.name && unit.images.map((url) => ({
+    const carouselData = unit && unit.images.map((url) => ({
       src: url,
-      alt: unit?.name,
+      alt:  unitTypes[unit.type].type ,
     }));
   
     return (
@@ -19,7 +20,7 @@
               <Carousel data={carouselData}/> {/* Render the Carousel component */}
             </div>
             <div className="listing-details">
-              <p className="listing-name">{unit.name}</p>
+              <p className="listing-name">{unitTypes[unit.type].type}</p>
               <p className="listing-type">{unit.type}</p>
               <div className="listing-desc">
                 <p className="listing-price">Ksh {unit.price.toLocaleString()}</p>

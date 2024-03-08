@@ -3,11 +3,14 @@ import Navbar from "../../components/NavBar/NavBar"
 import Header from "../../components/Header/Header"
 import PropertyList from "../../components/PropertyList/PropertyList"
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 
 const Browse = () => {
   const [filterCondition, setfilterCondition] = useState([]);
   const [search, setSearch] = useState("");
+  const [searchParams] = useSearchParams();
+  console.log(Object.fromEntries([...searchParams]));
 
 
   const filterHandler = (event) => {

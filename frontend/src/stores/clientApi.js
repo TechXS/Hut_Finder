@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import {handleReverseGeocode} from "../utils/geocode.js";
 
 export const clientApi = createApi({
     reducerPath: "clientApi",
@@ -15,8 +16,15 @@ export const clientApi = createApi({
     }), 
     endpoints: (builder) => ({
         getProperties: builder.query({
-            query: () => {
-                return {url: `/properties`};
+            query: (location) => {
+                return {url: `/properties?location=${location}`};
+            },
+            transformResponse: async (response) => {
+                const properties = await Promise.all(response.map(async (property) => {
+                    let location = await handleReverseGeocode(property.location.coordinates[1], property.location.coordinates[0]);
+                    return { ...property, location };
+                }));
+                return properties;
             },
         }),
         // getProperty: builder.query({

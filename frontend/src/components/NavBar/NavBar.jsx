@@ -44,7 +44,6 @@ const NavBar = () => {
      }
     }
 
-    console.log(user)
     const navLinks = [
         {
             name:"Home",
