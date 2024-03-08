@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import "./profile.scss";
-import Chart from "../../components/chart/Chart";
-//import Approval from '../Approval/Approval';
-import Datatable from '../Approval/Approval';
+
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -72,11 +70,7 @@ const Profile = () => {
 
   return (
     <>
-    <ul>
-      <h1>Appointments</h1>
-      <Datatable/>
-      
-    </ul>
+    
       <div className="top">
         <div className="left">
           <div className="editButton" onClick={handleEditClick}>
@@ -109,9 +103,6 @@ const Profile = () => {
               </div>
             </div>
           </div>
-        </div>
-        <div className="right">
-          <Chart aspect={2 / 1} title="Revenue (Last 6 Months)" />
         </div>
       </div>
     </>

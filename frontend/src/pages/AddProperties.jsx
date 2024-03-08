@@ -7,6 +7,7 @@ import HolidayVillageSharpIcon from "@mui/icons-material/HolidayVillageSharp";
 import Grid from "@mui/material/Grid";
 import {useNavigate} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
+import { Link } from "react-router-dom";
 import {
     propertyForm,
     setClearPropertyData,
@@ -20,9 +21,14 @@ import {KeyboardArrowLeft, KeyboardArrowRight} from "@mui/icons-material";
 import {useTheme} from "@mui/material/styles";
 import Divider from "@mui/material/Divider";
 import {properties} from "../utils/dataUtil.js";
-import {useCreatePropertyMutation} from "../stores/propertyApi.js";
+import {useCreatePropertyMutation} from "../stores/landlordApi.js";
 import {setErrorNotification, setSuccessNotification,} from "../stores/notificationSlice.js";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import { useRef } from 'react';
+import { handleGeocode } from '../utils/geocode';
+import { frmDta } from '../utils/formValidation.js';
+//import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
 
 const AddProperty = () => {
     const [activeStep, setActiveStep] = useState(1);
@@ -31,8 +37,60 @@ const AddProperty = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {propertyData, propertyError, unitData, unit} = useSelector(propertyForm);
+    // console.log('properrtyData', propertyData);
     const currentLandlord = useSelector(selectCurrentLandlord);
     const theme = useTheme();
+    const imageUploadRef1 = useRef();
+    const imageUploadRef2 = useRef();
+    const [propertyImages, setPropertyImages] = useState([])
+    const [unitImages, setUnitImages] = useState([])
+    const [unitImagesObject, setUnitImagesObject] = useState([])
+
+
+
+    const updatePropertyImages = async (newImages) => {
+        setPropertyImages(newImages);
+        // console.log('1stPropertyimages\n', propertyImages)
+    }
+    const updateUnitImages = async (newImages) => {
+        setUnitImages(newImages);
+        // console.log('1stUnitimages\n', unitImages)
+    }
+
+
+    const createUnitImagesObject = (type, images) => {
+        // Check if an object with the same type already exists in the array
+        const existingObjectIndex = unitImagesObject.findIndex(obj => obj.type === type);
+
+        if (existingObjectIndex !== -1) {
+            // If exists, update the existing object with the new images
+            setUnitImagesObject(prevUnitImagesObject => [
+                ...prevUnitImagesObject.slice(0, existingObjectIndex),
+                {
+                    type,
+                    images: [
+                        ...prevUnitImagesObject[existingObjectIndex].images,
+                        ...images
+                    ]
+                },
+                ...prevUnitImagesObject.slice(existingObjectIndex + 1),
+            ]);
+            setUnitImages([])
+        }
+         else {
+            // If not exists, create a new object
+            setUnitImagesObject(prevUnitImagesObject => [
+                ...prevUnitImagesObject,
+                { type, images }
+            ]);
+            setUnitImages([])
+        }
+
+        // Logging the updated unitImagesObject
+        // console.log('unitImagesObjec123456t\n', unitImagesObject);
+    };
+
+
     const [
         createProperty,
         {
@@ -44,15 +102,78 @@ const AddProperty = () => {
         },
     ] = useCreatePropertyMutation();
 
+    // useEffect(() => {
+    //     if (unit.type && unitImages.length > 0) {
+    //         createUnitImagesObject(unit.type, unitImages)
+    //     }
+    //     console.log('Use effect images\n', unitImagesObject)
+
+    // }, [activeStep]);
+
+    console.log('active step', activeStep);
+    // if(activeStep <= numberOfSteps){
+    //     if (unit.type && unitImages.length > 0) {
+    //         createUnitImagesObject(unit.type, unitImages)
+    //     }
+    //     console.log('Use effect images\n', unitImagesObject)
+    // }
 
     useEffect(() => {
         (async () => {
+            // console.log('updated property images', propertyImages)
+            // console.log('updated unit images', unitImages)
+            // console.log('unitImagesObject\n', unitImagesObject)
+            // const formData = new FormData();
+            // propertyImages.forEach((image) => {
+            //     formData.append("propertyImages", image.name);
+            // });
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
-                console.log(propertyData)
+                // console.log("propertyData\n", propertyData);
+                console.log('unit data\n', unitData)
                 try {
+                    const location = await handleGeocode(propertyData.location);
+
+                    const finalData = {...propertyData}
+                    finalData.location = {
+                        type: "Point",
+                        coordinates: [location.longitude, location.latitude],
+                    };
+                    const unitTypes = finalData.unitTypes.map((unit, index) => {
+                        const unitMatch = unitImagesObject.find((obj) => obj.type === unit.type);
+                        if (unitMatch) {
+                            // Return a new object with the updated properties
+                            return { ...unit, images: unitMatch.images };
+                        }
+                        // If no match is found, return the original object
+                        return unit;
+                    });
+
+                    console.log('updated unitTypes\n', unitTypes);
+
+                    // finalData.unitTypes = unitTypes;
+                    console.log('finalData\n', finalData);
+
+                    // await finalData.unitTypes.forEach((unit) => {
+                    //     if (unit.images && Array.isArray(unit.images)){
+                    //         unit.images.forEach((image) => {
+                    //             formData.append(unit.type, image.name);
+                    //         })
+                    //     }
+                    // })
+                    // formData.append('data ', JSON.stringify(finalData));
+                    // // console.log('formdata', formData);
+                    // for (var pair of formData.entries()) {
+                    //     console.log('key: ',pair[0], 'value: ' , pair[1]);
+                    // }
+                    // const newFormData = JSON.stringify(formData);
+                    // console.log('newFormData', newFormData);
+                    const formData = await frmDta(finalData, propertyImages, unitTypes)
+                    for (var pair of formData.entries()) {
+                        console.log('key: ',pair[0], 'value: ' , pair[1]);
+                    }
                     const response = await createProperty({
                         id: currentLandlord._id,
-                        payload: {data: propertyData},
+                        payload: formData,
                     }).unwrap();
 
                     dispatch(
@@ -60,7 +181,7 @@ const AddProperty = () => {
                             `Property ${response.name} created successfully`
                         )
                     );
-                    navigate("/landlord/properties");
+                    navigate("/");
                     setActiveStep(1);
                     setNumberOfSteps(1);
                     setSubmitForm(false)
@@ -75,7 +196,7 @@ const AddProperty = () => {
                 }
             }
         })()
-    }, [propertyData, submitForm])
+    }, [propertyData, submitForm, propertyImages, unitImages]);
 
     useEffect(() => {
         if (isError) {
@@ -102,24 +223,43 @@ const AddProperty = () => {
             dispatch(setPropertyForm({[name]: value}));
         } else if (name === "categories") {
             setNumberOfSteps(parseInt(value));
-        } else if (name === "number" || name === "type" || name === "price") {
+        } else if (name === "vacancies" || name === "type" || name === "price") {
             dispatch(setUnitForm({[name]: value}))
         }
+        // console.log('2propertyimages\n', propertyImages)
+        // console.log('2unitimages\n', unitImages)
     };
+
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         dispatch(setPropertyFormUnits());
         if (activeStep < numberOfSteps) {
+            imageUploadRef2.current.submitForm();
             setSubmitForm(false)
+            if (unit.type && unitImages.length > 0) {
+                createUnitImagesObject(unit.type, unitImages)
+            }
+            console.log('Use effect images\n', unitImagesObject)
             return handleNext();
         } else if (activeStep === numberOfSteps) {
+
+            imageUploadRef1.current.submitForm();
+            imageUploadRef2.current.submitForm();
             setSubmitForm(true)
+            if (unit.type && unitImages.length > 0) {
+                createUnitImagesObject(unit.type, unitImages)
+            }
+            // console.log('Use effect images\n', unitImagesObject)
         }
     };
+    // console.log(submitForm)
 
     return (
+        
         <Box
+    
             sx={{
                 flexDirection: "row",
                 flexWrap: "wrap",
@@ -132,6 +272,14 @@ const AddProperty = () => {
                 marginX: "auto",
             }}
         >
+            <div className="backbutton">
+                {" "}
+                <Link to="/landlord/addpropertypage">
+                    <Button variant="contained" color="secondary">
+                        Back
+                    </Button>
+                </Link>
+            </div>
             <Paper
                 elevation={5}
                 sx={{
@@ -208,6 +356,7 @@ const AddProperty = () => {
                             aria-describedby="my-helper-text"
                             value={numberOfSteps}
                         />
+                        <Imageupload ref={imageUploadRef1} updatePropertyImages={updatePropertyImages}/>
                     </FormControl>
                 </Box>
                 <Divider orientation="vertical" variant="middle" flexItem={true}/>
@@ -248,20 +397,15 @@ const AddProperty = () => {
                     </FormControl>
 
                     <FormControl>
-                        <Typography sx={{}}>
-                            {" "}
-                            How many units do you have in this category ?
-                        </Typography>
+                        <Typography sx={{}}>How do many vacancies do you have in this unit?</Typography>
                         <TextField
                             margin="normal"
                             required
                             fullWidth
-                            id="number"
-                            label="Number of Units"
-                            name="number"
-                            type={"number"}
-                            aria-describedby="my-helper-text"
-                            value={unit.number}
+                            id="vacancies"
+                            label="No of Vacancies"
+                            name="vacancies"
+                            value={unit.vacancies}
 
                         />
                     </FormControl>
@@ -278,18 +422,8 @@ const AddProperty = () => {
                             value={unit.price}
 
                         />
+                        <Imageupload ref={imageUploadRef2} updateUnitImages={updateUnitImages}/>
                     </FormControl>
-
-                    {/*{unitData.length} {activeStep}*/}
-                    {/*<Button*/}
-                    {/*    fullWidth*/}
-                    {/*    type="submit"*/}
-                    {/*    variant="contained"*/}
-                    {/*    onClick={handleSubmit}*/}
-                    {/*    disabled={activeStep === numberOfSteps && numberOfSteps === unitData.length}*/}
-                    {/*>*/}
-                    {/*    Submit*/}
-                    {/*</Button>*/}
 
                     <LoadingButton
                         loading={fetchLoading}
@@ -298,9 +432,6 @@ const AddProperty = () => {
                         fullWidth
                         variant="contained"
                         onClick={handleSubmit}
-                        // disabled={
-                        //     activeStep === numberOfSteps && numberOfSteps === unitData.length
-                        // }
                     >
                         Submit
                     </LoadingButton>
@@ -327,7 +458,6 @@ const AddProperty = () => {
                                 {theme.direction === "rtl" ? (
                                     <KeyboardArrowLeft/>
                                 ) : (
-                                    // eslint-disable-next-line react/jsx-no-undef
                                     <KeyboardArrowRight/>
                                 )}
                             </Button>

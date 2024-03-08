@@ -1,8 +1,5 @@
-//import AccountIcon from "../Icons/AccountIcon"
-//import MonetizationDueIcon from "../Icons/MonetizationDueIcon"
-//import MonetizationIcon from "../Icons/MonetizationIcon"
-//import PersonIcon from "../Icons/PersonIcon"
-import AddIcon from '@mui/icons-material/Add';
+
+
 export const getUnitType = (type) => {
     if (type === "SR") {
         return "Single Room";
@@ -49,6 +46,14 @@ export const properties = [
       value: "FRB",
     },
   ];
+
+
+import AccountIcon from "../Icons/AccountIcon"
+import MonetizationDueIcon from "../Icons/MonetizationDueIcon"
+import MonetizationIcon from "../Icons/MonetizationIcon"
+import PersonIcon from "../Icons/PersonIcon"
+import AddIcon from '@mui/icons-material/Add';
+
 //TMS....
 
 // Comments images Imports
@@ -79,10 +84,10 @@ export const properties = [
 //    },
 //  ];
 ////Data being showed in the Property main page
- export const propertyData = [
+export const propertyData = [
 
-   {
-       title: 'CASCADE APARTMENT 1',
+    {
+        title: 'CASCADE APARTMENT 1',
         subtitle: 'Cascade Apartments off of Mombasa Road',
         description: '"100KM off main Road"',
         //icon: PersonIcon
@@ -109,6 +114,34 @@ export const properties = [
 
 
 
+]
+
+export const widgetData = [
+    {
+        title: "TOTAL APPOINTMENTS",
+        isMoney: false,
+        link: "See all appointments",
+         amount: 100,
+         percentage : 20,
+         icon: MonetizationIcon
+    },
+    {
+        title: "TOTAL APARTMENTS",
+        isMoney: false,
+        link: "View all the rent",
+        amount: 100,
+        percentage : 20,
+        icon:  AccountIcon
+    },
+    {
+        title: "AVAILABLE UNITS",
+        isMoney: false,
+        link: "View total rent due",
+        amount: 100,
+        percentage : 20,
+        icon:   AccountIcon
+    },
+    
 ]
 
 export const propertyAdd = [
@@ -187,19 +220,19 @@ export const pricingData = [
 // Sample array of items  for browse page
 export const sampleItems = [
     {
-      imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
-      title: 'Cascade Plaza',
-      distance: '500m from Juja City Mall',
-      freeWifi: 'Free wifi installation',
-      apartmentDescription: 'Spacious Apartment with Air conditioning',
-      features: 'Laundry area • Underground packing • Rooftop oasis',
-      backupGenerator: 'Backup Generator',
-      partyParadise: 'Join us today, your private party paradise awaits!!!',
-      ratingLabel: 'Excellent',
-      rating: '8.9',
-      price: '$112',
-      taxAndFees: 'Includes taxes and fees',
-      availabilityButton: 'See availability',
+        imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
+        title: 'Cascade Plaza',
+        distance: '500m from Juja City Mall',
+        freeWifi: 'Free wifi installation',
+        apartmentDescription: 'Spacious Apartment with Air conditioning',
+        features: 'Laundry area • Underground packing • Rooftop oasis',
+        backupGenerator: 'Backup Generator',
+        partyParadise: 'Join us today, your private party paradise awaits!!!',
+        ratingLabel: 'Excellent',
+        rating: '8.9',
+        price: '$112',
+        taxAndFees: 'Includes taxes and fees',
+        availabilityButton: 'See availability',
     },
     {
         imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
@@ -215,8 +248,8 @@ export const sampleItems = [
         price: '$112',
         taxAndFees: 'Includes taxes and fees',
         availabilityButton: 'See availability',
-      },
-      {
+    },
+    {
         imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
         title: 'Cascade Plaza',
         distance: '500m from Juja City Mall',
@@ -230,26 +263,26 @@ export const sampleItems = [
         price: '$112',
         taxAndFees: 'Includes taxes and fees',
         availabilityButton: 'See availability',
-      },
+    },
     // Add more items as needed
-  ];
+];
 
-  // Sample array of wishlistitems
+// Sample array of wishlistitems
 export const wishlistItems = [
     {
-      imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
-      title: 'Cascade Plaza',
-      distance: '500m from Juja City Mall',
-      freeWifi: 'Free wifi installation',
-      apartmentDescription: 'Spacious Apartment with Air conditioning',
-      features: 'Laundry area • Underground packing • Rooftop oasis',
-      backupGenerator: 'Backup Generator',
-      partyParadise: 'Join us today, your private party paradise awaits!!!',
-      ratingLabel: 'Excellent',
-      rating: '8.9',
-      price: '$112',
-      taxAndFees: 'Includes taxes and fees',
-      availabilityButton: 'See availability',
+        imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
+        title: 'Cascade Plaza',
+        distance: '500m from Juja City Mall',
+        freeWifi: 'Free wifi installation',
+        apartmentDescription: 'Spacious Apartment with Air conditioning',
+        features: 'Laundry area • Underground packing • Rooftop oasis',
+        backupGenerator: 'Backup Generator',
+        partyParadise: 'Join us today, your private party paradise awaits!!!',
+        ratingLabel: 'Excellent',
+        rating: '8.9',
+        price: '$112',
+        taxAndFees: 'Includes taxes and fees',
+        availabilityButton: 'See availability',
     },
     {
         imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
@@ -265,8 +298,8 @@ export const wishlistItems = [
         price: '$112',
         taxAndFees: 'Includes taxes and fees',
         availabilityButton: 'See availability',
-      },
-      {
+    },
+    {
         imageUrl: 'https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1',
         title: 'Cascade Plaza',
         distance: '500m from Juja City Mall',
@@ -280,9 +313,9 @@ export const wishlistItems = [
         price: '$112',
         taxAndFees: 'Includes taxes and fees',
         availabilityButton: 'See availability',
-      },
+    },
     // Add more items as needed
-  ];
+];
 
 //Client Appointments data
 
@@ -294,4 +327,5 @@ export const clientAppointmentsData = [
     {name:'MREEVES COMPLEX',unit :'Bedsitter',phonenumber:'+2547789953',date:'21/02/2023' ,time:'14:00',status:'Confirmed'},
 
     // Add more transaction objects as needed
-  ];
+];
+

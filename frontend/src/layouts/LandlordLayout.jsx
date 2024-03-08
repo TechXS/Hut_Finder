@@ -10,7 +10,7 @@ const LandlordLayout = () => {
             <Sidebar/>
             <div className="dashContainer">
                 {/*<Navbar/>*/}
-               
+
                 <Outlet />
             </div>
         </div>

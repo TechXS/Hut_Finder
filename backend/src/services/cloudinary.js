@@ -27,3 +27,5 @@ const removeFromCloudinary = async (public_id) => {
         }
     })
 }
+
+module.exports = {uploadToCloudinary, removeFromCloudinary}

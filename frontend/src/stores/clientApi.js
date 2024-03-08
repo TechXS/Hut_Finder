@@ -12,15 +12,20 @@ export const clientApi = createApi({
             }
             return headers;
         },
-    }),
+    }), 
     endpoints: (builder) => ({
         getProperties: builder.query({
             query: () => {
                 return {url: `/properties`};
             },
         }),
+        // getProperty: builder.query({
+        //     query: ({id,property_id}) => {
+        //         return {url: `/properties/${property_id}`};
+        //     },
+        // }),
         getProperty: builder.query({
-            query: ({id,property_id}) => {
+            query: ({property_id}) => {
                 return {url: `/properties/${property_id}`};
             },
         }),
@@ -32,7 +37,7 @@ export const clientApi = createApi({
 
         createAppointment: builder.mutation({
             query: ({id, payload}) => ({
-                url: `{id}/appointments`,
+                url: `${id}/appointments`,
                 method: "POST",
                 body: payload,
             }),

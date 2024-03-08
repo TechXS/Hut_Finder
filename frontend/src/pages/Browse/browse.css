@@ -1,7 +1,12 @@
   .browseContainer {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    background-color: #f1f1f1;
+    /* height:100vh;
+    position:relative;
+    overflow-y: auto;
+      width: 100%; */
+
 }
 
 .browseWrapper {
@@ -13,11 +18,11 @@
 .browseSearch {
     flex: 1;
     background-color: #f1f1f1;
-    padding: 10px;
+    padding: 50px;
     border-radius: 10px;
     position: sticky;
     top: 10px;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     height: max-content;
 }
 
@@ -36,9 +41,16 @@
 }
 
 .brItem > input {
-    border: none;
+    border: 1px solid rgb(158, 154, 154);
     padding: 10px;
     font-size: 16px;
+    border-radius: 10px;
+    height: 40px;
+    max-width: fit-content;
+}
+
+hr{
+    width: 230px;
 }
 
 .brOptionItem {
@@ -50,7 +62,10 @@
 }
 
 .brOptionInput {
-    height: 30px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgb(158, 154, 154);
+    /* width: 50%; */
 }
 
 .browseSearch > button {

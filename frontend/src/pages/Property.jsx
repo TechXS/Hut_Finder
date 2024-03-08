@@ -7,7 +7,7 @@ import {selectPropertyData, setPropertyData,} from "../stores/landlordSlice";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {useGetPropertyQuery} from "../stores/propertyApi.js";
+//import {useGetPropertyQuery} from "../stores/propertyApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../stores/notificationSlice.js";
 
 

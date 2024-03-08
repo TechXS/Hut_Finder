@@ -3,20 +3,69 @@ const Landlord = require('../models/landlordModel');
 const Amenity = require('../models/amenityModel');
 const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
+const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
 
 //Create property
 const createProperty = async (req, res) => {
     const {id} = req.params;
+    console.log('id:', id)
     const { data } = req.body;
-    const unitTypes = data.p_units;
-    const amenities = data.p_amenities;
+    console.log('data:', data)
+    console.log('req.body:', req.body)
+    // for (var pair of data.entries()) {
+    //     console.log('key: ',pair[0], 'value: ' , pair[1]); 
+    // }
+    const parsedData = JSON.parse(data);
+    console.log('Pdata:', parsedData)
+    const unitTypes = parsedData.unitTypes;
+    console.log('unitTypes:', unitTypes)
+    // console.log('files:', req.files);
+    // const amenities = data.p_amenities;
+    // console.log('amenities:', amenities)
+    const propertyImages = req.files.propertyImages;
+    console.log('propertyImages:', propertyImages)
+    const unitImages = req.files.unitImages;
+    console.log('unitImages:', unitImages)
+    // for (const unitImage of unitImages){
+    //     console.log('\nunit image original name:\n', unitImage.originalname)
+    // }
+    // const stop = parsedData.data.unitTypes
+    // console.log('stop:', stop)
 
     if (!isValidObjectId(id)) {
         return res.status(400).json({error: "Not Valid Landlord ID"});
     }
+    let pImageArray = [];
+    try
+    {    
+        for (const propertyImage of propertyImages){
+            const data = await uploadToCloudinary(propertyImage.path, "property-images");
+            pImageArray.push(data.url);
+        }
 
-    Property.create(data)
-    .then((property) => {
+        for (const unitImage of unitImages){
+            const data = await uploadToCloudinary(unitImage.path, "unit-images");
+            // uImageObjArray.push(data);
+            unitTypes.forEach((unit) => {
+                if (unit.type === unitImage.originalname){
+                    unit.images = unit.images || [];
+                    unit.images.push(data.url);
+                }
+            })
+        }
+        console.log('New unitTypes:', unitTypes)
+    }
+    catch (error){
+        console.log('Error uploading image:', error.message);
+        return res.status(400).json({error: "Error uploading images"});
+    }
+    
+
+    Property.create({
+        ...parsedData,
+        images: pImageArray
+    })
+    .then( async (property) => {
         console.log('Property id\n', property._id);
 
            return Landlord.findByIdAndUpdate(
@@ -29,17 +78,17 @@ const createProperty = async (req, res) => {
                 Unit.create(unitType)
                     .then((unit) => {
                         console.log('created units:', unit._id);
-                        for (const amenity of unitType.u_special_amenities){
-                            Amenity.create(amenity)
-                            .then((amenity) => {
-                                console.log('created unit amenity\n', amenity._id);
-                                return Unit.findByIdAndUpdate(
-                                    {_id: unit._id},
-                                    {$push: {special_amenities: amenity._id}},
-                                    {new: true}
-                                )
-                            })
-                        }
+                        // for (const amenity of unitType.u_special_amenities){
+                        //     Amenity.create(amenity)
+                        //     .then((amenity) => {
+                        //         console.log('created unit amenity\n', amenity._id);
+                        //         return Unit.findByIdAndUpdate(
+                        //             {_id: unit._id},
+                        //             {$push: {special_amenities: amenity._id}},
+                        //             {new: true}
+                        //         )
+                        //     })
+                        // }
                     return Property.findByIdAndUpdate(
                             {_id: property._id},
                             {$push: {units: unit._id}},
@@ -53,24 +102,24 @@ const createProperty = async (req, res) => {
                         console.log("Error ",err.message);
                     })
             }
-            for (const amenity of amenities) {
-                Amenity.create(amenity)
-                .then((amenityResponse) => {
-                    console.log('success creating property amenity\n', amenityResponse._id);
+            // for (const amenity of amenities) {
+            //     Amenity.create(amenity)
+            //     .then((amenityResponse) => {
+            //         console.log('success creating property amenity\n', amenityResponse._id);
 
-                    return Property.findByIdAndUpdate(
-                        {_id: property._id},
-                        {$push: {amenities: amenityResponse._id}},
-                        {new: true}
-                    )
-                })
-                .then((response)=>{
-                    console.log("amenity creation success");
-                })
-                .catch((err) => {
-                    console.log("Error ",err.message);
-                })
-            }
+            //         return Property.findByIdAndUpdate(
+            //             {_id: property._id},
+            //             {$push: {amenities: amenityResponse._id}},
+            //             {new: true}
+            //         )
+            //     })
+            //     .then((response)=>{
+            //         console.log("amenity creation success");
+            //     })
+            //     .catch((err) => {
+            //         console.log("Error ",err.message);
+            //     })
+            // }
 
         })
         .catch((err) => {
@@ -172,6 +221,7 @@ const updateProperty = (req, res) => {
         res.status(400).json({error: "Error updating property"});
     })
 }
+
 
        
     

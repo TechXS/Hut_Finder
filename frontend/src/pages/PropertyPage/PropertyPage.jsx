@@ -3,36 +3,35 @@ import Navbar from "../../components/NavBar/NavBar";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
 import "./propertyPage.css";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
+import {useCreateAppointmentMutation, useGetPropertiesQuery, useGetPropertyQuery} from "../../stores/clientApi.js";
+import {useNavigate, useParams} from "react-router-dom";
+import Footer from "../../components/Footer/Footer.jsx";
+import {handleReverseGeocode} from "../../utils/geocode.js";
+import {selectAppointmentDate, setSignupError} from "../../stores/clientSlice.js";
+import {setForgotPassSuccess} from "../../stores/landlordSlice.js";
+import {signUpValidation} from "../../utils/formValidation.js";
+import {setErrorNotification} from "../../stores/notificationSlice.js";
+import {useSignUpClientMutation} from "../../stores/authApi.js";
+import LoadingButton from "@mui/lab/LoadingButton";
+import {selectCurrentClient} from "../../stores/clientSlice.js";
+import {useDispatch, useSelector} from "react-redux";
+import { selectCurrentProperty } from "../../stores/propertySlice";
 
 const PropertyPage = () => {
+  const client = useSelector(selectCurrentClient);
+  const appointmentDate = useSelector(selectAppointmentDate);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
+  const {id:property_id} = useParams();
+  const [location,setLocation] = useState({});
+  const { data: property, error, } = useGetPropertyQuery({property_id});
+  const [createAppointment, {data: response, isLoading}] = useCreateAppointmentMutation();
 
-  const photos = [
-    {
-      src: "../../../public/images/property3.jpg",
-    }, 
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707778.jpg?k=56ba0babbcbbfeb3d3e911728831dcbc390ed2cb16c51d88159f82bf751d04c6&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-    },
-    {
-      src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707389.jpg?k=52156673f9eb6d5d99d3eed9386491a0465ce6f3b995f005ac71abc192dd5827&o=&hp=1",
-    }, 
-    {
-      src: "../../../public/images/property3.jpg",
-    }, 
-  ];
+  const photos = property?.images
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -52,6 +51,47 @@ const PropertyPage = () => {
     setSlideNumber(newSlideNumber);
   };
 
+  const getLocation = async (property)=>{
+  try{
+    // const currentLocation = JSON.parse(sessionStorage.getItem("location"))
+    // console.log(currentLocation)
+    //
+    // let location  = await handleReverseGeocode(currentLocation.latitude,currentLocation.longitude)
+
+    let location  = await handleReverseGeocode(property.location.coordinates[1],property.location.coordinates[0])
+    setLocation(location)
+  }catch (e) {
+    console.error(e.message)
+  }
+  }
+
+
+  useEffect(() => {
+    if(property?.location !== undefined){
+      getLocation(property)
+    }
+
+  }, [property]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+        console.log(appointmentDate)
+      if (!client._id){return navigate("/auth/signin/client")}
+
+      const formData = {...appointmentDate}
+      formData.property = property._id
+      formData.client = client._id
+      console.log(formData)
+      const appointmentData = await createAppointment({id:client._id,payload:{data: formData}}).unwrap();
+      // navigate("/auth/signin/client");
+      console.log(appointmentData);
+    } catch (e) {
+      // console.error(e.data.message);
+      // dispatch(setSignupError(e.data.message));
+      dispatch(setErrorNotification(e?.data?.message ?? e.error));
+    }
+  };
   return (
     <div>
       <Navbar />
@@ -65,136 +105,144 @@ const PropertyPage = () => {
               <span className="material-symbols-outlined">arrow_circle_left</span>
             </span>
             <div className="sliderWrapper">
-              <img src={photos[slideNumber].src} alt="" className="sliderImg" />
+              <img src={photos[slideNumber]} alt="" className="sliderImg" />
             </div>
             <span className="arrow" onClick={() => handleMove("r")}>
               <span className="material-symbols-outlined">arrow_circle_right</span>
             </span>
           </div>
         )}
-        <div className="PropWrapper">
-          <h1 className="PropTitle">Cascade Plaza</h1>
-          <div className="PropAddress">
-            <span className="material-symbols-outlined">location_on</span>
-            <span>Sunrise St 125 Juja</span>
-          </div>
-          <span className="PropDistance">
+        { property && (
+            <>
+              <div className="PropWrapper">
+                <h1 className="PropTitle">{property?.name}</h1>
+                <div className="PropAddress">
+                  <span className="material-symbols-outlined">location_on</span>
+                  <span>{location?.formatted}</span>
+                </div>
+                <span className="PropDistance">
             Excellent location – 500m from center
           </span>
-          <span className="PropPriceHighlight">
+                <span className="PropPriceHighlight">
             Book an apointment with Agent to get a free tour of the Apartment
           </span>
-          <div className="PropImages">
-            {photos.slice(0, 6).map((photo, i) => (
-              console.log(photos),
-              <div className="PropImgWrapper" key={i}>
-                <img
-                  onClick={() => handleOpen(i)}
-                  src={photo.src}
-                  alt=""
-                  className="PropImg"
-                />
-              </div>
-            ))}
-            {photos.length > 6 && (
-            <div className="ExtraImagesCounter">
-              <span className="ExtraImagesCounterText">+{photos.length - 6} Photos</span>
-            </div>
-            )}
-          </div>
-          <div className="PropDetails">
-            <div className="PropDetailsTexts">
-              <h1 className="PropTitle">Stay in the heart of City</h1>
-              <p className="PropDesc">
-                Located a 5-minute walk from Juja city mall in Juja,
-                Cascade Plaza is a spacious appartment with air conditioning and
-                free WiFi installation. The units come with hardwood floors and feature a
-                fully equipped kitchenette with sliding drawers, modern taps,
-                and a private bathroom with shower. Popular points of interest near the
-                apartment include Juja police station, Main Market Square and Aghakan  University Hospital.
-                The nearest petrol station is Shell petrol, 16.1 km
-                from Cascade Plaza, and the property offers a paid gabbage collection
-              </p>
-              <div className="PropDetailsExtra">
-                <div className="PropDetailsWrapper">
-                  <div className="PropIcons">
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">apartment</span>
-                      <span>Apartment</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">local_florist</span>
-                      <span>Garden</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">wifi</span>
-                      <span>Wifi</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">bathtub</span>
-                      <span>Washrooms</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">local_parking</span>
-                      <span>Parking</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">visibility</span>
-                      <span>View</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">smoke_free</span>
-                      <span>Smoke Free</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">fitness_center</span>
-                      <span>Gym</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">pool</span>
-                      <span>Pool</span>
-                    </div>
-                    <div className="iconWithText">
-                      <span className="material-symbols-outlined">balcony</span>
-                      <span>Balcony</span>
+                <div className="PropImages">
+                  {photos.slice(0, 6).map((photo, i) => (
+                      console.log(photo),
+                          <div className="PropImgWrapper" key={i}>
+                            <img
+                                onClick={() => handleOpen(i)}
+                                src={photo}
+                                alt=""
+                                className="PropImg"
+                            />
+                          </div>
+                  ))}
+                  {photos.length > 6 && (
+                      <div className="ExtraImagesCounter">
+                        <span className="ExtraImagesCounterText">+{photos.length - 6} Photos</span>
+                      </div>
+                  )}
+                </div>
+                <div className="PropDetails">
+                  <div className="PropDetailsTexts">
+                    <h1 className="PropTitle">Stay in the heart of {location.city ?? ""} City</h1>
+                    <p className="PropDesc">
+                      {property.description}
+                    </p>
+                    <div className="PropDetailsExtra">
+                      <div className="PropDetailsWrapper">
+                        <div className="PropIcons">
+                          {
+                            property.amenities.map((amenity, index) => (
+                                <div className="iconWithText" key={index}>
+                                  <span className="material-symbols-outlined">{amenity.icon}</span>
+                                  <span>{amenity.name}</span>
+                                </div>
+                            ))
+                          }
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">local_florist</span>*/}
+                          {/*  <span>Garden</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">wifi</span>*/}
+                          {/*  <span>Wifi</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">bathtub</span>*/}
+                          {/*  <span>Washrooms</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">local_parking</span>*/}
+                          {/*  <span>Parking</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">visibility</span>*/}
+                          {/*  <span>View</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">smoke_free</span>*/}
+                          {/*  <span>Smoke Free</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">fitness_center</span>*/}
+                          {/*  <span>Gym</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">pool</span>*/}
+                          {/*  <span>Pool</span>*/}
+                          {/*</div>*/}
+                          {/*<div className="iconWithText">*/}
+                          {/*  <span className="material-symbols-outlined">balcony</span>*/}
+                          {/*  <span>Balcony</span>*/}
+                          {/*</div>*/}
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <div className="PropDetailsPrice">
-              <h1>Get what you need</h1>
-              <span>
-                Located at the real heart of Juja City Mall, this property has an
+                  <form  onSubmit={handleSubmit} className="PropDetailsPrice">
+                    <h1>Get what you need</h1>
+                    <span>
+                Located at the real heart of {location.city ?? location.country ?? location.continent}, this property has an
                 excellent location score of 9.8!
               </span>
-              <h1>Perfect for a family stay!</h1>
-              <span>
+                    <h1>Perfect for a family stay!</h1>
+                    <span>
                 Top Location: Highly rated by recent guests (8.7/10).
               </span>
-              <div className="date">
-                <DateTimePicker/>
+                    <div className="date">
+                      <DateTimePicker/>
+                    </div>
+                    <LoadingButton
+                        loading={isLoading}
+                        loadingPosition="end"
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2 ,textTransform:"none"}}
+
+                    >
+                      Reserve or Book Now!
+                    </LoadingButton>
+                  </form>
+                </div>
               </div>
-              <button>Reserve or Book Now!</button>
-            </div>
-          </div>
-        </div>
-        <div className="propInfo">
-          <PropertyHeader/>
-           <div className="flex-container">
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-             <PropertyListing />
-           </div>
-         </div>
-         {/* <Footer /> */}
-       </div>
-     </div>
-   );
- };
- export default PropertyPage;
+              <div className="propInfo">
+                <PropertyHeader/>
+                <div className="flex-container">
+                  {
+                    property.units.map((unit,index)=>(
+                        <PropertyListing unit={unit} key={index}/>
+                    ))
+                  }
+                </div>
+              </div>
+            </>
+        )}
+        <Footer/>
+      </div>
+    </div>
+  );
+};
+export default PropertyPage;

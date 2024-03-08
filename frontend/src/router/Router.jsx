@@ -13,15 +13,24 @@ import ResetPassword from "../components/SignIn/ResetPassword.jsx";
 import CancelResetPassword from "../components/SignIn/CancelResetPassword.jsx";
 import PortalLayout from "../layouts/PortalLayout.jsx";
 import BrowseLayout from "../layouts/BrowseLayout.jsx";
-// import Properties from "../pages/Properties.jsx";
-// import AddProperty from "../pages/AddProperties.jsx";
-// import Property from "../pages/Property.jsx";
+import Properties from "../pages/Properties.jsx";
+import AddProperty from "../pages/AddProperties.jsx";
+import Property from "../pages/Property.jsx";
 import PropertyLayout from "../layouts/PropertyLayout.jsx"
-import Property from "../pages/PropertyPage/AddProperty.jsx";
+import Imageupload from "../components/FileUpload/Imageupload.jsx";
+import PropertyEditPage from "../pages/PropertyEditPage/ProperyEditPage.jsx";
+// import Property from "../pages/PropertyPage/AddProperty.jsx";
 import LandlordLayout from "../layouts/LandlordLayout.jsx";
 import SearchItemList from "../components/SearchItem/SearchItem.jsx";
-import Profile from "../components/profile/Profile.jsx";
-//import Profile from "../components/profile/ClientProfile.jsx";
+import Profile from "../components/profile/Profile.jsx"
+import ProfileClient from "../components/profile/ClientProfile.jsx"
+import Wish from "../components/Wishlist/Wishlist.jsx";
+import All_Appointments from "../components/Appointments/Appointments.jsx";
+import ClientLayout from "../layouts/ClientLayout.jsx";
+import PropertyPage from "../pages/PropertyPage/PropertyPage.jsx";
+import AddAmenities from "../components/AddAmenities/AddAmenities.jsx";
+import Landlord_Dashboard from "../components/LandlordDashboard/Dashboard.jsx";
+import AddCard from "../pages/Properties.jsx";
 
 const router = createBrowserRouter([
     {
@@ -73,72 +82,68 @@ const router = createBrowserRouter([
         errorElement: <Error/>,
     },
     {
-        path: "/property",
+        path: "/properties/:id",
         element: <PropertyLayout/>,
-        errorElement: <Error/>,
     },
-    //{
-    //    path: "/addproperty",
-    //    element: <Property/>,
-    //    errorElement: <Error/>,
-    //},
-
+    
     {
-        path:"/landlord",
-        element: <LandlordLayout />,
-        children:[
-            //{
-            //      path:"/landlord/browse",
-            //      element:<BrowseLayout/>,
-            //
-            //    },
-        //  {
-        //    index: true,
-        //    element: <Dashboard />
-        //  },
-        //  {
-        //    path:"/landlord/stats",
-        //    element: <Stats />,
-        //
-        //  },
-        //  {
-        //    path:"/landlord/properties",
-        //    element: <List />,
-        //
-        //  },
-        //  {
-        //    path:"/landlord/propertypage",
-        //    element: <Property />,
-        //
-        //  },
-        {
-          path:"/landlord/profile",
-          element: <Profile />,
+        path: "/landlord",
+        element: <LandlordLayout/>,
+        children: [
+            {
+                path: '/landlord/dashboard',
+                element: <Landlord_Dashboard/>
+            },
+            {
+                path: '/landlord/addpropertypage',
+                element: <AddCard/>
+            },
+            {
+                path: '/landlord/addproperty',
+                element: <AddProperty/>
+            },
 
-        },
-        //  {
-        //    path:"/landlord/complaints",
-        //    element: <ComplaintsPage />,
-        //
-        //  },
+            {
+                path: '/landlord/editproperty',
+                element: <PropertyEditPage/>
+            },
+            {
+                path: '/landlord/properties',
+                element: <Property/>
+            },
+            {
+                path: "/landlord/profile",
+                element: <Profile/>,
+            },
+            {
+                path: '/landlord/upload',
+                element: <Imageupload/>
+            }
+            ]
+    },
+    {
+        path: "/client",
+        element: <ClientLayout/>,
+        errorElement: <Error/>,
+        children:[
+            {
+                index: true,
+                path: "/client/profile",
+                element: <ProfileClient/>,
+            },
+            {
+                path: "/client/wishlist",
+                element: <Wish/>,
+            },
+            {
+                path: "/client/appointments",
+                element: <All_Appointments/>,
+            },
         ]
 
-      },
+    },
 
-    //Eric
-    // {
-    //     path:'/properties',
-    //     element: <Properties />
-    //
-    // },
-    // {
-    //     path: '/addproperty',
-    //     element: <AddProperty/>
-    // },
-    // {
-    //     path:'/property',
-    //     element: <Property />
-    // }
+
 ]);
 
 export default router;

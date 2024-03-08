@@ -5,11 +5,8 @@ import Typography from '@mui/material/Typography';
 import sky from '/images/simone-hutsch-FaUSKa3bLiw-unsplash.jpg';
 import Frostyform from '../FrostyForm/Frostyform';
 
-
-
- 
-
 const HeroSection = () => {
+
 
 
   return (

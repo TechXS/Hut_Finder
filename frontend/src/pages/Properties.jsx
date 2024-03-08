@@ -2,9 +2,14 @@ import PropertyCard from "../components/Card/PropertyCard.jsx";
 import "./pages.scss"
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import AddIcon from '@mui/icons-material/Add';
+import { propertyData } from "../utils/dataUtil.js";
+import OutlinedCard from "../components/Card/OutlinedCard.jsx";
 
-const Properties = () => {
+const AddCard = () => {
     return (
+        <>
+                    <div>
         <Box sx={{
             display: "flex",
             flexDirection: "column",
@@ -15,9 +20,13 @@ const Properties = () => {
                 fontWeight: "bold"
             }}>All Your Properties
             </Typography>
-            <PropertyCard/>
+            <PropertyCard data={propertyData}/>
+            {/*<OutlinedCard data={propertyData}/>*/}
+            
         </Box>
+        </div>
+        </>
     );
 };
 
-export default Properties;
+export default AddCard;

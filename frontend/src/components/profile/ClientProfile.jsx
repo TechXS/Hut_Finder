@@ -9,7 +9,7 @@ import SearchItemList from '../SearchItem/SearchItem';
 import StickyHeadTable from '../table/ClientAppointments';
 import { clientAppointmentsData } from '../../utils/dataUtil';
 
-const Profile = () => {
+const ProfileClient = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [savedFields, setSavedFields] = useState({
@@ -83,16 +83,10 @@ const Profile = () => {
 
   return (
     <>
-    <ul>
-    <h1 style={{padding:'20px'}}>Appointments</h1>
-    <StickyHeadTable data={clientAppointmentsData}/>
+    <div style={{paddingLeft:'80px',paddingRight:'80px'}}>
     
-    </ul>
-    <ul>
-    <h1 style={{padding:'20px'}}>Your Wishlist</h1>
-    <SearchItemList items={wishlistItems} />
-    </ul>
-    <hr/>
+    
+    
     
     <ul>
       <div className="top">
@@ -165,8 +159,9 @@ const Profile = () => {
         </div>
     </div>
       </ul>
+      </div>
     </>
   );
 };
 
-export default Profile;
+export default ProfileClient;
