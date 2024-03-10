@@ -3,11 +3,11 @@ import {Link, useParams} from "react-router-dom";
 import {Button} from "@mui/material";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {selectPropertyData, setPropertyData,} from "../stores/landlordSlice";
+import {selectPropertyData, setPropertyData, selectCurrentLandlord} from "../stores/landlordSlice";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {useGetPropertyQuery} from "../stores/landlordApi.js";
+import { useGetPropertiesQuery } from "../stores/landlordApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../stores/notificationSlice.js";
 import {selectCurrentLandlord} from "../stores/landlordSlice.js"
 
@@ -16,9 +16,12 @@ const Property = () => {
     const dispatch = useDispatch();
     const landlord = useSelector(selectCurrentLandlord)
     const propertyData = useSelector(selectPropertyData);
-    const {id, layout} = useParams();
+    // const {id, layout} = useParams();
+    const landlord = useSelector(selectCurrentLandlord);
+    const id = landlord?._id;
+    console.log("landlord id", id);
     const [Loading, setLoading] = useState(false);
-    const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertyQuery({id:landlord._id,property_id:id})
+    const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertiesQuery(id)
     const {success, error, isLoading} = useSelector(notification);
 
 

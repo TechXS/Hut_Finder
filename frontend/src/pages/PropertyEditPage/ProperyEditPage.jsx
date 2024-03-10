@@ -25,20 +25,30 @@ import AddAmenities from "../../components/AddAmenities/AddAmenities";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../stores/landlordSlice.js";
 import {useParams} from "react-router-dom";
-import {useGetPropertyQuery} from "../../stores/landlordApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
+import { useGetPropertiesQuery } from "../../stores/landlordApi";
+import { useSelector } from "react-redux";
 
 const PropertyEditPage = () => {
-  const dispatch = useDispatch();
-  const landlord = useSelector(selectCurrentLandlord)
-  const {id, layout} = useParams();
-  const [Loading, setLoading] = useState(false);
-  const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertyQuery({id:landlord._id,property_id:id})
-  const {success, error, isLoading} = useSelector(notification);
 
+  const landlord = useSelector(selectCurrentLandlord);
+  console.log('landlord', landlord)
+  const dispatch = useDispatch();
+  const id = landlord._id;
+  console.log('id', id)
+  const [Loading, setLoading] = useState(false);
+  const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(id);
+  console.log('properties\n', properties)
   const [location,setLocation] = useState({});
-    const [slideNumber, setSlideNumber] = useState(0);
+  const {success, error, isLoading} = useSelector(notification);
+  // const {id, layout} = useParams();
+
+
+
+
+
+  const [slideNumber, setSlideNumber] = useState(0);
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
   const imageUploadRef1 = useRef();

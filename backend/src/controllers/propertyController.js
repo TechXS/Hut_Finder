@@ -43,6 +43,7 @@ const createProperty = async (req, res) => {
             pImageArray.push(data.url);
         }
 
+        
         for (const unitImage of unitImages){
             const data = await uploadToCloudinary(unitImage.path, "unit-images");
             // uImageObjArray.push(data);
