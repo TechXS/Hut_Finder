@@ -205,7 +205,7 @@ const deleteProperty = (req, res) => {
 const updateProperty = (req, res) => {
     const {id} = req.params;
     const { data } = req.body;
-
+    console.log('data:', data)
     if (!isValidObjectId(id)) {
         return res.status(400).json({error: "Not Valid Property ID"});
     }

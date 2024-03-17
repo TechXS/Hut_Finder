@@ -27,16 +27,22 @@ import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../
 import {useParams} from "react-router-dom";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
-import { useGetPropertiesQuery, useGetPropertyQuery, useGetAllAmenitiesQuery } from "../../stores/landlordApi";
-import { selectCurrentProperty } from "../../stores/propertySlice";
+import { 
+  useGetPropertiesQuery,
+  useGetPropertyQuery, 
+  useGetAllAmenitiesQuery,
+  useUpdatePropertyMutation,
+  useUpdateUnitMutation
+} from "../../stores/landlordApi";
+// import { selectCurrentProperty } from "../../stores/propertySlice";
 
 
 const PropertyEditPage = () => { 
 
   const landlord = useSelector(selectCurrentLandlord)
   console.log('landlord', landlord)
-  const currentProperty = useSelector(selectCurrentProperty)
-  console.log('currentProperty', currentProperty)
+  // const currentProperty = useSelector(selectCurrentProperty)
+  // console.log('currentProperty', currentProperty)
   const dispatch = useDispatch();
   const landlord_id = landlord._id;
   console.log('landlord_id', landlord_id)
@@ -63,6 +69,25 @@ const PropertyEditPage = () => {
   const imageUploadRef1 = useRef();
   const [photos, setPhotos] = useState([]);
   const [amenities, setAmenities] = useState([]);
+  const [editedUnitDets, setEditedUnitDets] = useState([]);
+  const [
+    updateProperty, {
+      data: updated_property, 
+      error: updatePropertyError, 
+      isLoading: updatePropertyLoading,
+      isError: updatePropertyIsError
+    }] = useUpdatePropertyMutation();
+  const [
+    updateUnit, {
+      data: updated_unit, 
+      error: updateUnitError, 
+      isLoading: updateUnitLoading,
+      isError: updateUnitIsError
+    }] = useUpdateUnitMutation();
+
+  const updatedUnit = async (unit) => {
+    setEditedUnitDets((prev) => [...prev, unit]);
+  }
 
   useEffect(() => {
     setLoading(true)
@@ -139,10 +164,31 @@ const PropertyEditPage = () => {
     setSlideNumber(newSlideNumber);
   };
 
-  const handleSubmit =(e)=>{
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //send form data images and other object  to the database 
-    console.log(formData)
+    //send form data images and other object  to the database
+    // const unitUpdates = editedUnitDets.forEach(async (unit) => {
+    //   const updatedUnit = await updateUnit({
+    //     id: unit._id, 
+    //     payload: unit}).unwrap();
+    //   console.log('updated unit\n', updatedUnit)
+    // })
+    console.log('edited unit details\n', editedUnitDets)
+    const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
+      const updatedUnit = await updateUnit({
+          id: unit._id, 
+          payload: unit
+      }).unwrap();
+      console.log('updated unit\n', updatedUnit);
+      return updatedUnit;
+  }));
+    console.log('unit updates\n', unitUpdates)  
+    console.log('form data edit page\n', formData)
+    const propertyUpdates = await updateProperty({
+      id: id, 
+    payload: {data: formData}
+    }).unwrap();
+    console.log('property updates\n', propertyUpdates)
     imageUploadRef1.current.submitForm();
     setclicked(!clicked)
   }
@@ -169,7 +215,7 @@ const PropertyEditPage = () => {
                   <div className="PropWrapper">
                     <TextField
                         className="PropTitle"
-                        name="propertyName"
+                        name="name"
                         defaultValue={property?.name}
                         label='Propert name'
                         variant="standard"
@@ -207,7 +253,7 @@ const PropertyEditPage = () => {
                         <h1 className="PropTitle">Stay in the heart of City</h1>
                         < TextField
                             defaultValue={property?.description}
-                            name='propertyDescription'
+                            name='description'
                             label='Propert description'
                             variant="standard"
                             sx={{margin: '10px'}}
@@ -275,7 +321,7 @@ const PropertyEditPage = () => {
                       <ListingItemEdit/> */}
                       {
                         property.units && property.units.map((unit, index) => (
-                            <ListingItemEdit unit={unit} key={index}/>
+                            <ListingItemEdit unit={unit} key={index} updatedUnit={updatedUnit}/>
                         ))
                       }
                     </div>

@@ -45,7 +45,14 @@ export const landlordApi = createApi({
                 method: "PATCH",
                 body: payload,
             }),
-        }), 
+        }),
+        updateUnit: builder.mutation({
+            query: ({id, payload}) => ({
+                url: `${id}/property/unit`,
+                method: "PATCH",
+                body: payload,
+            }),
+        }),
         deleteProperty: builder.mutation({
             query: ({id, payload}) => ({
                 url: `${id}`,
@@ -69,4 +76,5 @@ export const {
     useUpdatePropertyMutation,
     useDeletePropertyMutation,
     useGetAllAmenitiesQuery,
+    useUpdateUnitMutation,
 } = landlordApi;

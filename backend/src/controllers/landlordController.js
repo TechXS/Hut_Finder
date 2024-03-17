@@ -2,7 +2,9 @@ const Property = require('../models/propertyModel');
 const Landlord = require('../models/landlordModel')
 const Appointment = require('../models/appointmentModel')
 const Amenity = require('../models/amenityModel')
+const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
+const { response } = require('express');
 
 
 //Get all Properties
@@ -234,6 +236,29 @@ const getAllAmenities = async (req, res) => {
 
 }
 
+const updateUnit = async (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+    console.log("data\n", data);
+
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Unit ID"});
+    }
+
+    Unit.findOneAndUpdate(
+        {_id: id},
+        {$set: data},
+        {returnOriginal: false}
+    ).then((response) => {
+        res.status(200).json(response);
+        console.log('succesin unit update');
+    }).catch((err) => {
+        res.status(400).json({error: 'Error updating unit'});
+        console.log('error in unit update')
+    })
+
+}
+
 
 module.exports = { 
     getLandlordData,
@@ -244,5 +269,6 @@ module.exports = {
     getAllLandlordProperties,
     updateLandlord,
     uploadImage,
-    getAllAmenities
+    getAllAmenities,
+    updateUnit
 };

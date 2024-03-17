@@ -5,25 +5,37 @@ import { Box, TextField } from "@mui/material";
 import Carousel from "../Carousel/Carousel";
 import { Button } from "@mui/base";
 import {unitTypes} from "../../utils/dataUtil.js";
-export default function ListingItemEdit({ unit }) {
-  console.log('e', unit);
+export default function ListingItemEdit({ unit, updatedUnit }) {
+  // console.log('e', unit);
   const [listing, setListing] = useState(unit);
   const carouselData = unit && unit.images && unit.images.map((url) => ({
     src: url,
     alt:  unitTypes[unit.type].type ,
   })); 
-
+  // const unitObj = {
+  //   _id: unit._id,
+  //   type: unit.type,
+  //   vacancies: unit.vacancies
+  // }
+  const [unitObj, setUnitObj] = useState({});
 
   const handleChange = (event)=>{
     const {name, value}=  event.target;
+    const parsedValue = parseInt(value);
     setListing((prevListing)=>({
-        ...prevListing, [name]:value,
+        ...prevListing, [name]:parsedValue,
     }))
+    setUnitObj((prevUnit)=>({
+      ...prevUnit, _id: unit._id, [name]:parsedValue,
+    }))
+    console.log('unitObj\n', unitObj)
+    console.log('listing\n', listing)
   }
 
   const handleSubmit = (event)=>{
     event.preventDefault();
-    console.log(listing)
+    updatedUnit(unitObj);
+    console.log('newunits details\n', listing)
   }
   return (
     <div className="listing-card">
@@ -44,15 +56,17 @@ export default function ListingItemEdit({ unit }) {
           defaultValue={listing.price}
           name="price"
           label='Unit price'
+          type="number"
           variant="standard"
           sx={{margin:'10px', width:'100px'}} 
           onChange={handleChange}
           />
           <TextField 
-          name="vacancy"
+          name="vacancies"
           className='listing-info'
           defaultValue={listing.vacancies}
           label='Edit Vacancies'
+          type="number"
           variant="standard"
           sx={{margin:'10px', width:'100px'}} 
           onChange={handleChange}

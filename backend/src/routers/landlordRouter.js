@@ -9,7 +9,8 @@ const {
     getAllLandlordProperties,
     updateLandlord,
     uploadImage,
-    getAllAmenities
+    getAllAmenities,
+    updateUnit
 } = require("../controllers/landlordController");
 
 const {createProperty, deleteProperty, updateProperty} = require("../controllers/propertyController");
@@ -24,11 +25,13 @@ router.post('/:id', upload.fields([
     {name: 'unitImages', maxCount: 50},
 ]),createProperty);
 router.delete('/:id', deleteProperty);
-router.patch('/:id/property', updateProperty);
 
-router.patch('/:id', updateLandlord);
 router.post('/image/:id', upload.single("hutFinder-profileImages"), uploadImage);
 
+//patch
+router.patch('/:id/property', updateProperty);
+router.patch('/:id', updateLandlord);
+router.patch('/:id/property/unit', updateUnit);
 
 //get
 router.get('/amenities', getAllAmenities);
