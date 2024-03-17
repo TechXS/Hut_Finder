@@ -13,7 +13,7 @@ export const landlordApi = createApi({
 
             }
             return headers;
-        },
+        }, 
     }),
     endpoints: (builder) => ({
         getProperties: builder.query({
@@ -22,11 +22,11 @@ export const landlordApi = createApi({
             },
         }),
         getProperty: builder.query({
-            query: ({id,property_id}) => {
+            query: ({id, property_id}) => {
                 return {url: `${id}/properties/${property_id}`};
             },
         }),
-        getAppointments: builder.query({
+        getAppointments: builder.query({    
             query: (id) => {
                 return {url: `${id}/appointments`};
             },
@@ -45,14 +45,20 @@ export const landlordApi = createApi({
                 method: "PATCH",
                 body: payload,
             }),
-        }), deleteProperty: builder.mutation({
+        }), 
+        deleteProperty: builder.mutation({
             query: ({id, payload}) => ({
                 url: `${id}`,
                 method: "DELETE",
                 body: payload,
             }),
+        }), 
+        getAllAmenities: builder.query({
+            query: () => {
+                return {url: `amenities`};
+            },
         }),
-    }),
+    })
 });
 
 export const {
@@ -61,5 +67,6 @@ export const {
     useGetAppointmentsQuery,
     useCreatePropertyMutation,
     useUpdatePropertyMutation,
-    useDeletePropertyMutation
+    useDeletePropertyMutation,
+    useGetAllAmenitiesQuery,
 } = landlordApi;

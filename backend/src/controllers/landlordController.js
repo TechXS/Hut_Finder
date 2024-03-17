@@ -1,6 +1,7 @@
 const Property = require('../models/propertyModel');
 const Landlord = require('../models/landlordModel')
 const Appointment = require('../models/appointmentModel')
+const Amenity = require('../models/amenityModel')
 const {isValidObjectId} = require("mongoose");
 
 
@@ -21,8 +22,9 @@ const getLandlordData = async (req, res) => {
     const { id } = req.params;
     try {
         if (!isValidObjectId(id)) {
+            console.log('NOT AMENITES so i wonder')
             return res.status(404).json({
-                message: 'Landlord does not exist',
+                message: 'Landlord does not exist peaceeeee',
                 error: "Not Valid ID"
             });
         }
@@ -62,6 +64,7 @@ const getLandlordData = async (req, res) => {
         };
 
         res.json(modifiedLandlord);
+        console.log("landlord and not amenitiessssssssssssss\n");
     } catch (error) {
         res.status(500).json({ message: 'Could not retrieve landlord data', error: error.message });
     }
@@ -91,6 +94,7 @@ const getLandlordData = async (req, res) => {
 // Get one Property
 const getSpecificProperty = async (req, res) => {
     const {id} = req.params;
+    console.log("id", id);
     // const {location} = req.query();
 
     // console.log(location);
@@ -207,5 +211,38 @@ const uploadImage = async (req, res) => {
     }
 }
 
+//get all amenities
+const getAllAmenities = async (req, res) => {
+    console.log("get all amenities func")
+    try {
+        const result = await Amenity.find();
+        // console.log("result", result);
+        const flag = {};
+        const uniqueAmenites = result.filter((amenity) => {
+            if (!flag[amenity.name]) {
+                flag[amenity.name] = true;
+                return true;
+            }
+            return false;
+        });
+        console.log("uniqueAmenites", uniqueAmenites)
+        res.json(uniqueAmenites);
+    } catch (error) {
+        res.status(500).json({message: 'Could not get all amenities', error: error.message});
+        console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrror\n", error);
+    }
 
-module.exports = { getLandlordData ,getSpecificProperty, getAllProperties, createLandlord, getAllAppointments, getAllLandlordProperties, updateLandlord, uploadImage};
+}
+
+
+module.exports = { 
+    getLandlordData,
+    getSpecificProperty,
+    getAllProperties,
+    createLandlord,
+    getAllAppointments,
+    getAllLandlordProperties,
+    updateLandlord,
+    uploadImage,
+    getAllAmenities
+};

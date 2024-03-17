@@ -9,15 +9,12 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useGetPropertiesQuery } from "../stores/landlordApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../stores/notificationSlice.js";
-import {selectCurrentLandlord} from "../stores/landlordSlice.js"
-
 
 const Property = () => {
     const dispatch = useDispatch();
     const landlord = useSelector(selectCurrentLandlord)
     const propertyData = useSelector(selectPropertyData);
     // const {id, layout} = useParams();
-    const landlord = useSelector(selectCurrentLandlord);
     const id = landlord?._id;
     console.log("landlord id", id);
     const [Loading, setLoading] = useState(false);

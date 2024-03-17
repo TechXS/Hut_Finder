@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { ListItemIcon,ListItemText, Paper } from '@mui/material'
 import {Box}from '@mui/material'
@@ -7,36 +8,15 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Bathtub from '@mui/icons-material/Bathtub';
-
-
+// import { useGetAllAmenitiesQuery } from '../../stores/landlordApi';
 
 
 
 const AddAmenities = forwardRef((props, ref) => {
+    
     const [amenity, setAmenity] = useState([])
-    const [amenities, setAmenities] = useState([
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small"  />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-    ])
+    const amenities = props.amenities;
+    console.log('props amenities\n', amenities);
 
 
     const handleChange=(event)=>{
@@ -96,7 +76,7 @@ const AddAmenities = forwardRef((props, ref) => {
                             <ListItemIcon>
                                 {amenit.icon}
                             </ListItemIcon>
-                            {/* <ListItemText>{amenit.name}</ListItemText> */}
+                            <ListItemText>{amenit.name}</ListItemText>
                             </MenuItem>
                 ))}
         </Box>

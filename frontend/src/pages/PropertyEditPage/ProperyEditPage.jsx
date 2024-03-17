@@ -27,31 +27,42 @@ import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../
 import {useParams} from "react-router-dom";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
-import { useGetPropertiesQuery } from "../../stores/landlordApi";
-import { useSelector } from "react-redux";
+import { useGetPropertiesQuery, useGetPropertyQuery, useGetAllAmenitiesQuery } from "../../stores/landlordApi";
+import { selectCurrentProperty } from "../../stores/propertySlice";
 
-const PropertyEditPage = () => {
 
-  const landlord = useSelector(selectCurrentLandlord);
+const PropertyEditPage = () => { 
+
+  const landlord = useSelector(selectCurrentLandlord)
   console.log('landlord', landlord)
+  const currentProperty = useSelector(selectCurrentProperty)
+  console.log('currentProperty', currentProperty)
   const dispatch = useDispatch();
-  const id = landlord._id;
-  console.log('id', id)
+  const landlord_id = landlord._id;
+  console.log('landlord_id', landlord_id)
+  const id = useParams().id
+  // const id = currentProperty._id;
+  console.log('id', id) 
+  // console.log('current property id', currentProperty._id)
   const [Loading, setLoading] = useState(false);
-  const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(id);
+  const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(landlord_id);
+  console.log('id1', id, 'id2', landlord_id)
+  const { data: property, isError: propertyError , isLoading: propertyLoading, error: fetchError } = useGetPropertyQuery({id: landlord_id, property_id: id});
   console.log('properties\n', properties)
+  const { data: all_amenities, error: amenitiesError, isLoading: amenitiesLoading } = useGetAllAmenitiesQuery();
+  console.log('all_amenities\n', all_amenities)
+  if (amenitiesError){
+    console.error(amenitiesError)
+  } 
   const [location,setLocation] = useState({});
   const {success, error, isLoading} = useSelector(notification);
   // const {id, layout} = useParams();
-
-
-
-
-
   const [slideNumber, setSlideNumber] = useState(0);
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
   const imageUploadRef1 = useRef();
+  const [photos, setPhotos] = useState([]);
+  const [amenities, setAmenities] = useState([]);
 
   useEffect(() => {
     setLoading(true)
@@ -75,6 +86,10 @@ const PropertyEditPage = () => {
 
       let location  = await handleReverseGeocode(property.location.coordinates[1],property.location.coordinates[0])
       setLocation(location)
+      const images = property?.images
+      setPhotos(images)
+      const amenities = property?.amenities
+      setAmenities(amenities)
     }catch (e) {
       console.error(e.message)
     }
@@ -87,63 +102,10 @@ const PropertyEditPage = () => {
     }
 
   }, [property]);
+  console.log('property\n', property)
 
 
-
-  // const [photos, setPhotos] = useState([
-  //   {
-  //     src: "../../../public/images/property3.jpg",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-  //   },
-  //   {
-  //     src: "../../../public/images/property3.jpg",
-  //   },
-  // ])
-
-  const photos = property?.images
-  //
-  // const [amenities ,setAmenities]= useState([
-  //   {
-  //       name: "Apartment",
-  //       element: <ApartmentIcon />
-  //   },
-  //   {
-  //       name: "Garden",
-  //       element: <LocalFloristIcon />
-  //   },
-  //   {
-  //       name: "Wifi",
-  //       element:<WifiIcon />
-  //   },
-  //   {
-  //       name: "Washrooms",
-  //       element:<BathtubIcon />
-  //   },
-  //   {
-  //       name:"Parking",
-  //       element: <LocalParkingIcon />
-  //   },
-  //   {
-  //       name:"View",
-  //       element:<VisibilityIcon />
-  //   }
-  //
-  // ])
-  const [formData, setFormData] = useState({})
-  const  propertyname = 'Cascade Plaza'
-  const  propertyDesc = 'Located a 5-minute walk from Juja city mall in Juja,Cascade Plaza is a spacious appartment with air conditioning and free WiFi installation. The units come with hardwood floors and feature a fully equipped kitchenette with sliding drawers, modern taps, and a private bathroom with shower. Popular points of interest near the apartment include Juja police station, Main Market Square and Aghakan  University Hospital. The nearest petrol station is Shell petrol, 16.1 km from Cascade Plaza, and the property offers a paid gabbage collection'
- 
+  const [formData, setFormData] = useState({}) 
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -215,8 +177,8 @@ const PropertyEditPage = () => {
                         onChange={handleChange}
                     />
                     <div className="PropAddress">
-                      <LocationOnIcon/>
-                      <span>Sunrise St 125 Juja</span>
+                      <span className="material-symbols-outlined">location_on</span>
+                      <span>{location?.formatted}</span>
                     </div>
                     <span className="PropDistance">
                 Excellent location – 500m from center
@@ -226,11 +188,11 @@ const PropertyEditPage = () => {
               </span>
                     <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit}/>
                     <div className="PropImages">
-                      {photos?.map((photos, i) => (
+                      {photos.slice(0, 6).map((photo, i) => (
                           <div className="PropImgWrapper" key={i}>
                             <img
                                 onClick={() => handleOpen(i)}
-                                src={photos.src}
+                                src={photo}
                                 alt=""
                                 className="PropImg"
                             />
@@ -259,8 +221,10 @@ const PropertyEditPage = () => {
                         <div className="PropDetailsExtra">
                           <div className="PropDetailsWrapper">
                             <div className="PropIcons">
-                              {property?.amenities.map((amenity, index) => (<div className="iconWithText" key={index}>
-                                {amenity.element}
+                              {property?.amenities.map(
+                                (amenity, index) => (
+                                <div className="iconWithText" key={index}>
+                                <span className="material-symbols-outlined">{amenity.icon}</span>
                                 <span>{amenity.name}</span>
                                 <IconButton onClick={() => handleAmenitiesDelete(index)} aria-label="delete"
                                             size="large">
@@ -270,12 +234,12 @@ const PropertyEditPage = () => {
                             </div>
                             <div style={{marginTop: '20px'}}>
 
-                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit} amenities={all_amenities}/>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="PropDetailsPrice">
+                      {/* <div className="PropDetailsPrice">
                         <h1>Get what you need</h1>
                         <span>
                     Located at the real heart of Juja City Mall, this property has an
@@ -285,30 +249,35 @@ const PropertyEditPage = () => {
                         <span>
                     Top Location: Highly rated by recent guests (8.7/10).
                   </span>
-                        {/* <h1>Apppartments with:</h1>
+                        <h1>Apppartments with:</h1>
                   <span>
                     Garden view
                     Inner courtyard view
                     Free underground parking on site
-                  </span> */}
+                  </span>
                         <h2>
                           <b>$945</b>
                         </h2>
 
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="propInfo">
                     <PropertyHeader/>
                     <div className="flex-container">
+                      {/* <ListingItemEdit/>
                       <ListingItemEdit/>
                       <ListingItemEdit/>
                       <ListingItemEdit/>
                       <ListingItemEdit/>
                       <ListingItemEdit/>
                       <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
+                      <ListingItemEdit/> */}
+                      {
+                        property.units && property.units.map((unit, index) => (
+                            <ListingItemEdit unit={unit} key={index}/>
+                        ))
+                      }
                     </div>
                   </div>
                 </Box>
