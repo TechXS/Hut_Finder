@@ -158,7 +158,7 @@ const getAllLandlordProperties = (req, res) => {
     .populate({path: "properties", select: "name location images", populate: {path: "amenities units"}})
     .then((landlord) => {
         const properties = landlord.properties;
-        console.log("properties\n", properties)
+        console.log("successsssssssss\n",)
         res.status(200).json({ message: "Properties fetched successfully\n", properties });
     })
     .catch((err) => {
@@ -227,7 +227,7 @@ const getAllAmenities = async (req, res) => {
             }
             return false;
         });
-        console.log("uniqueAmenites", uniqueAmenites)
+        console.log("successss")
         res.json(uniqueAmenites);
     } catch (error) {
         res.status(500).json({message: 'Could not get all amenities', error: error.message});

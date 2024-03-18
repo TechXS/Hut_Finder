@@ -40,23 +40,23 @@ import {
 const PropertyEditPage = () => { 
 
   const landlord = useSelector(selectCurrentLandlord)
-  console.log('landlord', landlord)
+  // console.log('landlord', landlord)
   // const currentProperty = useSelector(selectCurrentProperty)
   // console.log('currentProperty', currentProperty)
   const dispatch = useDispatch();
   const landlord_id = landlord._id;
-  console.log('landlord_id', landlord_id)
+  // console.log('landlord_id', landlord_id)
   const id = useParams().id
   // const id = currentProperty._id;
-  console.log('id', id) 
+  // console.log('id', id) 
   // console.log('current property id', currentProperty._id)
   const [Loading, setLoading] = useState(false);
   const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(landlord_id);
-  console.log('id1', id, 'id2', landlord_id)
+  // console.log('id1', id, 'id2', landlord_id)
   const { data: property, isError: propertyError , isLoading: propertyLoading, error: fetchError } = useGetPropertyQuery({id: landlord_id, property_id: id});
-  console.log('properties\n', properties)
+  // console.log('properties\n', properties)
   const { data: all_amenities, error: amenitiesError, isLoading: amenitiesLoading } = useGetAllAmenitiesQuery();
-  console.log('all_amenities\n', all_amenities)
+  // console.log('all_amenities\n', all_amenities)
   if (amenitiesError){
     console.error(amenitiesError)
   } 
@@ -127,7 +127,7 @@ const PropertyEditPage = () => {
     }
 
   }, [property]);
-  console.log('property\n', property)
+  // console.log('property\n', property)
 
 
   const [formData, setFormData] = useState({}) 
@@ -148,6 +148,7 @@ const PropertyEditPage = () => {
     if (index >= 0 && amenities.length > index) {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
       setAmenities(updatedAmenities);
+      setFormData({...formData, amenities: updatedAmenities})
     }
   };
 
@@ -175,9 +176,10 @@ const PropertyEditPage = () => {
     // })
     console.log('edited unit details\n', editedUnitDets)
     const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
+      console.log('submitUnit', unit)
       const updatedUnit = await updateUnit({
           id: unit._id, 
-          payload: unit
+          payload: {data: unit}
       }).unwrap();
       console.log('updated unit\n', updatedUnit);
       return updatedUnit;
@@ -311,14 +313,6 @@ const PropertyEditPage = () => {
                   <div className="propInfo">
                     <PropertyHeader/>
                     <div className="flex-container">
-                      {/* <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/> */}
                       {
                         property.units && property.units.map((unit, index) => (
                             <ListingItemEdit unit={unit} key={index} updatedUnit={updatedUnit}/>

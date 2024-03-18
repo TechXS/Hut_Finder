@@ -4,7 +4,7 @@
   
   export default function PropertyListing({unit}) {
 
-    console.log('unedited units\n', unit)
+    // console.log('unedited units\n', unit)
   
     // Format image data for the Carousel component
     const carouselData = unit && unit.images && unit.images.map((url) => ({

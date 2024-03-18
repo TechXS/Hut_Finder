@@ -16,12 +16,16 @@ const AddAmenities = forwardRef((props, ref) => {
     
     const [amenity, setAmenity] = useState([])
     const amenities = props.amenities;
-    console.log('props amenities\n', amenities);
+    // const [amenityId, setAmenityId] = useState('')
+    // console.log('props amenities\n', amenities);
+    // const handleIdset=(id)=>{
+    //     setAmenityId(id)
+    // }
 
 
     const handleChange=(event)=>{
         const {name, icon} =event.target.value;
-        console.log(name , icon)
+        // console.log(name , icon)
         setAmenity((amenity)=>([...amenity,{name:name , icon:icon}])) 
     }
 
@@ -59,6 +63,7 @@ const AddAmenities = forwardRef((props, ref) => {
                                 {amenit.icon}
                             </ListItemIcon>
                             <ListItemText>{amenit.name}</ListItemText>
+                            {/* {handleIdset(amenit._id)} */}
                             </MenuItem>
                 ))}
 

@@ -28,14 +28,14 @@ export default function ListingItemEdit({ unit, updatedUnit }) {
     setUnitObj((prevUnit)=>({
       ...prevUnit, _id: unit._id, [name]:parsedValue,
     }))
-    console.log('unitObj\n', unitObj)
-    console.log('listing\n', listing)
+    // console.log('unitObj\n', unitObj)
+    // console.log('listing\n', listing)
   }
 
   const handleSubmit = (event)=>{
     event.preventDefault();
     updatedUnit(unitObj);
-    console.log('newunits details\n', listing)
+    // console.log('newunits details\n', listing)
   }
   return (
     <div className="listing-card">
