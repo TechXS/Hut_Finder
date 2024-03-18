@@ -167,7 +167,7 @@ const PropertyEditPage = () => {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
       setAmenities(updatedAmenities);
       console.log('updated amenities\n', updatedAmenities)
-      setFormData({...formData, amenities: updatedAmenities})
+      setFormData({...formData, updated_amenities: updatedAmenities})
       console.log('form data\n', formData)
 
     }
@@ -191,27 +191,23 @@ const PropertyEditPage = () => {
       console.log('useeeaddedAmenities\n', addedAmenities)
       await frmData({...formData, amenities: addedAmenities})
       console.log('useeefrmDATTTTAA\n', formData)
+      // if (formData.amenities){
+      //   console.log('1addedAmenities\n', addedAmenities)
+      //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   console.log('11frmDATTTTAA\n', formData)
+      // } else {
+      //   console.log('2222addedAmenities\n', addedAmenities)
+      //   await frmData({...formData, amenities: addedAmenities})
+      //   // setFormData({...formData, amenities: addedAmenities})
+      //   console.log('22frmDATTTTAA\n', formData)
+      // }
     })()
 }, [addedAmenities]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log('addedAmenities\n', addedAmenities)
-    // if (formData.amenities){
-    //   console.log('a11ddedAmenities\n', addedAmenities)
-    //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
-    //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
-    //   console.log('11frmDATTTTAA\n', formData)
-    // } else {
-    //   console.log('2222addedAmenities\n', addedAmenities)
-    //   await frmData({...formData, amenities: addedAmenities})
-    //   // setFormData({...formData, amenities: addedAmenities})
-    //   console.log('22frmDATTTTAA\n', formData)
-    // }
-    // console.log('a11ddedAmenities\n', addedAmenities)
-    // await frmData({...formData, amenities: addedAmenities})
-    // console.log('11frmDATTTTAA\n', formData)
-
     //send form data images and other object  to the database
     // const unitUpdates = editedUnitDets.forEach(async (unit) => {
     //   const updatedUnit = await updateUnit({
@@ -231,6 +227,9 @@ const PropertyEditPage = () => {
   }));
     console.log('unit updates\n', unitUpdates)  
     console.log('form data edit page\n', formData)
+    // if (formData.amenities.length < 1) {
+    //   const {empty_amenities, ...newformData} = formData;
+    // }
     const propertyUpdates = await updateProperty({
       id: id, 
     payload: {data: formData}

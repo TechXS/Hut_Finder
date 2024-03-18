@@ -202,23 +202,133 @@ const deleteProperty = (req, res) => {
 }
 
 //update property
-const updateProperty = (req, res) => {
-    const {id} = req.params;
+// const updateProperty = async (req, res) => {
+//     const {id} = req.params;
+//     const { data } = req.body;
+//     console.log('data:', data)
+//     if (!isValidObjectId(id)) {
+//         return res.status(400).json({error: "Not Valid Property ID"});
+//     }
+//     let error = false;
+//     if (data.amenities){
+//         // const amenities = data.amenities;
+//         const { amenities, ...newData} = data;
+//         console.log('newData\n', newData)
+//         console.log('amenities\n', amenities)
+        // for (const amenity of amenities){
+        //     Amenity.findOne(
+        //         {name: amenity.name}
+        //     ).then ((response) => {
+        //         console.log('Amenity found:\n', response)
+        //         return Property.findByIdAndUpdate(
+        //             {_id: id},
+        //             { $push: {amenities: response._id}, ...data },
+        //             {new: true}
+        //         ).then((response) => {
+        //             console.log('Updated property:', response)
+        //             // res.status(200).json({message: "Amenity id pushed to property successfully"});
+                
+        //         }).catch((err) => {
+        //             console.log("1Error:\n", err.message)
+        //             // res.status(400).json({error: "Error pushing amenity id to property"});
+        //             error = true;
+        //         })
+        //     }).catch((err) => {
+        //         console.log("2Error:\n", err.message)
+        //         res.status(400).json({error: "Error finding amenity"});
+        //         error = true;
+        //     })
+        //     if (error) {break;}
+        // }
+//         if(!error){
+//             console.log('error:', error)
+//             res.status(200).json({message: "Property updated successfully"});
+//         }
+//     } 
+            // for (const amenity of amenities) {
+            //     try {
+            //         const response = await Amenity.findOne({ name: amenity.name });
+            //         console.log('Amenity found:\n', response);
+            //         const updatedProperty = await Property.findByIdAndUpdate(
+            //             { _id: id },
+            //             { $push: { amenities: response._id }, ...newData },
+            //             { new: true }
+            //         );
+            //         console.log('Updated property:', updatedProperty);
+            //     } catch (err) {
+            //         console.log("Error:\n", err.message);
+            //         // errorEncountered = true;
+            //         break; // Exit the loop if an error occurs
+            //     }
+            // }
+            // if (!errorEncountered) {
+            //     res.status(200).json({ message: "Amenity ids pushed to property successfully" });
+            // } else {
+            //     res.status(400).json({ error: "Error pushing amenity ids to property" });
+            // }
+                // }
+    // else {
+    //     const { updated_amenities, ...newData } = data;
+    //     console.log('updated_amenities\n', updated_amenities);
+    //     Property.findByIdAndUpdate(
+    //         {_id: id}, 
+    //         {amenities: updated_amenities, ...newData}, 
+    //         {new: true}
+    //     ).then((response) => {
+    //         console.log('Updated property:', response)
+    //         res.status(200).json({message: "Property updated successfully"});
+    //     })
+    //     .catch((err) => {
+    //         console.log("Error:\n", err.message)
+    //         res.status(400).json({error: "Error updating property"});
+    //     })
+    // }
+const updateProperty = async (req, res) => {
+    const { id } = req.params;
     const { data } = req.body;
-    console.log('data:', data)
+    console.log('data:', data);
     if (!isValidObjectId(id)) {
-        return res.status(400).json({error: "Not Valid Property ID"});
+        return res.status(400).json({ error: "Not Valid Property ID" });
     }
+
+    const { amenities, updated_amenities, ...newData } = data;
+    console.log('newData\n', newData);
+    console.log('amenities\n', amenities);
+    console.log('updated_amenities\n', updated_amenities);
     Property.findByIdAndUpdate(
         {_id: id}, 
-        data, 
+        {amenities: updated_amenities, ...newData}, 
         {new: true}
     ).then((response) => {
+        if (amenities){       
+            for (const amenity of amenities){
+                Amenity.findOne(
+                    {name: amenity.name}
+                ).then ((response) => {
+                    console.log('Amenity found:\n', response)
+                    return Property.findByIdAndUpdate(
+                        {_id: id},
+                        { $push: {amenities: response._id} },
+                        {new: true}
+                    ).then((response) => {
+                        console.log('Updated property:', response)
+                        // res.status(200).json({message: "Amenity id pushed to property successfully"});
+                    
+                    }).catch((err) => {
+                        console.log("1Error:\n", err.message)
+                        // res.status(400).json({error: "Error pushing amenity id to property"});
+                    })
+                }).catch((err) => {
+                    console.log("2Error:\n", err.message)
+                    // res.status(400).json({error: "Error finding amenity"});
+                })
+            }
+        }
+    }).then((response) => {
         console.log('Updated property:', response)
         res.status(200).json({message: "Property updated successfully"});
-    })
-    .catch((err) => {
-        console.log("Error:\n", err.message)
+    }).catch((err) => {
+        console.log("33Error:\n", err.message)
         res.status(400).json({error: "Error updating property"});
     })
 }
