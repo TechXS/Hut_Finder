@@ -60,6 +60,7 @@ const PropertyEditPage = () => {
   if (amenitiesError){
     console.error(amenitiesError)
   } 
+  const [addedAmenities, setAddedAmenities] = useState([]);
   const [location,setLocation] = useState({});
   const {success, error, isLoading} = useSelector(notification);
   // const {id, layout} = useParams();
@@ -85,8 +86,25 @@ const PropertyEditPage = () => {
       isError: updateUnitIsError
     }] = useUpdateUnitMutation();
 
+  const frmData = async (data) => {
+    setFormData(data);
+  }
   const updatedUnit = async (unit) => {
     setEditedUnitDets((prev) => [...prev, unit]);
+  }
+  const addedAmenitiesHandler = async (amenity) => {
+    setAddedAmenities(amenity);
+    // if (formData.amenities){
+      // console.log('a11ddedAmenities\n', addedAmenities)
+      // // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      // // setFormData({...formData, amenities: addedAmenities})
+      // await frmData({...formData, amenities: addedAmenities})
+      // console.log('11frmDATTTTAA\n', formData)
+    // } else {
+    //   console.log('2222addedAmenities\n', addedAmenities)
+    //   setFormData({...formData, amenities: addedAmenities})
+    //   console.log('22frmDATTTTAA\n', formData)
+    // }
   }
 
   useEffect(() => {
@@ -148,7 +166,10 @@ const PropertyEditPage = () => {
     if (index >= 0 && amenities.length > index) {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
       setAmenities(updatedAmenities);
+      console.log('updated amenities\n', updatedAmenities)
       setFormData({...formData, amenities: updatedAmenities})
+      console.log('form data\n', formData)
+
     }
   };
 
@@ -165,8 +186,32 @@ const PropertyEditPage = () => {
     setSlideNumber(newSlideNumber);
   };
 
+  useEffect(() => {
+    (async () => {
+      console.log('useeeaddedAmenities\n', addedAmenities)
+      await frmData({...formData, amenities: addedAmenities})
+      console.log('useeefrmDATTTTAA\n', formData)
+    })()
+}, [addedAmenities]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('addedAmenities\n', addedAmenities)
+    // if (formData.amenities){
+    //   console.log('a11ddedAmenities\n', addedAmenities)
+    //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
+    //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
+    //   console.log('11frmDATTTTAA\n', formData)
+    // } else {
+    //   console.log('2222addedAmenities\n', addedAmenities)
+    //   await frmData({...formData, amenities: addedAmenities})
+    //   // setFormData({...formData, amenities: addedAmenities})
+    //   console.log('22frmDATTTTAA\n', formData)
+    // }
+    // console.log('a11ddedAmenities\n', addedAmenities)
+    // await frmData({...formData, amenities: addedAmenities})
+    // console.log('11frmDATTTTAA\n', formData)
+
     //send form data images and other object  to the database
     // const unitUpdates = editedUnitDets.forEach(async (unit) => {
     //   const updatedUnit = await updateUnit({
@@ -282,7 +327,7 @@ const PropertyEditPage = () => {
                             </div>
                             <div style={{marginTop: '20px'}}>
 
-                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit} amenities={all_amenities}/>
+                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit} amenities={all_amenities} addedAmenitiesHandler={addedAmenitiesHandler}/>
                             </div>
                           </div>
                         </div>
