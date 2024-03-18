@@ -8,15 +8,10 @@ import {unitTypes} from "../../utils/dataUtil.js";
 export default function ListingItemEdit({ unit, updatedUnit }) {
   // console.log('e', unit);
   const [listing, setListing] = useState(unit);
-  const carouselData = unit && unit.images && unit.images.map((url) => ({
-    src: url,
+  const carouselData = unit && unit.images && unit.images.map((image) => ({
+    src: image.imageUrl,
     alt:  unitTypes[unit.type].type ,
   })); 
-  // const unitObj = {
-  //   _id: unit._id,
-  //   type: unit.type,
-  //   vacancies: unit.vacancies
-  // }
   const [unitObj, setUnitObj] = useState({});
 
   const handleChange = (event)=>{
@@ -28,14 +23,11 @@ export default function ListingItemEdit({ unit, updatedUnit }) {
     setUnitObj((prevUnit)=>({
       ...prevUnit, _id: unit._id, [name]:parsedValue,
     }))
-    // console.log('unitObj\n', unitObj)
-    // console.log('listing\n', listing)
   }
 
   const handleSubmit = (event)=>{
     event.preventDefault();
     updatedUnit(unitObj);
-    // console.log('newunits details\n', listing)
   }
   return (
     <div className="listing-card">

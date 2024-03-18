@@ -16,11 +16,6 @@ const AddAmenities = forwardRef((props, ref) => {
     
     const [amenity, setAmenity] = useState([])
     const amenities = props.amenities;
-    // const [amenityId, setAmenityId] = useState('')
-    // console.log('props amenities\n', amenities);
-    // const handleIdset=(id)=>{
-    //     setAmenityId(id)
-    // }
 
 
     const handleChange= async (event)=>{

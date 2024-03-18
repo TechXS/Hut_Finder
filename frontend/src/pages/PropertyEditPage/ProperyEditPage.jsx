@@ -32,7 +32,8 @@ import {
   useGetPropertyQuery, 
   useGetAllAmenitiesQuery,
   useUpdatePropertyMutation,
-  useUpdateUnitMutation
+  useUpdateUnitMutation,
+  useDeleteImageMutation
 } from "../../stores/landlordApi";
 // import { selectCurrentProperty } from "../../stores/propertySlice";
 
@@ -85,6 +86,13 @@ const PropertyEditPage = () => {
       isLoading: updateUnitLoading,
       isError: updateUnitIsError
     }] = useUpdateUnitMutation();
+    const [
+      deleteImage, {
+        data: deleted_image, 
+        error: deleteImageError, 
+        isLoading: deleteImageLoading,
+        isError: deleteImageIsError
+      }] = useDeleteImageMutation();
 
   const frmData = async (data) => {
     setFormData(data);
@@ -94,17 +102,6 @@ const PropertyEditPage = () => {
   }
   const addedAmenitiesHandler = async (amenity) => {
     setAddedAmenities(amenity);
-    // if (formData.amenities){
-      // console.log('a11ddedAmenities\n', addedAmenities)
-      // // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
-      // // setFormData({...formData, amenities: addedAmenities})
-      // await frmData({...formData, amenities: addedAmenities})
-      // console.log('11frmDATTTTAA\n', formData)
-    // } else {
-    //   console.log('2222addedAmenities\n', addedAmenities)
-    //   setFormData({...formData, amenities: addedAmenities})
-    //   console.log('22frmDATTTTAA\n', formData)
-    // }
   }
 
   useEffect(() => {
@@ -155,10 +152,17 @@ const PropertyEditPage = () => {
     setOpen(true);
   };
 
-  const handlePhotoDelete = (index) => {
+  const handlePhotoDelete = async (index) => {
     if (index >= 0 && photos.length > index) {
       const updatedPhotos = photos.filter((_, i) => i !== index);
       setPhotos(updatedPhotos);
+      const deletedPhotoId = photos[index].publicId;
+      console.log('deleted photo id\n', deletedPhotoId)
+      const deletedImage = await deleteImage({
+        id: id, 
+        payload: {data: deletedPhotoId}
+      }).unwrap();
+      console.log('deleted image\n', deletedImage)
     }
   };
 
@@ -227,9 +231,6 @@ const PropertyEditPage = () => {
   }));
     console.log('unit updates\n', unitUpdates)  
     console.log('form data edit page\n', formData)
-    // if (formData.amenities.length < 1) {
-    //   const {empty_amenities, ...newformData} = formData;
-    // }
     const propertyUpdates = await updateProperty({
       id: id, 
     payload: {data: formData}
@@ -284,7 +285,7 @@ const PropertyEditPage = () => {
                           <div className="PropImgWrapper" key={i}>
                             <img
                                 onClick={() => handleOpen(i)}
-                                src={photo}
+                                src={photo.imageUrl}
                                 alt=""
                                 className="PropImg"
                             />
@@ -409,7 +410,7 @@ const PropertyEditPage = () => {
                               <div className="PropImgWrapper" key={i}>
                                 <img
                                     onClick={() => handleOpen(i)}
-                                    src={photo}
+                                    src={photo.imageUrl}
                                     alt=""
                                     className="PropImg"
                                 />

@@ -72,27 +72,6 @@ const getLandlordData = async (req, res) => {
     }
 };
 
-// const getLandlordData = async (req, res) => {
-//     const {id} = req.params;
-//     try {
-//         if (!isValidObjectId(id)) {
-//             return res.status(404).json({
-//                 message: 'Landlord does not exist',
-//                 error: "Not Valid ID"
-//             });
-//         }
-//
-//         const landlord = await Landlord.findById(id)
-//             .populate({path: "properties", populate: {path: "amenities units"}})
-//             .populate({path: "appointments", populate: {path: "amenities units"}})
-//
-//
-//         res.json( landlord);
-//     } catch (error) {
-//         res.status(500).json({message: 'Could not retrieve landlord data', error: error.message});
-//
-//     }
-// };
 // Get one Property
 const getSpecificProperty = async (req, res) => {
     const {id} = req.params;

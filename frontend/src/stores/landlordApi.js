@@ -59,7 +59,14 @@ export const landlordApi = createApi({
                 method: "DELETE",
                 body: payload,
             }),
-        }), 
+        }),
+        deleteImage: builder.mutation({
+            query: ({id, payload}) => ({
+                url: `${id}/property/image`,
+                method: "DELETE",
+                body: payload,
+            }),
+        }),
         getAllAmenities: builder.query({
             query: () => {
                 return {url: `amenities`};
@@ -75,6 +82,7 @@ export const {
     useCreatePropertyMutation,
     useUpdatePropertyMutation,
     useDeletePropertyMutation,
+    useDeleteImageMutation,
     useGetAllAmenitiesQuery,
     useUpdateUnitMutation,
 } = landlordApi;
