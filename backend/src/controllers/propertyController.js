@@ -18,7 +18,7 @@ const createProperty = async (req, res) => {
     console.log('unitTypes:', unitTypes)
     const propertyImages = req.files.propertyImages;
     console.log('propertyImages:', propertyImages)
-    const unitImages = req.files.unitImages;
+    const unitImages = req.files.unitImages ? req.files.unitImages : null;
     console.log('unitImages:', unitImages)
 
     // const stop = parsedData.data.unitTypes
@@ -35,7 +35,7 @@ const createProperty = async (req, res) => {
             pImageArray.push({publicId: data.public_id, imageUrl: data.url});
         }
 
-        
+    if(unitImages){
         for (const unitImage of unitImages){
             const data = await uploadToCloudinary(unitImage.path, "unit-images");
             // uImageObjArray.push(data);
@@ -45,7 +45,7 @@ const createProperty = async (req, res) => {
                     unit.images.push({publicId: data.public_id, imageUrl: data.url});
                 }
             })
-        }
+    }}
         console.log('New unitTypes:', unitTypes)
     }
     catch (error){
@@ -274,7 +274,60 @@ const createAmenity = (req, res) => {
         })
     }
 }      
+//upload image
+const uploadpImage = async (req, res) => {
+    const { id } = req.params;
+    const pimages = req.files.new_pImages;
+    console.log('images:', pimages)
+    console.log('req.files:', req.files)
 
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Property ID"});
+    }
+
+    let pImageArray = [];
+    try {
+        for (const pimage of pimages){
+            const data = await uploadToCloudinary(pimage.path, "property-images");
+            pImageArray.push({publicId: data.public_id, imageUrl: data.url});
+        }
+    }
+    catch (error){
+        console.log('Error uploading new pimage:', error.message);
+        return res.status(400).json({error: "Error uploading pimage"});
+    }
+    Property.findByIdAndUpdate(
+        {_id: id},
+        {$push: {images: pImageArray}},
+        {new: true}
+    ).then((response) => {
+        console.log('Updated property:', response)
+        res.status(200).json({message: "Property image uploaded successfully"});
+    }).catch((err) => {
+        console.log("Error:\n", err.message)
+        res.status(400).json({error: "Error uploading property image"});
+    })
+
+    // try {
+    //     const data = await uploadToCloudinary(path, "property-images");
+    //     console.log('data:', data)
+    //     Property.findByIdAndUpdate(
+    //         {_id: id},
+    //         {$push: {images: {publicId: data.public_id, imageUrl: data.url}}},
+    //         {new: true}
+    //     ).then((response) => {
+    //         console.log('Updated property:', response)
+    //         res.status(200).json({message: "Property image uploaded successfully"});
+    //     }).catch((err) => {
+    //         console.log("Error:\n", err.message)
+    //         res.status(400).json({error: "Error uploading property image"});
+    //     })
+    // }
+    // catch (error){
+    //     console.log('Error uploading image:', error.message);
+    //     return res.status(400).json({error: "Error uploading image"});
+    // }
+}
 //delete image
 const deleteImage = async (req, res) => {
     const {id} = req.params;
@@ -298,4 +351,4 @@ const deleteImage = async (req, res) => {
     })
 }
 
-module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,deleteImage}
+module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage}

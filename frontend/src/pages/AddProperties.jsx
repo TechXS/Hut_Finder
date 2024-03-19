@@ -125,6 +125,7 @@ const AddProperty = () => {
 
                     // finalData.unitTypes = unitTypes;
                     console.log('finalData\n', finalData);
+                    console.log('propertyImages\n', propertyImages);
                     const formData = await frmDta(finalData, propertyImages, unitTypes)
                     for (var pair of formData.entries()) {
                         console.log('key: ',pair[0], 'value: ' , pair[1]);
@@ -139,7 +140,7 @@ const AddProperty = () => {
                             `Property ${response.name} created successfully`
                         )
                     );
-                    navigate("/");
+                    navigate("/landlord/dashboard");
                     setActiveStep(1);
                     setNumberOfSteps(1);
                     setSubmitForm(false)

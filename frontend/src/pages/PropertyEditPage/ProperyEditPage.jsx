@@ -27,13 +27,15 @@ import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../
 import {useParams} from "react-router-dom";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
+import { pimageDta } from "../../utils/formValidation.js";
 import { 
   useGetPropertiesQuery,
   useGetPropertyQuery, 
   useGetAllAmenitiesQuery,
   useUpdatePropertyMutation,
   useUpdateUnitMutation,
-  useDeleteImageMutation
+  useDeleteImageMutation,
+  useUploadImageMutation
 } from "../../stores/landlordApi";
 // import { selectCurrentProperty } from "../../stores/propertySlice";
 
@@ -72,6 +74,8 @@ const PropertyEditPage = () => {
   const [photos, setPhotos] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const [editedUnitDets, setEditedUnitDets] = useState([]);
+  const [pIMages, setPImages] = useState([]);
+  const [submitImage, setsubmitImage] = useState(false)
   const [
     updateProperty, {
       data: updated_property, 
@@ -86,13 +90,20 @@ const PropertyEditPage = () => {
       isLoading: updateUnitLoading,
       isError: updateUnitIsError
     }] = useUpdateUnitMutation();
+  const [
+    deleteImage, {
+      data: deleted_image, 
+      error: deleteImageError, 
+      isLoading: deleteImageLoading,
+      isError: deleteImageIsError
+    }] = useDeleteImageMutation();
     const [
-      deleteImage, {
-        data: deleted_image, 
-        error: deleteImageError, 
-        isLoading: deleteImageLoading,
-        isError: deleteImageIsError
-      }] = useDeleteImageMutation();
+      uploadImage, {
+        data: uploaded_image, 
+        error: uploadImageError, 
+        isLoading: uploadImageLoading,
+        isError: uploadImageIsError
+      }] = useUploadImageMutation();
 
   const frmData = async (data) => {
     setFormData(data);
@@ -102,6 +113,9 @@ const PropertyEditPage = () => {
   }
   const addedAmenitiesHandler = async (amenity) => {
     setAddedAmenities(amenity);
+  }
+  const updatePropertyPhotos = async (photo) => {
+    setPImages(photo);
   }
 
   useEffect(() => {
@@ -209,8 +223,34 @@ const PropertyEditPage = () => {
     })()
 }, [addedAmenities]);
 
+useEffect(()=> {
+  (async () => {
+    // const pImageData = new FormData();
+    // pIMages.forEach((image) => {
+    //   pImageData.append("new_pImages", image, image.name);
+    // });
+  if(submitImage){  
+    try {  
+      console.log('pIMages\n', pIMages)
+      const pImageData = await pimageDta(pIMages);
+      const uploadedImages = await uploadImage({
+        id: id,
+        payload: pImageData
+      }).unwrap()
+      console.log('uploadedImages\n', uploadedImages)
+      setsubmitImage(false)
+    } catch (e){
+      console.error(e)
+      setsubmitImage(false)
+    }
+  }
+  }) ()
+}, [pIMages, submitImage])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    imageUploadRef1.current.submitForm();
+    setsubmitImage(true)
     console.log('addedAmenities\n', addedAmenities)
     //send form data images and other object  to the database
     // const unitUpdates = editedUnitDets.forEach(async (unit) => {
@@ -223,7 +263,7 @@ const PropertyEditPage = () => {
     const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
       console.log('submitUnit', unit)
       const updatedUnit = await updateUnit({
-          id: unit._id, 
+          id: unit._id,
           payload: {data: unit}
       }).unwrap();
       console.log('updated unit\n', updatedUnit);
@@ -236,7 +276,6 @@ const PropertyEditPage = () => {
     payload: {data: formData}
     }).unwrap();
     console.log('property updates\n', propertyUpdates)
-    imageUploadRef1.current.submitForm();
     setclicked(!clicked)
   }
 
@@ -279,7 +318,7 @@ const PropertyEditPage = () => {
                     <span className="PropPriceHighlight">
                 Book an apointment with Agent to get a free tour of the Apartment
               </span>
-                    <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                    <Imageupload ref={imageUploadRef1} updatePropertyPhotos={updatePropertyPhotos}/>
                     <div className="PropImages">
                       {photos.slice(0, 6).map((photo, i) => (
                           <div className="PropImgWrapper" key={i}>
@@ -386,7 +425,7 @@ const PropertyEditPage = () => {
                   <span className="material-symbols-outlined">arrow_circle_left</span>
                 </span>
                         <div className="sliderWrapper">
-                          <img src={photos[slideNumber].src} alt="" className="sliderImg"/>
+                          <img src={photos[slideNumber].imageUrl} alt="" className="sliderImg"/>
                         </div>
                         <span className="arrow" onClick={() => handleMove("r")}>
                   <span className="material-symbols-outlined">arrow_circle_right</span>
