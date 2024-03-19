@@ -4,14 +4,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    types:
-      - closed
-    branches:
-      - main
 defaults:
   run:
-    working-directory: ./backend
+    working-directory: backend
 
 jobs:
   lint_and_test:
