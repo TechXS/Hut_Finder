@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'frontend/**'
   workflow_dispatch:
 defaults:
   run:
@@ -47,7 +49,7 @@ jobs:
       - name: Docker build and push
         run: |
           #run commands to build and push docker images
-          docker build --build-arg BACKEND_API_URL: ${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
+          docker build --build-arg BACKEND_API_URL=${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
           docker tag hut_finder_frontend mesutempire/hut_finder_frontend:latest
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push mesutempire/hut_finder_frontend:latest
