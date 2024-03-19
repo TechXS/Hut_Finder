@@ -14,7 +14,7 @@ defaults:
     working-directory: ./backend
 
 jobs:
-  lint_test:
+  lint_and_test:
     runs-on: ubuntu-latest
 
     steps:
