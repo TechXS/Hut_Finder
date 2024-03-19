@@ -5,6 +5,9 @@ on:
     branches:
       - main
   workflow_dispatch:
+defaults:
+  run:
+    working-directory: frontend
 
 jobs:
   lint_and_test:
@@ -21,19 +24,13 @@ jobs:
           node-version: "21.x"
 
       - name: Install Dependencies
-        run: |
-          cd frontend  
-          npm install
+        run: npm install
 
       - name: Linting
-        run: |
-          cd frontend  
-          npm run lint --if-present
+        run: npm run lint --if-present
 
       - name: Unit Testing
-        run: |
-          cd frontend  
-          npm run test --if-present
+        run: npm run test --if-present
 
   build_frontend:
     runs-on: ubuntu-latest
@@ -49,7 +46,6 @@ jobs:
 
       - name: Docker build and push
         run: |
-          cd frontend
           #run commands to build and push docker images
           docker build --build-arg BACKEND_API_URL: ${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
           docker tag hut_finder_frontend mesutempire/hut_finder_frontend:latest
