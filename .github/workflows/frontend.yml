@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "21.x"
 
       - name: Install Dependencies
         run: npm install
@@ -44,8 +44,8 @@ jobs:
       - name: Docker build and push
         run: |
           #run commands to build and push docker images
-          docker build --build-arg VITE_BACKEND_API_URL: ${{secrets.VITE_BACKEND_API_URL}} -t netflix .
-          docker tag netflix mesutempire/hut_finder_frontend:latest
+          docker build --build-arg BACKEND_API_URL: ${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
+          docker tag hut_finder_frontend mesutempire/hut_finder_frontend:latest
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker push mesutempire/hut_finder_frontend:latest
         env:
