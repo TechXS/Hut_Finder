@@ -48,7 +48,7 @@ jobs:
         run: |
           #run commands to build and push docker images
           docker build --build-arg BACKEND_API_URL=${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
-          docker tag hut_finder_frontend hfindr.azurecr.io/hut_finder_frontend:latest
+          docker tag hut_finder_frontend hfindr.azurecr.io/hut_finder_frontend
           docker login hfindr.azurecr.io -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }}
           docker push hfindr.azurecr.io/hut_finder_frontend:latest
         env:
