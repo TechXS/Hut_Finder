@@ -64,7 +64,7 @@ const NavBar = () => {
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
-                }} > HuUT </Typography>
+                }} > HuUrrT </Typography>
                 <Typography variant={'span'} sx={{
                 color:"#07779A",
                     fontSize:"25px"
