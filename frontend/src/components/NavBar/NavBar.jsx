@@ -24,7 +24,7 @@ const NavBar = () => {
 
     const navLinks = [
         {
-            name:"Homeeee",
+            name:"Home",
             path:"/"
         },
         {
@@ -64,7 +64,7 @@ const NavBar = () => {
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
-                }} > HuUuuuT </Typography>
+                }} > HuUT </Typography>
                 <Typography variant={'span'} sx={{
                 color:"#07779A",
                     fontSize:"25px"
