@@ -1,0 +1,52 @@
+name: Build and deploy the Backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+defaults:
+  run:
+    working-directory: ./backend
+
+jobs:
+  lint_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: "21.x"
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Linting
+        run: npm run lint --if-present
+
+      - name: Unit Testing
+        run: npm run test --if-present
+
+  build_backend:
+    runs-on: ubuntu-latest
+    needs: lint_and_test
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Docker build and push
+        run: |
+          #run commands to build and push docker images
+          docker build -t hut_finder_backend .
+          docker tag hut_finder_backend mesutempire/hut_finder_backend:latest
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker push mesutempire/hut_finder_backend:latest
+        env:
+          DOCKER_CLI_ACI: 1
