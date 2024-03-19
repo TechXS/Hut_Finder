@@ -24,7 +24,7 @@ const NavBar = () => {
 
     const navLinks = [
         {
-            name:"Home",
+            name:"Homeeee",
             path:"/"
         },
         {
