@@ -5,9 +5,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-defaults:
-  run:
-    working-directory: frontend
 
 jobs:
   lint_and_test:
@@ -20,12 +17,15 @@ jobs:
           node-version: "21.x"
 
       - name: Install Dependencies
+        working-directory: ./frontend
         run: npm install
 
       - name: Linting
+        working-directory: ./frontend
         run: npm run lint --if-present
 
       - name: Unit Testing
+        working-directory: ./frontend
         run: npm run test --if-present
 
   build_frontend:
@@ -41,6 +41,7 @@ jobs:
           fetch-depth: 0
 
       - name: Docker build and push
+        working-directory: ./frontend
         run: |
           #run commands to build and push docker images
           docker build --build-arg BACKEND_API_URL: ${{secrets.BACKEND_API_URL}} -t hut_finder_frontend .
