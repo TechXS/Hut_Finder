@@ -45,8 +45,8 @@ jobs:
         run: |
           #run commands to build and push docker images
           docker build -t hut_finder_backend .
-          docker tag hut_finder_backend mesutempire/hut_finder_backend:latest
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push mesutempire/hut_finder_backend:latest
+          docker tag hut_finder_backend hfindrbcknd.azurecr.io/hut_finder_backend
+          docker login hfindrbcknd.azurecr.io -u ${{ secrets.ACRBCK_USERNAME }} -p ${{ secrets.ACRBCK_PASSWORD }}
+          docker push hfindrbcknd.azurecr.io/hut_finder_backend:latest
         env:
           DOCKER_CLI_ACI: 1
