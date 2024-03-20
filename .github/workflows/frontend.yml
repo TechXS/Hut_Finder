@@ -35,7 +35,7 @@ jobs:
         with:
           working-directory: frontend
           build: npm run build
-          start: npm preview
+          start: npm run preview
           browser: chrome
 
       #      - name: Linting
