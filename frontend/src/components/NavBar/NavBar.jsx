@@ -20,29 +20,7 @@ const NavBar = () => {
 
     const [logout, {data: response, isLoading}] = useLogoutMutation();
 
-    var user = (client ?? landlord )?? null
-    user = {...user,role: user && client ? "client" : landlord ? "landlord" : ""}
-
-    const handleOpen = ()=>{
-        console.log(open)
-        setOpen(!open)
-    }
-
-    const handleLogout = async ()=>{
-     try{
-
-         const data = {
-             role : client ? "client" : "landlord"
-         }
-         const appointmentData = await logout({data: data}).unwrap();
-         dispatch(setClientLogout())
-         dispatch(setLandlordLogout())
-         navigate('/')
-
-     }catch (e) {
-         console.error(e.message)
-     }
-    }
+    var user = client.role ==="client" ? client : landlord.role === "landlord" ? landlord : null
 
     const navLinks = [
         {
@@ -86,7 +64,7 @@ const NavBar = () => {
                 <Typography variant={'span'} sx={{
                     color:"#000000",
                     fontSize:"25px"
-                }} > HUT </Typography>
+                }} > HuYyT </Typography>
                 <Typography variant={'span'} sx={{
                 color:"#07779A",
                     fontSize:"25px"
@@ -99,7 +77,7 @@ const NavBar = () => {
                 alignItems:'center',
                 justifyContent:'space-around',
                 position:"relative",
-                width: user.name ? "10%" : {
+                width: user ? "10%" : {
                     sm:"70%",
                     md:"50%",
                     lg:"40%",
@@ -107,40 +85,8 @@ const NavBar = () => {
                 }
             }}
         >
-            {user.name ? (
-                <>
+            {user ? (
                     <AccountMenu user={user}/>
-                    {/*<img onClick={()=> handleOpen()} src={user.imageUrl} alt={"Profile"} style={{*/}
-                    {/*    fontSize: "20px",*/}
-                    {/*    width: "60px",*/}
-                    {/*    height: "60px",*/}
-                    {/*    borderRadius: "50%",*/}
-                    {/*    cursor: "pointer"*/}
-                    {/*}} />*/}
-                    {/*{open && (                    <Box sx={{*/}
-                    {/*    position:"absolute",*/}
-                    {/*    paddingX:"2rem",*/}
-                    {/*    paddingY:"1rem",*/}
-                    {/*    top:"2.5rem",*/}
-
-
-                    {/*}}>*/}
-                    {/*        <Button*/}
-                    {/*            onClick={()=> handleLogout()}*/}
-                    {/*            sx={{*/}
-                    {/*                backgroundColor: '#d2d0d0',*/}
-                    {/*                "&:hover": { backgroundColor: "#afb0b0" },*/}
-                    {/*                textTransform:"none",*/}
-                    {/*                color:"black"*/}
-                    {/*            }}*/}
-                    {/*            disableElevation={true}*/}
-                    {/*            disableFocusRipple={true}*/}
-                    {/*            variant='contained'*/}
-                    {/*        >*/}
-                    {/*            Logout*/}
-                    {/*        </Button>*/}
-                    {/*</Box>)}*/}
-                    </>
 
             ) : (
                 <>

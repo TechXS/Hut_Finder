@@ -6,9 +6,8 @@ import {setCurrentClient} from "./stores/clientSlice";
 import CssBaseline from "@mui/material/CssBaseline";
 import {createTheme, ThemeProvider} from '@mui/material';
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {themePalette} from "./presetsColor.js";
-
 
 
 const App = () => {
@@ -21,7 +20,6 @@ const App = () => {
         dispatch(setCurrentClient(currentClient));
     }
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const [location, setLocation] = useState(null);
     const [error, setError] = useState(null);
 
 

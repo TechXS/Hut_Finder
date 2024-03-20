@@ -12,10 +12,10 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
     return(
         <div className="sidebar">
-            <div className="top">
-                <span className="logo">Landlord</span>
-            </div>
-            <hr/>
+            {/*<div className="top">*/}
+            {/*    <span className="logo">Landlord</span>*/}
+            {/*</div>*/}
+            {/*<hr/>*/}
             <div className="center">
                 <ul>
                     <p className="title">MAIN</p>
@@ -27,7 +27,7 @@ const Sidebar = () => {
                        
                     </li>
                     </Link> 
-                    <Link to="/landlord/addpropertypage">
+                    <Link to="/landlord/properties">
                     <li>
                         {/*<OtherHousesIcon className="icon"/>*/}
                         

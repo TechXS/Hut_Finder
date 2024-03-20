@@ -166,14 +166,7 @@ export const propertyData = [
 ]
 
 export const widgetData = [
-    {
-        title: "TOTAL APPOINTMENTS",
-        isMoney: false,
-        link: "See all appointments",
-         amount: 100,
-         percentage : 20,
-         icon: MonetizationIcon
-    },
+
     {
         title: "TOTAL APARTMENTS",
         isMoney: false,
@@ -181,6 +174,14 @@ export const widgetData = [
         amount: 100,
         percentage : 20,
         icon:  AccountIcon
+    },
+    {
+        title: "TOTAL APPOINTMENTS",
+        isMoney: false,
+        link: "See all appointments",
+         amount: 100,
+         percentage : 20,
+         icon: MonetizationIcon
     },
     {
         title: "AVAILABLE UNITS",
