@@ -36,13 +36,12 @@ jobs:
           working-directory: frontend
           build: npm run build
           start: npm run preview
-          browser: chrome
 
       #      - name: Linting
       #        run: npm run lint --if-present
 
-#      - name: Unit Testing
-#        run: npm run test --if-present
+#      - name: Coverage
+#        run: npm run coverage --if-present
 
   build_frontend:
     runs-on: ubuntu-latest
