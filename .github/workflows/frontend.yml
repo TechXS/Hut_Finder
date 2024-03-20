@@ -26,10 +26,14 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Debug Working Directory Contents
+        run: ls -la
+
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: npm run build
+          build: ls -la && npm run build
           start: npm start
           browser: chrome
 
