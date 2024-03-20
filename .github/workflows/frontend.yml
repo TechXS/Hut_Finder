@@ -12,6 +12,9 @@ defaults:
 jobs:
   lint_and_test:
     runs-on: ubuntu-latest
+    container:
+      image: cypress/browsers:node-20.9.0-chrome-118.0.5993.88-1-ff-118.0.2-edge-118.0.2088.46-1
+      options: --user 1001
 
     steps:
       - uses: actions/checkout@v2
@@ -26,11 +29,18 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+          browser: chrome
+
       #      - name: Linting
       #        run: npm run lint --if-present
 
-      - name: Unit Testing
-        run: npm run test --if-present
+#      - name: Unit Testing
+#        run: npm run test --if-present
 
   build_frontend:
     runs-on: ubuntu-latest
