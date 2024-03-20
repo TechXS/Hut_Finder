@@ -54,3 +54,92 @@ jobs:
         env:
           DOCKER_CLI_ACI: 1
 
+          
+To incorporate the release creation workflow into your existing frontend build and deploy workflow, you can merge the two YAML files together. Here's the combined YAML code:
+
+yaml
+Copy code
+name: Build and deploy the Frontend
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  lint_and_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js version
+        uses: actions/setup-node@v3
+        with:
+          node-version: "21.x"
+
+      - name: Install Dependencies
+        run: npm install
+
+      # Uncomment if needed
+      # - name: Linting
+      #   run: npm run lint --if-present
+
+      - name: Unit Testing
+        run: npm run test --if-present
+
+  build_frontend:
+    runs-on: ubuntu-latest
+    needs: lint_and_test
+
+    env:
+      VITE_BACKEND_API_URL: ${{ secrets.VITE_BACKEND_API_URL }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Docker build and push
+        run: |
+          # Commands to build and push docker images
+          docker build --build-arg BACKEND_API_URL=${{ secrets.BACKEND_API_URL }} -t hut_finder_frontend .
+          docker tag hut_finder_frontend hfindr.azurecr.io/hut_finder_frontend
+          docker login hfindr.azurecr.io -u ${{ secrets.ACR_USERNAME }} -p ${{ secrets.ACR_PASSWORD }}
+          docker push hfindr.azurecr.io/hut_finder_frontend:latest
+        env:
+          DOCKER_CLI_ACI: 1
+
+  create_release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: build_frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second 
+          draft: false
+          prerelease: false
+        
+
+
