@@ -24,7 +24,7 @@ app.use("/api", router);
 
 // app listening for requests
 app.listen(process.env.PORT || 2000, () =>
-    console.log(`Listening ooon port ${process.env.PORT || 2000}`)
+    console.log(`Listening o99oon port ${process.env.PORT || 2000}`)
 );
 
 //connect to db
