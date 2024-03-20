@@ -26,6 +26,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
+      #      - name: Linting
+      #        run: npm run lint --if-present
+
+#      - name: Unit Testing
+#        run: npm run test --if-present
 
   build_frontend:
     runs-on: ubuntu-latest
