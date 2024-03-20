@@ -7,16 +7,18 @@ import {selectPropertyData, setPropertyData,} from "../stores/landlordSlice";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-//import {useGetPropertyQuery} from "../stores/propertyApi.js";
+import {useGetPropertyQuery} from "../stores/landlordApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../stores/notificationSlice.js";
+import {selectCurrentLandlord} from "../stores/landlordSlice.js"
 
 
 const Property = () => {
     const dispatch = useDispatch();
+    const landlord = useSelector(selectCurrentLandlord)
     const propertyData = useSelector(selectPropertyData);
     const {id, layout} = useParams();
     const [Loading, setLoading] = useState(false);
-    const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertyQuery(id)
+    const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertyQuery({id:landlord._id,property_id:id})
     const {success, error, isLoading} = useSelector(notification);
 
 
@@ -37,29 +39,6 @@ const Property = () => {
         } else {
             dispatch(setLoadingNotification(propertyLoading));
         }
-        //
-        // fetch(`${import.meta.env.VITE_BACKEND_API_URL}/api/property/${id}`, {
-        //     method: "GET",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //     },
-        //     credentials: "include",
-        // })
-        //     .then(async (response) => {
-        //         if (response.status !== 200) {
-        //             const data = await response.json();
-        //             throw new Error(data.message);
-        //         }
-        //         return response.json();
-        //     })
-        //     .then((data) => {
-        //         setLoading(false);
-        //         dispatch(setPropertyData(data));
-        //     })
-        //     .catch((error) => {
-        //         setLoading(false);
-        //         dispatch(setGetDataError(error.message));
-        //     });
     }, [property, fetchError, propertyLoading]);
 
     return (

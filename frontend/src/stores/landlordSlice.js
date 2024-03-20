@@ -25,7 +25,7 @@ export const landlordSlice = createSlice({
       state.signupForm.error = null;
       state.signupForm.data = {};
       state.forgotPassSuccess = null;
-      state.currentLandlord = { ...action.payload, role: "Landlord" };
+      state.currentLandlord = { ...action.payload, role: "landlord" };
     },
     setLoginForm: (state, action) => {
       state.loginForm.error = null;
@@ -108,13 +108,12 @@ export const selectPropertyData = (state) => state.landlord.propertyData;
 
 export const selectLandlordData = (state) => {
   return {
-    properties: state.landlord.landlordData.landlord?.properties,
-    totalRentDue: state.landlord.landlordData.totalRentDue,
-    totalVacantUnits: state.landlord.landlordData.totalVacantUnits,
-    rentCollected: state.landlord.landlordData.totalRentCollected,
+    properties: state.landlord.landlordData?.properties,
+    appointments: state.landlord.landlordData?.appointments,
+    totalVacantUnits:state.landlord.landlordData?.totalVacantUnits,
+    totalProperties:state.landlord.landlordData?.totalProperties,
+    totalPendingAppointments:state.landlord.landlordData?.totalPendingAppointments,
     getDataError: state.landlord.getDataError,
-    propertiesStats: state.landlord.landlordData.propertiesStats,
-    totalRentToBePaid: state.landlord.landlordData.totalRentToBePaid,
   };
 };
 

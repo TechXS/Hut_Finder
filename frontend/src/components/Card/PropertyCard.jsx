@@ -10,6 +10,7 @@ import AddIcon from '@mui/icons-material/Add';
 
 const PropertyCard = ({data}) => {
     const {properties} = useSelector(selectLandlordData);
+
     return (
         <>
             <Box sx={{display: "flex", flexWrap: "wrap", gap: "20px"}}>
@@ -74,7 +75,7 @@ const PropertyCard = ({data}) => {
                                             color="text.secondary"
                                             gutterBottom
                                         >
-                                            {property.location}
+                                            {property.location.city && property.location.country ? `${property.location.city}, ${property.location.country}` : property.location.city ?? property.location.country ?? property.location.continent ?? property.location.formatted}
 
                                         </Typography>
                                     </div>
