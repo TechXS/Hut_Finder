@@ -27,7 +27,13 @@ const unitSchema = new Schema(
         },
         images: [
             {
-                type: String,
+                publicId: {
+                    type: String,
+
+                },
+                imageUrl: {
+                    type: String,
+                }
             }
         ],
         special_amenities: [{

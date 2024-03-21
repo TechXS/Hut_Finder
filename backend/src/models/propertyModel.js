@@ -20,8 +20,13 @@ const propertySchema = new Schema(
         },
         images: [
             {
-                type: String,
+                publicId: {
+                    type: String,
 
+                },
+                imageUrl: {
+                    type: String,
+                }
             }
         ],
         amenities: [{

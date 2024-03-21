@@ -3,18 +3,20 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useRef, useState } from 'react'
 
 
-const ImageuploadSingle = () => {
+const ImageuploadSingle = ({onFileUpload, url, role}) => {
     const inputRef = useRef(null);
     const [image, setImage] = useState('')
     
-    const handleSubmit=()=>{
+    const handleSubmit=(file)=>{
         inputRef.current.click();
+        onFileUpload(file);
     };
     const handleImageChange =(event)=>{
         const file = event.target.files[0];
         if (file){
-            console.log(file);
-            setImage(file)
+            console.log("file\n", file);
+            // setImage(file)
+            handleSubmit(file);
         }
     };
 

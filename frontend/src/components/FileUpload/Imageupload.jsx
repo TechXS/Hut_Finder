@@ -41,6 +41,10 @@ const Imageupload =forwardRef((props, ref) => {
             props.updateUnitImages([...images, file])
             console.log('added unit images')
         }
+        if (props.updatePropertyPhotos){
+            props.updatePropertyPhotos([...images, file])
+            console.log('added new property images')
+        }
     };
 
   return (
