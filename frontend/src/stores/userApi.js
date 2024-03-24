@@ -9,7 +9,7 @@ export const userApi = createApi({
       const accessToken = sessionStorage.getItem("token");
       if (accessToken) {
         headers.set("authorization", `Bearer ${accessToken}`);
-        headers.set("Content-Type", "application/json");
+        // headers.set("Content-Type", "application/json");
       }
       return headers;
     },

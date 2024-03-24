@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./profile.scss";
 //import Approval from '../Approval/Approval';
 import Datatable from '../Approval/Approval';
@@ -15,7 +15,9 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [profilePicture, setProfilePicture] = useState(null);
+  const [uploadPic, setUploadPic] = useState(null);
   const [savedFields, setSavedFields] = useState({
+    name: Landlord?.name,
     email: Landlord?.email,
     phone: Landlord?.phoneNumber,
     Role: Landlord?.role
@@ -34,18 +36,12 @@ const Profile = () => {
     error: uploadError
   }] = useUploadProfileImageMutation()
 
-
+  useEffect(() => {
+    setProfilePicture(Landlord?.imageUrl)
+    console.log("profilePicture set")
+  },[]);
 
   const handleEditClick = async () => {
-    // if (isEditing) {
-    //   if (validateFields(editedFields)) {
-        // setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-    //   } else {
-    //     alert('Please fill in all the fields with valid values.');
-    //     return;
-    //   }
-    // }
-    // setIsEditing(!isEditing);
     if (isEditing === false) {
       setIsEditing(!isEditing);
     } else {
@@ -56,7 +52,11 @@ const Profile = () => {
           alert('Please fill in all the fields with valid values.');
           return;
         }
-          // const response = await updateProfileValidation(editedFields)
+        console.log("profilePicture", profilePicture)
+        if (uploadPic){
+          console.log("uploading")
+          upload(uploadPic);
+        }
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
           const newProfile = await updateProfile({
               id: Landlord._id,
@@ -120,28 +120,37 @@ const Profile = () => {
     }
   };
   const upload = async (file) => {
+    console.log("file", file)
     const formData = new FormData();
-    formData.append("userImage", file, file.name);
+    formData.append("hutFinder-profileImages", file, file.name);
+    // console.log("formData", formData);
+    for(var pair of formData.entries()) {
+      console.log(pair[0]+ ', '+ pair[1]);
+    }
     try {
         const response = await uploadProfileImage({
           id: Landlord._id, 
           layout: "landlord", 
           payload: formData
         }).unwrap()
-        setProfilePicture(response.data.url);
-        // localStorage.setItem("currentLandlord", JSON.stringify(response));
+        console.log("response", response)
+        setProfilePicture(response.imageUrl);
+        console.log("profilePicture", profilePicture)
+        localStorage.setItem("currentLandlord", JSON.stringify(response));
+        setUploadPic(null)
         // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
         // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
     } catch (e) {
         console.log(e)
         console.log(e.data.message)
+        setUploadPic(null)
         // dispatch(setGetDataError(`Failed to update landlord Profile Image`));
         // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"}  Profile Image`));
     }
   }
 
-  const handleFileUpload = (file, name) => {
-    upload(file, name)
+  const handleFileUpload = async (file) => {
+    setUploadPic(file)
   };
 
   return (
@@ -154,25 +163,19 @@ const Profile = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            {/* <img
-              src={Landlord?.imageUrl}
-              alt=""
-              className="itemImg"
-            />
-            <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/> */}
             {
               isEditing ? (
                 <>
                   <img
-                    src={Landlord?.imageUrl}
+                    src={profilePicture}
                     alt=""
                     className="itemImg"
                   />
-                  <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/>
+                  <ImageuploadSingle handleFileUpload={handleFileUpload}/>
                 </>
               ) : (
                 <img
-                  src={Landlord?.imageUrl}
+                  src={profilePicture}
                   alt=""
                   className="itemImg"
                 />
@@ -180,6 +183,10 @@ const Profile = () => {
             }
             <div className="details">
               <h1 className="itemTitle">{Landlord?.name}</h1>
+              <div className="detailItem">
+                <span className="itemKey">Name:</span>
+                {renderFieldValue("name", true)}
+              </div>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}

@@ -207,7 +207,11 @@ const uploadImage = async (req, res) => {
 
     try {
         const result = await uploadToCloudinary(file.path, "hutFinder-profileImages");
-        const client = await Client.findByIdAndUpdate(id, { profile_picture: result.url }, { new: true });
+        const client = await Client.findByIdAndUpdate(
+            id, 
+            { publicId: result.public_id, imageUrl: result.url }, 
+            { new: true }
+        );
         res.status(200).json(client);
     } catch (error) {
         console.error('Error uploading image:', error);

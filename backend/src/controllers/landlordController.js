@@ -5,7 +5,7 @@ const Amenity = require('../models/amenityModel')
 const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
 const { response } = require('express');
-
+const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
 
 //Get all Properties
 const getAllProperties = async (req, res) => {
@@ -24,9 +24,8 @@ const getLandlordData = async (req, res) => {
     const { id } = req.params;
     try {
         if (!isValidObjectId(id)) {
-            console.log('NOT AMENITES so i wonder')
             return res.status(404).json({
-                message: 'Landlord does not exist peaceeeee',
+                message: 'Landlord does not exist',
                 error: "Not Valid ID"
             });
         }
@@ -66,7 +65,7 @@ const getLandlordData = async (req, res) => {
         };
 
         res.json(modifiedLandlord);
-        console.log("landlord and not amenitiessssssssssssss\n");
+        console.log("landlord Data retrieved\n");
     } catch (error) {
         res.status(500).json({ message: 'Could not retrieve landlord data', error: error.message });
     }
@@ -174,6 +173,7 @@ const updateLandlord = (req, res) => {
 
 //upload image
 const uploadImage = async (req, res) => {
+    console.log("upload image func")
     const { id } = req.params;
     const file = req.file;
     console.log("file", file);
@@ -184,7 +184,11 @@ const uploadImage = async (req, res) => {
 
     try {
         const result = await uploadToCloudinary(file.path, "hutFinder-profileImages");
-        const landLord = await Landlord.findByIdAndUpdate(id, { profile_picture: result.url }, { new: true });
+        const landLord = await Landlord.findByIdAndUpdate(
+            id, 
+            { publicId: result.public_id, imageUrl: result.url }, 
+            { new: true }
+        );
         res.status(200).json(landLord);
     } catch (error) {
         console.error('Error uploading image:', error);
@@ -210,7 +214,7 @@ const getAllAmenities = async (req, res) => {
         res.json(uniqueAmenites);
     } catch (error) {
         res.status(500).json({message: 'Could not get all amenities', error: error.message});
-        console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrror\n", error);
+        console.log("error\n", error);
     }
 
 }

@@ -19,13 +19,13 @@ const router = Router();
 
 // router.get('/:id/properties', getAllProperties)
 // router.post('/create', createLandlord)
-
+  
 //post
+router.post('/image/:id', upload.single('hutFinder-profileImages'), uploadImage);
 router.post('/:id', upload.fields([
     {name: 'propertyImages', maxCount: 10},
     {name: 'unitImages', maxCount: 50},
 ]),createProperty);
-router.post('/image/:id', upload.single("hutFinder-profileImages"), uploadImage);
 router.post('/:id/property/image', upload.fields([
     {name: 'new_pImages', maxCount: 10}
 ]), uploadpImage);

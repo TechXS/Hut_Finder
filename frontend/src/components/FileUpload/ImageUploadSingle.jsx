@@ -1,22 +1,34 @@
+/* eslint-disable react/display-name */
 import { Box, Button, Input, Paper } from '@mui/material'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import React, { useRef, useState } from 'react'
+import  { forwardRef, useRef, useState, useImperativeHandle } from 'react'
 
 
-const ImageuploadSingle = ({onFileUpload, url, role}) => {
+const ImageuploadSingle = forwardRef((props, ref) => {
     const inputRef = useRef(null);
     const [image, setImage] = useState('')
-    
-    const handleSubmit=(file)=>{
+    const handlePreview=()=>{
         inputRef.current.click();
-        onFileUpload(file);
     };
-    const handleImageChange =(event)=>{
+    useImperativeHandle(ref, () => ({
+        submitForm: () => {
+            //put submit logic here
+
+
+
+          console.log(image)
+          setImage('')
+        },
+      }));
+    const handleImageChange = async (event)=>{
         const file = event.target.files[0];
         if (file){
-            console.log("file\n", file);
-            // setImage(file)
-            handleSubmit(file);
+            // console.log("file\n", file);
+            setImage(file)
+        }
+        if(props.handleFileUpload){
+            props.handleFileUpload(file)
+            console.log('added profile image cc')
         }
     };
 
@@ -39,7 +51,7 @@ const ImageuploadSingle = ({onFileUpload, url, role}) => {
                 <Button  
                 startIcon={<CloudUploadIcon />} 
                 variant="contained" 
-                onClick={handleSubmit}
+                onClick={handlePreview}
                 sx={{margin:'5px'}}>
                     Add Image
             </Button>
@@ -57,6 +69,6 @@ const ImageuploadSingle = ({onFileUpload, url, role}) => {
         </Paper>
     </div>
   )
-}
+})
 
 export default ImageuploadSingle
