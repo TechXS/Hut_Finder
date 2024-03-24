@@ -49,16 +49,11 @@ const ProfileClient = () => {
   },[]);
 
   const handleEditClick = () => {
-    // if (isEditing) {
-
-    // }
-    // setIsEditing(!isEditing);
     if (isEditing === false) {
       setIsEditing(!isEditing);
     } else {
       try {
         console.log('Edited fields:', editedFields)
-        // const response = updateProfileValidation(editedFields)
         if (validateFields(editedFields)) {
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
         } else {
@@ -154,10 +149,7 @@ const ProfileClient = () => {
   }
 
   const handleFileUpload = (file) => {
-    // upload(file)
-    // setProfilePicture(file);
     setUploadPic(file);
-    console.log('handlefile upload\n', file);
   };
 
   return (

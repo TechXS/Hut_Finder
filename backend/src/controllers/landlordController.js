@@ -25,7 +25,7 @@ const getLandlordData = async (req, res) => {
     try {
         if (!isValidObjectId(id)) {
             return res.status(404).json({
-                message: 'Landlord does not exist peaceeeee',
+                message: 'Landlord does not exist',
                 error: "Not Valid ID"
             });
         }

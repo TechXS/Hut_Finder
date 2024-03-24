@@ -57,7 +57,6 @@ const Profile = () => {
           console.log("uploading")
           upload(uploadPic);
         }
-          // const response = await updateProfileValidation(editedFields)
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
           const newProfile = await updateProfile({
               id: Landlord._id,
@@ -151,9 +150,7 @@ const Profile = () => {
   }
 
   const handleFileUpload = async (file) => {
-    // setProfilePicture(file)
     setUploadPic(file)
-    // upload(file)
   };
 
   return (
@@ -166,27 +163,18 @@ const Profile = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            {/* <img
-              src={Landlord?.imageUrl}
-              alt=""
-              className="itemImg"
-            />
-            <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/> */}
             {
               isEditing ? (
                 <>
                   <img
-                    // src={Landlord?.imageUrl}
                     src={profilePicture}
                     alt=""
                     className="itemImg"
                   />
                   <ImageuploadSingle handleFileUpload={handleFileUpload}/>
-                  {/* <Imageupload handleFileUpload={handleFileUpload}/> */}
                 </>
               ) : (
                 <img
-                  // src={Landlord?.imageUrl}
                   src={profilePicture}
                   alt=""
                   className="itemImg"
