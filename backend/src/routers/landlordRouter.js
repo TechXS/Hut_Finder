@@ -22,9 +22,6 @@ const router = Router();
   
 //post
 router.post('/image/:id', upload.single('hutFinder-profileImages'), uploadImage);
-// router.post('/image/:id', upload.fields([
-//     {name: 'profileImages', maxCount: 1}
-// ]), uploadImage);
 router.post('/:id', upload.fields([
     {name: 'propertyImages', maxCount: 10},
     {name: 'unitImages', maxCount: 50},

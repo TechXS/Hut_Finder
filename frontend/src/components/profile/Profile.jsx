@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./profile.scss";
 //import Approval from '../Approval/Approval';
 import Datatable from '../Approval/Approval';
@@ -7,7 +7,6 @@ import { selectCurrentLandlord, selectGetDataError } from '../../stores/landlord
 import {useUpdateProfileMutation, useUploadProfileImageMutation} from '../../stores/userApi';
 import { updateProfileValidation } from '../../utils/formValidation';
 import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
-import Imageupload from '../FileUpload/Imageupload';
 
 const Profile = () => {
   const Landlord = useSelector(selectCurrentLandlord);
@@ -16,6 +15,7 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [profilePicture, setProfilePicture] = useState(null);
+  const [uploadPic, setUploadPic] = useState(null);
   const [savedFields, setSavedFields] = useState({
     name: Landlord?.name,
     email: Landlord?.email,
@@ -36,7 +36,10 @@ const Profile = () => {
     error: uploadError
   }] = useUploadProfileImageMutation()
 
-
+  useEffect(() => {
+    setProfilePicture(Landlord?.imageUrl)
+    console.log("profilePicture set")
+  },[]);
 
   const handleEditClick = async () => {
     if (isEditing === false) {
@@ -49,11 +52,11 @@ const Profile = () => {
           alert('Please fill in all the fields with valid values.');
           return;
         }
-        // console.log("profilePicture", profilePicture)
-        // if (profilePicture){
-        //   console.log("uploading")
-        //   upload(profilePicture);
-        // }
+        console.log("profilePicture", profilePicture)
+        if (uploadPic){
+          console.log("uploading")
+          upload(uploadPic);
+        }
           // const response = await updateProfileValidation(editedFields)
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
           const newProfile = await updateProfile({
@@ -125,35 +128,23 @@ const Profile = () => {
     for(var pair of formData.entries()) {
       console.log(pair[0]+ ', '+ pair[1]);
     }
-    // Iterate over form data entries
-    // Initialize total size
-    // let totalSize = 0;
-
-    // // Iterate over form data entries
-    // for (const entry of formData.entries()) {
-    //     // Calculate the size of each entry
-    //     // const keySize = entry[0] ? entry[0].toString().length : 0;
-    //     const valueSize = entry[1] ? entry[1].toString().length : 0;
-    //     totalSize += valueSize;
-    // }
-
-    // // Convert total size to KB
-    // const totalSizeKB = totalSize / 1024;
-
-    // console.log("Size of form data:", totalSizeKB, "KB");
     try {
         const response = await uploadProfileImage({
           id: Landlord._id, 
           layout: "landlord", 
           payload: formData
         }).unwrap()
-        // setProfilePicture(response.data.url);
-        // localStorage.setItem("currentLandlord", JSON.stringify(response));
+        console.log("response", response)
+        setProfilePicture(response.imageUrl);
+        console.log("profilePicture", profilePicture)
+        localStorage.setItem("currentLandlord", JSON.stringify(response));
+        setUploadPic(null)
         // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
         // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
     } catch (e) {
         console.log(e)
         console.log(e.data.message)
+        setUploadPic(null)
         // dispatch(setGetDataError(`Failed to update landlord Profile Image`));
         // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"}  Profile Image`));
     }
@@ -161,7 +152,8 @@ const Profile = () => {
 
   const handleFileUpload = async (file) => {
     // setProfilePicture(file)
-    upload(file)
+    setUploadPic(file)
+    // upload(file)
   };
 
   return (
@@ -184,7 +176,8 @@ const Profile = () => {
               isEditing ? (
                 <>
                   <img
-                    src={Landlord?.imageUrl}
+                    // src={Landlord?.imageUrl}
+                    src={profilePicture}
                     alt=""
                     className="itemImg"
                   />
@@ -193,7 +186,8 @@ const Profile = () => {
                 </>
               ) : (
                 <img
-                  src={Landlord?.imageUrl}
+                  // src={Landlord?.imageUrl}
+                  src={profilePicture}
                   alt=""
                   className="itemImg"
                 />

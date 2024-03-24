@@ -28,7 +28,7 @@ const ImageuploadSingle = forwardRef((props, ref) => {
         }
         if(props.handleFileUpload){
             props.handleFileUpload(file)
-            console.log('added profile image')
+            console.log('added profile image cc')
         }
     };
 

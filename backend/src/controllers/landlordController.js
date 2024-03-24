@@ -24,7 +24,6 @@ const getLandlordData = async (req, res) => {
     const { id } = req.params;
     try {
         if (!isValidObjectId(id)) {
-            console.log('NOT AMENITES so i wonder')
             return res.status(404).json({
                 message: 'Landlord does not exist peaceeeee',
                 error: "Not Valid ID"
@@ -66,7 +65,7 @@ const getLandlordData = async (req, res) => {
         };
 
         res.json(modifiedLandlord);
-        console.log("landlord and not amenitiessssssssssssss\n");
+        console.log("landlord Data retrieved\n");
     } catch (error) {
         res.status(500).json({ message: 'Could not retrieve landlord data', error: error.message });
     }
@@ -215,7 +214,7 @@ const getAllAmenities = async (req, res) => {
         res.json(uniqueAmenites);
     } catch (error) {
         res.status(500).json({message: 'Could not get all amenities', error: error.message});
-        console.log("errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrror\n", error);
+        console.log("error\n", error);
     }
 
 }

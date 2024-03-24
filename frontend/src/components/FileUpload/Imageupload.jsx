@@ -45,10 +45,6 @@ const Imageupload =forwardRef((props, ref) => {
             props.updatePropertyPhotos([...images, file])
             console.log('added new property images')
         }
-        if (props.handleFileUpload){
-            props.handleFileUpload(file)
-            console.log('added new profile images')
-        }
     };
 
   return (
