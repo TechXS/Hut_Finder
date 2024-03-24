@@ -39,7 +39,7 @@ const landlordSchema = new Schema(
             default: "https://res.cloudinary.com/dlhv79tzp/image/upload/v1688329957/user-images/nsn2dlabvge32pbgoxhr.jpg",
         }
     },
-    {timestamps: true}
+    {timestamps: true} 
 );
 
 //Mongoose Life hooks ---- before save

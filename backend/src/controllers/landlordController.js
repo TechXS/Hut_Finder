@@ -5,7 +5,7 @@ const Amenity = require('../models/amenityModel')
 const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
 const { response } = require('express');
-
+const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
 
 //Get all Properties
 const getAllProperties = async (req, res) => {
@@ -174,6 +174,7 @@ const updateLandlord = (req, res) => {
 
 //upload image
 const uploadImage = async (req, res) => {
+    console.log("upload image func")
     const { id } = req.params;
     const file = req.file;
     console.log("file", file);
@@ -184,7 +185,11 @@ const uploadImage = async (req, res) => {
 
     try {
         const result = await uploadToCloudinary(file.path, "hutFinder-profileImages");
-        const landLord = await Landlord.findByIdAndUpdate(id, { profile_picture: result.url }, { new: true });
+        const landLord = await Landlord.findByIdAndUpdate(
+            id, 
+            { publicId: result.public_id, imageUrl: result.url }, 
+            { new: true }
+        );
         res.status(200).json(landLord);
     } catch (error) {
         console.error('Error uploading image:', error);

@@ -7,6 +7,7 @@ import { selectCurrentLandlord, selectGetDataError } from '../../stores/landlord
 import {useUpdateProfileMutation, useUploadProfileImageMutation} from '../../stores/userApi';
 import { updateProfileValidation } from '../../utils/formValidation';
 import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
+import Imageupload from '../FileUpload/Imageupload';
 
 const Profile = () => {
   const Landlord = useSelector(selectCurrentLandlord);
@@ -16,6 +17,7 @@ const Profile = () => {
   const [editedFields, setEditedFields] = useState({});
   const [profilePicture, setProfilePicture] = useState(null);
   const [savedFields, setSavedFields] = useState({
+    name: Landlord?.name,
     email: Landlord?.email,
     phone: Landlord?.phoneNumber,
     Role: Landlord?.role
@@ -37,15 +39,6 @@ const Profile = () => {
 
 
   const handleEditClick = async () => {
-    // if (isEditing) {
-    //   if (validateFields(editedFields)) {
-        // setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-    //   } else {
-    //     alert('Please fill in all the fields with valid values.');
-    //     return;
-    //   }
-    // }
-    // setIsEditing(!isEditing);
     if (isEditing === false) {
       setIsEditing(!isEditing);
     } else {
@@ -56,6 +49,11 @@ const Profile = () => {
           alert('Please fill in all the fields with valid values.');
           return;
         }
+        // console.log("profilePicture", profilePicture)
+        // if (profilePicture){
+        //   console.log("uploading")
+        //   upload(profilePicture);
+        // }
           // const response = await updateProfileValidation(editedFields)
           setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
           const newProfile = await updateProfile({
@@ -120,15 +118,36 @@ const Profile = () => {
     }
   };
   const upload = async (file) => {
+    console.log("file", file)
     const formData = new FormData();
-    formData.append("userImage", file, file.name);
+    formData.append("hutFinder-profileImages", file, file.name);
+    // console.log("formData", formData);
+    for(var pair of formData.entries()) {
+      console.log(pair[0]+ ', '+ pair[1]);
+    }
+    // Iterate over form data entries
+    // Initialize total size
+    // let totalSize = 0;
+
+    // // Iterate over form data entries
+    // for (const entry of formData.entries()) {
+    //     // Calculate the size of each entry
+    //     // const keySize = entry[0] ? entry[0].toString().length : 0;
+    //     const valueSize = entry[1] ? entry[1].toString().length : 0;
+    //     totalSize += valueSize;
+    // }
+
+    // // Convert total size to KB
+    // const totalSizeKB = totalSize / 1024;
+
+    // console.log("Size of form data:", totalSizeKB, "KB");
     try {
         const response = await uploadProfileImage({
           id: Landlord._id, 
           layout: "landlord", 
           payload: formData
         }).unwrap()
-        setProfilePicture(response.data.url);
+        // setProfilePicture(response.data.url);
         // localStorage.setItem("currentLandlord", JSON.stringify(response));
         // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
         // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
@@ -140,8 +159,9 @@ const Profile = () => {
     }
   }
 
-  const handleFileUpload = (file, name) => {
-    upload(file, name)
+  const handleFileUpload = async (file) => {
+    // setProfilePicture(file)
+    upload(file)
   };
 
   return (
@@ -168,7 +188,8 @@ const Profile = () => {
                     alt=""
                     className="itemImg"
                   />
-                  <ImageuploadSingle onFileUpload={handleFileUpload} url={Landlord.imageUrl}/>
+                  <ImageuploadSingle handleFileUpload={handleFileUpload}/>
+                  {/* <Imageupload handleFileUpload={handleFileUpload}/> */}
                 </>
               ) : (
                 <img
@@ -180,6 +201,10 @@ const Profile = () => {
             }
             <div className="details">
               <h1 className="itemTitle">{Landlord?.name}</h1>
+              <div className="detailItem">
+                <span className="itemKey">Name:</span>
+                {renderFieldValue("name", true)}
+              </div>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}
