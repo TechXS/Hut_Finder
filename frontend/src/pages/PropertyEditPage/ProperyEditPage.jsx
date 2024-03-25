@@ -2,16 +2,6 @@ import "./PropertEditPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
 import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import ArrowCircleRightIcon from '@mui/icons-material/ArrowCircleRight';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import CancelIcon from '@mui/icons-material/Cancel';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ApartmentIcon from '@mui/icons-material/Apartment';
-import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
-import WifiIcon from '@mui/icons-material/Wifi';
-import BathtubIcon from '@mui/icons-material/Bathtub';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import {useEffect, useState} from "react";
 import Button from '@mui/material/Button';
 import { Box, TextField } from "@mui/material";
@@ -71,6 +61,7 @@ const PropertyEditPage = () => {
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
   const imageUploadRef1 = useRef();
+  const unitUploadRef1 = useRef();
   const [photos, setPhotos] = useState([]);
   const [amenities, setAmenities] = useState([]);
   const [editedUnitDets, setEditedUnitDets] = useState([]);
@@ -183,6 +174,7 @@ const PropertyEditPage = () => {
   const handleAmenitiesDelete = (index) => {
     if (index >= 0 && amenities.length > index) {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
+      console.log(updatedAmenities)
       setAmenities(updatedAmenities);
       console.log('updated amenities\n', updatedAmenities)
       setFormData({...formData, updated_amenities: updatedAmenities})
@@ -353,7 +345,7 @@ useEffect(()=> {
                         <div className="PropDetailsExtra">
                           <div className="PropDetailsWrapper">
                             <div className="PropIcons">
-                              {property?.amenities.map(
+                              {amenities.map(
                                 (amenity, index) => (
                                 <div className="iconWithText" key={index}>
                                 <span className="material-symbols-outlined">{amenity.icon}</span>
@@ -399,7 +391,7 @@ useEffect(()=> {
                     <div className="flex-container">
                       {
                         property.units && property.units.map((unit, index) => (
-                            <ListingItemEdit unit={unit} key={index} updatedUnit={updatedUnit}/>
+                            <ListingItemEdit ref={unitUploadRef1} unit={unit} key={index} updatedUnit={updatedUnit}/>
                         ))
                       }
                     </div>

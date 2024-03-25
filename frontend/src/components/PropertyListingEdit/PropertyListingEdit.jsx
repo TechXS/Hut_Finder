@@ -1,12 +1,48 @@
-import { useState } from "react";
-import ImageuploadSingle from "../FileUpload/ImageUploadSingle";
+import { useState, forwardRef, useImperativeHandle, useRef} from "react";
+import Imageupload from "../FileUpload/Imageupload.jsx";
 import "./PropertListingEdit.css";
 import { Box, TextField } from "@mui/material";
-import Carousel from "../Carousel/Carousel";
+import CarouselEdit from "../CarouseEdit/CarouselEdit.jsx";
 import { Button } from "@mui/base";
 import {unitTypes} from "../../utils/dataUtil.js";
-export default function ListingItemEdit({ unit, updatedUnit }) {
+import AddAmenities from "../AddAmenities/AddAmenities.jsx";
+import { 
+  useGetAllAmenitiesQuery,
+} from "../../stores/landlordApi";
+
+import * as React from 'react';
+import Modal from '@mui/material/Modal';
+
+const PropertyListingEdit = forwardRef(( props ,ref) => {
+  const { data: all_amenities, error: amenitiesError, isLoading: amenitiesLoading } = useGetAllAmenitiesQuery();
+  // console.log('all_amenities\n', all_amenities)
+  if (amenitiesError){
+    console.error(amenitiesError)
+  } 
+
+
+  const {unit, updatedUnit} = props
+
+  const amenityUploadRef = useRef();
   // console.log('e', unit);
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
+
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [addedAmenities, setAddedAmenities] = useState([]);
+
   const [listing, setListing] = useState(unit);
   const carouselData = unit && unit.images && unit.images.map((image) => ({
     src: image.imageUrl,
@@ -25,22 +61,51 @@ export default function ListingItemEdit({ unit, updatedUnit }) {
     }))
   }
 
+  useImperativeHandle(ref, () => ({
+    submitForm: () => {
+        //put submit logic here
+
+        // updatedUnit(unitObj);
+
+      console.log('ello govner')
+      
+    },
+  }));
+
   const handleSubmit = (event)=>{
     event.preventDefault();
+    //put the submit function here 
+    console.log('addedAmenities\n', addedAmenities)
+    console.log()
     updatedUnit(unitObj);
   }
+
+  const addedAmenitiesHandler = async (amenity) => {
+    setAddedAmenities(amenity);
+  } 
+
   return (
     <div className="listing-card">
-      <div className="carousel-wrapper">
-        <Carousel data={carouselData}/> {/* Render the Carousel component */}
+      <div className="carousel-wrapper" >
+      <img src={carouselData[0].src} alt="hellp"  onClick={handleOpen}/>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+        <CarouselEdit data={carouselData}/> {/* Render the Carousel component */}
+        </Box>
+      </Modal>
+
       </div>
-      <ImageuploadSingle />
+      <Imageupload />
       <div className='listing-details'>
         <p className='listing-name'>{unitTypes[listing.type].type}</p>
         <div className="listing-desc">
             <Box
             component={"form"}
-            
             >
 
           <TextField 
@@ -66,6 +131,9 @@ export default function ListingItemEdit({ unit, updatedUnit }) {
           <Button type="submit" onClick={handleSubmit}>SUbmit</Button>
             </Box>
         </div>
+        <AddAmenities
+        ref={amenityUploadRef} handleSubmit={handleSubmit} amenities={all_amenities} addedAmenitiesHandler={addedAmenitiesHandler}
+        />
         <div className='listing-features'>
           {
             listing?.special_amenities?.map((special_amenity, index) => (
@@ -76,4 +144,5 @@ export default function ListingItemEdit({ unit, updatedUnit }) {
       </div>
     </div>
   );
-}
+})
+export default PropertyListingEdit

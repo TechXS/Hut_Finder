@@ -57,9 +57,11 @@ const AddAmenities = forwardRef((props, ref) => {
             >
                 {amenities.map((amenit, index)=>(
                         <MenuItem value={amenit} key={index}>
-                            <ListItemIcon>
+                            <span
+                            className="material-symbols-outlined"
+                            >
                                 {amenit.icon}
-                            </ListItemIcon>
+                            </span>
                             <ListItemText>{amenit.name}</ListItemText>
                             {/* {handleIdset(amenit._id)} */}
                             </MenuItem>
@@ -76,10 +78,10 @@ const AddAmenities = forwardRef((props, ref) => {
                         <MenuItem
                             sx={{width:'10px'}}
                          value={amenit.name} key={index}>
-                            <ListItemIcon>
+                            <span className="material-symbols-outlined">
                                 {amenit.icon}
-                            </ListItemIcon>
-                            <ListItemText>{amenit.name}</ListItemText>
+                            </span>
+                            
                             </MenuItem>
                 ))}
         </Box>
