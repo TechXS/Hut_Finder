@@ -73,7 +73,7 @@ export const propertyForm = (state) => {
         propertyError: state.property.propertyForm.error,
         unitData: state.property.propertyForm.data.unitTypes,
         unit: state.property.unitForm
-    };
+    }; 
 };
 
 export const selectCurrentProperty = (state) => state.property.currentProperty;
