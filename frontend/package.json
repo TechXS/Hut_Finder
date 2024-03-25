@@ -7,7 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "e2e": "cypress open",
+    "test": "cypress run",
+    "info": "cypress info",
+    "coverage": "npx nyc report --reporter=text-summary"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

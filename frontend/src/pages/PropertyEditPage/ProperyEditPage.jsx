@@ -25,23 +25,98 @@ import AddAmenities from "../../components/AddAmenities/AddAmenities";
 import {useDispatch, useSelector} from "react-redux";
 import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../stores/landlordSlice.js";
 import {useParams} from "react-router-dom";
-import {useGetPropertyQuery} from "../../stores/landlordApi.js";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
+import { pimageDta } from "../../utils/formValidation.js";
+import { 
+  useGetPropertiesQuery,
+  useGetPropertyQuery, 
+  useGetAllAmenitiesQuery,
+  useUpdatePropertyMutation,
+  useUpdateUnitMutation,
+  useDeleteImageMutation,
+  useUploadImageMutation
+} from "../../stores/landlordApi";
+// import { selectCurrentProperty } from "../../stores/propertySlice";
 
-const PropertyEditPage = () => {
-  const dispatch = useDispatch();
+
+const PropertyEditPage = () => { 
+
   const landlord = useSelector(selectCurrentLandlord)
-  const {id, layout} = useParams();
+  // console.log('landlord', landlord)
+  // const currentProperty = useSelector(selectCurrentProperty)
+  // console.log('currentProperty', currentProperty)
+  const dispatch = useDispatch();
+  const landlord_id = landlord._id;
+  // console.log('landlord_id', landlord_id)
+  const id = useParams().id
+  // const id = currentProperty._id;
+  // console.log('id', id) 
+  // console.log('current property id', currentProperty._id)
   const [Loading, setLoading] = useState(false);
-  const {data: property, isError, isLoading: propertyLoading, error: fetchError} = useGetPropertyQuery({id:landlord._id,property_id:id})
-  const {success, error, isLoading} = useSelector(notification);
-
+  const { data: properties, isError, isLoading: propertiesLoading, error: propertiesError } = useGetPropertiesQuery(landlord_id);
+  // console.log('id1', id, 'id2', landlord_id)
+  const { data: property, isError: propertyError , isLoading: propertyLoading, error: fetchError } = useGetPropertyQuery({id: landlord_id, property_id: id});
+  // console.log('properties\n', properties)
+  const { data: all_amenities, error: amenitiesError, isLoading: amenitiesLoading } = useGetAllAmenitiesQuery();
+  // console.log('all_amenities\n', all_amenities)
+  if (amenitiesError){
+    console.error(amenitiesError)
+  } 
+  const [addedAmenities, setAddedAmenities] = useState([]);
   const [location,setLocation] = useState({});
-    const [slideNumber, setSlideNumber] = useState(0);
+  const {success, error, isLoading} = useSelector(notification);
+  // const {id, layout} = useParams();
+  const [slideNumber, setSlideNumber] = useState(0);
   const [clicked,  setclicked] = useState(false)
   const [open, setOpen] = useState(false);
   const imageUploadRef1 = useRef();
+  const [photos, setPhotos] = useState([]);
+  const [amenities, setAmenities] = useState([]);
+  const [editedUnitDets, setEditedUnitDets] = useState([]);
+  const [pIMages, setPImages] = useState([]);
+  const [submitImage, setsubmitImage] = useState(false)
+  const [
+    updateProperty, {
+      data: updated_property, 
+      error: updatePropertyError, 
+      isLoading: updatePropertyLoading,
+      isError: updatePropertyIsError
+    }] = useUpdatePropertyMutation();
+  const [
+    updateUnit, {
+      data: updated_unit, 
+      error: updateUnitError, 
+      isLoading: updateUnitLoading,
+      isError: updateUnitIsError
+    }] = useUpdateUnitMutation();
+  const [
+    deleteImage, {
+      data: deleted_image, 
+      error: deleteImageError, 
+      isLoading: deleteImageLoading,
+      isError: deleteImageIsError
+    }] = useDeleteImageMutation();
+    const [
+      uploadImage, {
+        data: uploaded_image, 
+        error: uploadImageError, 
+        isLoading: uploadImageLoading,
+        isError: uploadImageIsError
+      }] = useUploadImageMutation();
+
+  const frmData = async (data) => {
+    setFormData(data);
+  }
+  const updatedUnit = async (unit) => {
+    setEditedUnitDets((prev) => [...prev, unit]);
+  }
+  const addedAmenitiesHandler = async (amenity) => {
+    setAddedAmenities(amenity);
+  }
+  const updatePropertyPhotos = async (photo) => {
+    setPImages(photo);
+  }
 
   useEffect(() => {
     setLoading(true)
@@ -65,6 +140,10 @@ const PropertyEditPage = () => {
 
       let location  = await handleReverseGeocode(property.location.coordinates[1],property.location.coordinates[0])
       setLocation(location)
+      const images = property?.images
+      setPhotos(images)
+      const amenities = property?.amenities
+      setAmenities(amenities)
     }catch (e) {
       console.error(e.message)
     }
@@ -77,73 +156,27 @@ const PropertyEditPage = () => {
     }
 
   }, [property]);
+  // console.log('property\n', property)
 
 
-
-  // const [photos, setPhotos] = useState([
-  //   {
-  //     src: "../../../public/images/property3.jpg",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707367.jpg?k=cbacfdeb8404af56a1a94812575d96f6b80f6740fd491d02c6fc3912a16d8757&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708745.jpg?k=1aae4678d645c63e0d90cdae8127b15f1e3232d4739bdf387a6578dc3b14bdfd&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261707776.jpg?k=054bb3e27c9e58d3bb1110349eb5e6e24dacd53fbb0316b9e2519b2bf3c520ae&o=&hp=1",
-  //   },
-  //   {
-  //     src: "https://cf.bstatic.com/xdata/images/hotel/max1280x900/261708693.jpg?k=ea210b4fa329fe302eab55dd9818c0571afba2abd2225ca3a36457f9afa74e94&o=&hp=1",
-  //   },
-  //   {
-  //     src: "../../../public/images/property3.jpg",
-  //   },
-  // ])
-
-  const photos = property?.images
-  //
-  // const [amenities ,setAmenities]= useState([
-  //   {
-  //       name: "Apartment",
-  //       element: <ApartmentIcon />
-  //   },
-  //   {
-  //       name: "Garden",
-  //       element: <LocalFloristIcon />
-  //   },
-  //   {
-  //       name: "Wifi",
-  //       element:<WifiIcon />
-  //   },
-  //   {
-  //       name: "Washrooms",
-  //       element:<BathtubIcon />
-  //   },
-  //   {
-  //       name:"Parking",
-  //       element: <LocalParkingIcon />
-  //   },
-  //   {
-  //       name:"View",
-  //       element:<VisibilityIcon />
-  //   }
-  //
-  // ])
-  const [formData, setFormData] = useState({})
-  const  propertyname = 'Cascade Plaza'
-  const  propertyDesc = 'Located a 5-minute walk from Juja city mall in Juja,Cascade Plaza is a spacious appartment with air conditioning and free WiFi installation. The units come with hardwood floors and feature a fully equipped kitchenette with sliding drawers, modern taps, and a private bathroom with shower. Popular points of interest near the apartment include Juja police station, Main Market Square and Aghakan  University Hospital. The nearest petrol station is Shell petrol, 16.1 km from Cascade Plaza, and the property offers a paid gabbage collection'
- 
+  const [formData, setFormData] = useState({}) 
 
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
   };
 
-  const handlePhotoDelete = (index) => {
+  const handlePhotoDelete = async (index) => {
     if (index >= 0 && photos.length > index) {
       const updatedPhotos = photos.filter((_, i) => i !== index);
       setPhotos(updatedPhotos);
+      const deletedPhotoId = photos[index].publicId;
+      console.log('deleted photo id\n', deletedPhotoId)
+      const deletedImage = await deleteImage({
+        id: id, 
+        payload: {data: deletedPhotoId}
+      }).unwrap();
+      console.log('deleted image\n', deletedImage)
     }
   };
 
@@ -151,6 +184,10 @@ const PropertyEditPage = () => {
     if (index >= 0 && amenities.length > index) {
       const updatedAmenities = amenities.filter((_, i) => i !== index);
       setAmenities(updatedAmenities);
+      console.log('updated amenities\n', updatedAmenities)
+      setFormData({...formData, updated_amenities: updatedAmenities})
+      console.log('form data\n', formData)
+
     }
   };
 
@@ -167,11 +204,78 @@ const PropertyEditPage = () => {
     setSlideNumber(newSlideNumber);
   };
 
-  const handleSubmit =(e)=>{
+  useEffect(() => {
+    (async () => {
+      console.log('useeeaddedAmenities\n', addedAmenities)
+      await frmData({...formData, amenities: addedAmenities})
+      console.log('useeefrmDATTTTAA\n', formData)
+      // if (formData.amenities){
+      //   console.log('1addedAmenities\n', addedAmenities)
+      //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   console.log('11frmDATTTTAA\n', formData)
+      // } else {
+      //   console.log('2222addedAmenities\n', addedAmenities)
+      //   await frmData({...formData, amenities: addedAmenities})
+      //   // setFormData({...formData, amenities: addedAmenities})
+      //   console.log('22frmDATTTTAA\n', formData)
+      // }
+    })()
+}, [addedAmenities]);
+
+useEffect(()=> {
+  (async () => {
+    // const pImageData = new FormData();
+    // pIMages.forEach((image) => {
+    //   pImageData.append("new_pImages", image, image.name);
+    // });
+  if(submitImage){  
+    try {  
+      console.log('pIMages\n', pIMages)
+      const pImageData = await pimageDta(pIMages);
+      const uploadedImages = await uploadImage({
+        id: id,
+        payload: pImageData
+      }).unwrap()
+      console.log('uploadedImages\n', uploadedImages)
+      setsubmitImage(false)
+    } catch (e){
+      console.error(e)
+      setsubmitImage(false)
+    }
+  }
+  }) ()
+}, [pIMages, submitImage])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //send form data images and other object  to the database 
-    console.log(formData)
     imageUploadRef1.current.submitForm();
+    setsubmitImage(true)
+    console.log('addedAmenities\n', addedAmenities)
+    //send form data images and other object  to the database
+    // const unitUpdates = editedUnitDets.forEach(async (unit) => {
+    //   const updatedUnit = await updateUnit({
+    //     id: unit._id, 
+    //     payload: unit}).unwrap();
+    //   console.log('updated unit\n', updatedUnit)
+    // })
+    console.log('edited unit details\n', editedUnitDets)
+    const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
+      console.log('submitUnit', unit)
+      const updatedUnit = await updateUnit({
+          id: unit._id,
+          payload: {data: unit}
+      }).unwrap();
+      console.log('updated unit\n', updatedUnit);
+      return updatedUnit;
+  }));
+    console.log('unit updates\n', unitUpdates)  
+    console.log('form data edit page\n', formData)
+    const propertyUpdates = await updateProperty({
+      id: id, 
+    payload: {data: formData}
+    }).unwrap();
+    console.log('property updates\n', propertyUpdates)
     setclicked(!clicked)
   }
 
@@ -197,7 +301,7 @@ const PropertyEditPage = () => {
                   <div className="PropWrapper">
                     <TextField
                         className="PropTitle"
-                        name="propertyName"
+                        name="name"
                         defaultValue={property?.name}
                         label='Propert name'
                         variant="standard"
@@ -205,8 +309,8 @@ const PropertyEditPage = () => {
                         onChange={handleChange}
                     />
                     <div className="PropAddress">
-                      <LocationOnIcon/>
-                      <span>Sunrise St 125 Juja</span>
+                      <span className="material-symbols-outlined">location_on</span>
+                      <span>{location?.formatted}</span>
                     </div>
                     <span className="PropDistance">
                 Excellent location – 500m from center
@@ -214,13 +318,13 @@ const PropertyEditPage = () => {
                     <span className="PropPriceHighlight">
                 Book an apointment with Agent to get a free tour of the Apartment
               </span>
-                    <Imageupload ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                    <Imageupload ref={imageUploadRef1} updatePropertyPhotos={updatePropertyPhotos}/>
                     <div className="PropImages">
-                      {photos?.map((photos, i) => (
+                      {photos.slice(0, 6).map((photo, i) => (
                           <div className="PropImgWrapper" key={i}>
                             <img
                                 onClick={() => handleOpen(i)}
-                                src={photos.src}
+                                src={photo.imageUrl}
                                 alt=""
                                 className="PropImg"
                             />
@@ -235,7 +339,7 @@ const PropertyEditPage = () => {
                         <h1 className="PropTitle">Stay in the heart of City</h1>
                         < TextField
                             defaultValue={property?.description}
-                            name='propertyDescription'
+                            name='description'
                             label='Propert description'
                             variant="standard"
                             sx={{margin: '10px'}}
@@ -249,8 +353,10 @@ const PropertyEditPage = () => {
                         <div className="PropDetailsExtra">
                           <div className="PropDetailsWrapper">
                             <div className="PropIcons">
-                              {property?.amenities.map((amenity, index) => (<div className="iconWithText" key={index}>
-                                {amenity.element}
+                              {property?.amenities.map(
+                                (amenity, index) => (
+                                <div className="iconWithText" key={index}>
+                                <span className="material-symbols-outlined">{amenity.icon}</span>
                                 <span>{amenity.name}</span>
                                 <IconButton onClick={() => handleAmenitiesDelete(index)} aria-label="delete"
                                             size="large">
@@ -260,12 +366,12 @@ const PropertyEditPage = () => {
                             </div>
                             <div style={{marginTop: '20px'}}>
 
-                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit}/>
+                              <AddAmenities ref={imageUploadRef1} handleSubmit={handleSubmit} amenities={all_amenities} addedAmenitiesHandler={addedAmenitiesHandler}/>
                             </div>
                           </div>
                         </div>
                       </div>
-                      <div className="PropDetailsPrice">
+                      {/* <div className="PropDetailsPrice">
                         <h1>Get what you need</h1>
                         <span>
                     Located at the real heart of Juja City Mall, this property has an
@@ -275,30 +381,27 @@ const PropertyEditPage = () => {
                         <span>
                     Top Location: Highly rated by recent guests (8.7/10).
                   </span>
-                        {/* <h1>Apppartments with:</h1>
+                        <h1>Apppartments with:</h1>
                   <span>
                     Garden view
                     Inner courtyard view
                     Free underground parking on site
-                  </span> */}
+                  </span>
                         <h2>
                           <b>$945</b>
                         </h2>
 
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   <div className="propInfo">
                     <PropertyHeader/>
                     <div className="flex-container">
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
-                      <ListingItemEdit/>
+                      {
+                        property.units && property.units.map((unit, index) => (
+                            <ListingItemEdit unit={unit} key={index} updatedUnit={updatedUnit}/>
+                        ))
+                      }
                     </div>
                   </div>
                 </Box>
@@ -322,7 +425,7 @@ const PropertyEditPage = () => {
                   <span className="material-symbols-outlined">arrow_circle_left</span>
                 </span>
                         <div className="sliderWrapper">
-                          <img src={photos[slideNumber].src} alt="" className="sliderImg"/>
+                          <img src={photos[slideNumber].imageUrl} alt="" className="sliderImg"/>
                         </div>
                         <span className="arrow" onClick={() => handleMove("r")}>
                   <span className="material-symbols-outlined">arrow_circle_right</span>
@@ -346,7 +449,7 @@ const PropertyEditPage = () => {
                               <div className="PropImgWrapper" key={i}>
                                 <img
                                     onClick={() => handleOpen(i)}
-                                    src={photo}
+                                    src={photo.imageUrl}
                                     alt=""
                                     className="PropImg"
                                 />

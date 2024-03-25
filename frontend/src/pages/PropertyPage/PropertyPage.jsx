@@ -128,11 +128,11 @@ const PropertyPage = () => {
           </span>
                 <div className="PropImages">
                   {photos.slice(0, 6).map((photo, i) => (
-                      console.log(photo),
+                      console.log('url isss', photo.imageUrl),
                           <div className="PropImgWrapper" key={i}>
                             <img
                                 onClick={() => handleOpen(i)}
-                                src={photo}
+                                src={photo.imageUrl}
                                 alt=""
                                 className="PropImg"
                             />

@@ -5,11 +5,16 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import {Link} from "react-router-dom";
 import {selectLandlordData} from "../../stores/landlordSlice";
-import {useSelector} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import AddIcon from '@mui/icons-material/Add';
+import { setCurrentProperty } from "../../stores/propertySlice";
 
 const PropertyCard = ({data}) => {
     const {properties} = useSelector(selectLandlordData);
+    const dispatch = useDispatch();
+    const setProperty = (property) => {
+        dispatch(setCurrentProperty(property));
+    }
 
     return (
         <>
@@ -48,7 +53,9 @@ const PropertyCard = ({data}) => {
                 {
                     properties && properties.map((property, index) => (
                         <Link to={`/landlord/properties/${property._id}`}
-                              key={property._id}>
+                              key={property._id}
+                              onClick={() => setProperty(property)}
+                              >
                             <Card sx={{
                                 height: "14rem",
                                 minWidth: 275,

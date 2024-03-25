@@ -107,5 +107,19 @@ export const frmDta = (data, propertyImages, unitTypes) => {
     });
 };
 
+export const pimageDta = (pImages) => {
+    return new Promise((resolve, reject) => {
+        try {
 
+            const formData = new FormData();
+            pImages.forEach((image) => {
+                formData.append('new_pImages', image, image.name);
+            });
+            resolve(formData);
+        } catch (error) {
+            console.error('Error in frmDta:', error);
+            reject(error);
+        }
+    });
+};
 
