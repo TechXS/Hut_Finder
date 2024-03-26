@@ -23,7 +23,14 @@ const AddAmenities = forwardRef((props, ref) => {
         // console.log(name , icon)
         setAmenity(prevAmenity => [...prevAmenity,{name:name , icon:icon}]) 
         console.log('amenitynnnn\n', amenity)
-        props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        // props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        if(props.addedAmenitiesHandler){
+            props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+        if(props.addedSpecialAmenitiesHandler){
+            props.addedSpecialAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+
     }
 
     useImperativeHandle(ref, ()=>({

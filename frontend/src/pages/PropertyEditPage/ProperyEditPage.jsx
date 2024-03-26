@@ -215,13 +215,20 @@ const PropertyEditPage = () => {
     })()
 }, [addedAmenities]);
 
+useEffect(() => {
+  (async () => {
+    console.log('edited units\n', editedUnitDets)
+  })()
+}, [editedUnitDets]);
+
+
 useEffect(()=> {
   (async () => {
     // const pImageData = new FormData();
     // pIMages.forEach((image) => {
     //   pImageData.append("new_pImages", image, image.name);
     // });
-  if(submitImage){  
+  if(submitImage && pIMages.length > 0){  
     try {  
       console.log('pIMages\n', pIMages)
       const pImageData = await pimageDta(pIMages);

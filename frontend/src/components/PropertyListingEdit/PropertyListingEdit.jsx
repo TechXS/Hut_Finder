@@ -1,4 +1,5 @@
-import { useState, forwardRef, useImperativeHandle, useRef} from "react";
+/* eslint-disable react/display-name */
+import { useState, forwardRef, useImperativeHandle, useRef, useEffect} from "react";
 import Imageupload from "../FileUpload/Imageupload.jsx";
 import "./PropertListingEdit.css";
 import { Box, TextField } from "@mui/material";
@@ -57,7 +58,9 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
         ...prevListing, [name]:parsedValue,
     }))
     setUnitObj((prevUnit)=>({
-      ...prevUnit, _id: unit._id, [name]:parsedValue,
+      ...prevUnit, 
+      _id: unit._id, 
+      [name]:parsedValue,
     }))
   }
 
@@ -72,15 +75,41 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
     },
   }));
 
+  useEffect(() => {
+    (async () => {
+      console.log('unit special amenities\n', addedAmenities)
+      setUnitObj((prevUnit)=>({
+        ...prevUnit,
+        _id: unit._id, 
+        amenities: addedAmenities
+      }))
+      // await frmData({...formData, amenities: addedAmenities})
+      // console.log('useeefrmDATTTTAA\n', formData)
+      // if (formData.amenities){
+      //   console.log('1addedAmenities\n', addedAmenities)
+      //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
+      //   console.log('11frmDATTTTAA\n', formData)
+      // } else {
+      //   console.log('2222addedAmenities\n', addedAmenities)
+      //   await frmData({...formData, amenities: addedAmenities})
+      //   // setFormData({...formData, amenities: addedAmenities})
+      //   console.log('22frmDATTTTAA\n', formData)
+      // }
+      
+    })()
+}, [addedAmenities]);
+
   const handleSubmit = (event)=>{
     event.preventDefault();
     //put the submit function here 
     console.log('addedAmenities\n', addedAmenities)
     console.log()
+    console.log('unitObj\n', unitObj)
     updatedUnit(unitObj);
   }
 
-  const addedAmenitiesHandler = async (amenity) => {
+  const addedSpecialAmenitiesHandler = async (amenity) => {
     setAddedAmenities(amenity);
   } 
 
@@ -132,7 +161,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
             </Box>
         </div>
         <AddAmenities
-        ref={amenityUploadRef} handleSubmit={handleSubmit} amenities={all_amenities} addedAmenitiesHandler={addedAmenitiesHandler}
+        ref={amenityUploadRef} handleSubmit={handleSubmit} amenities={all_amenities} addedSpecialAmenitiesHandler={addedSpecialAmenitiesHandler}
         />
         <div className='listing-features'>
           {

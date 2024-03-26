@@ -219,29 +219,78 @@ const getAllAmenities = async (req, res) => {
 
 }
 
-const updateUnit = async (req, res) => {
-    const {id} = req.params;
-    const { data } = req.body;
-    console.log("data\n", data);
+// const updateUnit = async (req, res) => {
+//     const {id} = req.params;
+//     const { data } = req.body;
+//     console.log("data\n", data);
 
+//     if (!isValidObjectId(id)) {
+//         return res.status(400).json({error: "Not Valid Unit ID"});
+//     }
+
+//     Unit.findOneAndUpdate(
+//         {_id: id},
+//         {$set: data},
+//         {returnOriginal: false}
+//     ).then((response) => {
+//         res.status(200).json(response);
+//         console.log('succesin unit update');
+//     }).catch((err) => {
+//         res.status(400).json({error: 'Error updating unit'});
+//         console.log('error in unit update')
+//     })
+
+// }
+
+const updateUnit = async (req, res) => {
+    const { id } = req.params;
+    const { data } = req.body;
+    console.log('data:', data);
     if (!isValidObjectId(id)) {
-        return res.status(400).json({error: "Not Valid Unit ID"});
+        return res.status(400).json({ error: "Not Valid Unit ID" });
     }
 
-    Unit.findOneAndUpdate(
-        {_id: id},
-        {$set: data},
-        {returnOriginal: false}
+    const { amenities, updated_amenities, ...newData } = data;
+    console.log('newunitData\n', newData);
+    console.log('unit amenities\n', amenities);
+    console.log('updated unit amenities\n', updated_amenities);
+    Unit.findByIdAndUpdate(
+        {_id: id}, 
+        {amenities: updated_amenities, ...newData}, 
+        {new: true}
     ).then((response) => {
-        res.status(200).json(response);
-        console.log('succesin unit update');
+        if (amenities){       
+            for (const amenity of amenities){
+                Amenity.findOne(
+                    {name: amenity.name}
+                ).then ((response) => {
+                    console.log('Amenity found:\n', response)
+                    return Unit.findByIdAndUpdate(
+                        {_id: id},
+                        { $push: {special_amenities: response._id} },
+                        {new: true}
+                    ).then((response) => {
+                        console.log('Updated property:', response)
+                        // res.status(200).json({message: "Amenity id pushed to property successfully"});
+                    
+                    }).catch((err) => {
+                        console.log("1Error:\n", err.message)
+                        // res.status(400).json({error: "Error pushing amenity id to property"});
+                    })
+                }).catch((err) => {
+                    console.log("2Error:\n", err.message)
+                    // res.status(400).json({error: "Error finding amenity"});
+                })
+            }
+        }
+    }).then((response) => {
+        console.log('Updated Unit:', response)
+        res.status(200).json({message: "Unit updated successfully"});
     }).catch((err) => {
-        res.status(400).json({error: 'Error updating unit'});
-        console.log('error in unit update')
+        console.log("Unit Error:\n", err.message)
+        res.status(400).json({error: "Error updating Unit"});
     })
-
 }
-
 
 module.exports = { 
     getLandlordData,
