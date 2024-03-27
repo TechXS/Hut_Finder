@@ -112,7 +112,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <CarouselEdit data={carouselData} images={images} id={id}/> {/* Render the Carousel component */}
+        <CarouselEdit images={images} id={id}/> {/* Render the Carousel component */}
         </Box>
       </Modal>
 

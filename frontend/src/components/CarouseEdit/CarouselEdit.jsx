@@ -6,19 +6,11 @@ import { useDeleteUnitImageMutation } from '../../stores/landlordApi';
 
 
 
-const Carousel = ({ data, images, id }) => {
-// console.log('Data received by Carousel:', data); 
-
-  // useEffect(() => {
-  //     setPhotos(images);
-  //     console.log('Photos set to data\n', photos)
-  // }, [images])
-  
+const Carousel = ({ images, id }) => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [photos, setPhotos] = useState(images);
   console.log('Photos\n', photos)
-  console.log('data\n', data)
   const [
     deleteImage, {
       data: deletedImageData,
@@ -28,7 +20,7 @@ const Carousel = ({ data, images, id }) => {
     }] = useDeleteUnitImageMutation();
 
   const handlePrevClick = () => {
-    setCurrentIndex(currentIndex === 0 ? data.length - 1 : currentIndex - 1);
+    setCurrentIndex(currentIndex === 0 ? photos.length - 1 : currentIndex - 1);
 
   };
 
@@ -47,35 +39,16 @@ const Carousel = ({ data, images, id }) => {
   };
 
   const handleNextClick = () => {
-    setCurrentIndex(currentIndex === data.length - 1 ? 0 : currentIndex + 1);
+    setCurrentIndex(currentIndex === photos.length - 1 ? 0 : currentIndex + 1);
 
   };
 
   return (
     <div className="carousel">
-      {/* <div className="carousel-images">
-        {data && data.map((item, index) => (
-          <div key={index}>
-            <img
-            key={index}
-            src={item.src}
-            alt={item.alt}
-            className={index === currentIndex ? 'slide' : 'slide-hidden'}
-          />
-          
-          <IconButton  
-          className={index === currentIndex ? 'slide' : 'slide-hidden'}
-          onClick={() => handlePhotoDelete(index)} aria-label="delete" size="large">
-            <DeleteIcon fontSize="inherit"/>
-            </IconButton>
-            </div>
-        ))}
-      </div> */}
       <div className="carousel-images">
         {photos && photos.map((photo, index) => (
             <div key={index}>
               <img
-                  // onClick={() => handleOpen(i)}
                   src={photo.imageUrl}
                   alt=""
                   className={index === currentIndex ? 'slide' : 'slide-hidden'}
@@ -98,7 +71,7 @@ const Carousel = ({ data, images, id }) => {
         &#10095;
       </button>
       <div className="indicators">
-        {data && data.map((_, index) => (
+        {photos && photos.map((_, index) => (
           <span
             key={index}
             className={index === currentIndex ? 'active' : ''}
