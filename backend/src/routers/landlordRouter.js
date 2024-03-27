@@ -13,7 +13,14 @@ const {
     updateUnit
 } = require("../controllers/landlordController");
 
-const {createProperty, deleteProperty, updateProperty, uploadpImage, deleteImage} = require("../controllers/propertyController");
+const {
+    createProperty, 
+    deleteProperty, 
+    updateProperty, 
+    uploadpImage, 
+    deleteImage,
+    deleteUnitImage
+} = require("../controllers/propertyController");
 const upload = require("../middlewares/upload");
 const router = Router();
 
@@ -34,6 +41,7 @@ router.post('/:id/property/image', upload.fields([
 //delete
 router.delete('/:id', deleteProperty);
 router.delete('/:id/property/image', deleteImage);
+router.delete('/:id/unit/images', deleteUnitImage);
 
 
 //patch

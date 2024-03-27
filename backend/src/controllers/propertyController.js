@@ -351,4 +351,26 @@ const deleteImage = async (req, res) => {
     })
 }
 
-module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage}
+const deleteUnitImage = async (req, res) => {
+    const {id} = req.params;
+    const { data } = req.body;
+    // const {publicId} = data;
+    console.log('unit-publicId:', data)
+    await removeFromCloudinary(data);
+    if (!isValidObjectId(id)) {
+        return res.status(400).json({error: "Not Valid Unit ID"});
+    }
+    Unit.findByIdAndUpdate(
+        {_id: id},
+        {$pull: {images: {publicId: data}}},
+        {new: true}
+    ).then((response) => {
+        console.log('Updated unit:', response)
+        res.status(200).json({message: "Unit image deleted successfully"});
+    }).catch((err) => {
+        console.log("Error deleting unit:\n", err.message)
+        res.status(400).json({error: "Error deleting unit image"});
+    })
+}
+
+module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage,deleteUnitImage}

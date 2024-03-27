@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import './carouseledit.css';
+import { useDeleteUnitImageMutation } from '../../stores/landlordApi';
 
 
 
-const Carousel = ({ data }) => {
+const Carousel = ({ data, images, id }) => {
 // console.log('Data received by Carousel:', data); 
 
+  // useEffect(() => {
+  //     setPhotos(images);
+  //     console.log('Photos set to data\n', photos)
+  // }, [images])
+  
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [photos, setPhotos] = useState(images);
+  console.log('Photos\n', photos)
+  console.log('data\n', data)
+  const [
+    deleteImage, {
+      data: deletedImageData,
+      error: deletedImageError,
+      isLoading: deletedImageIsLoading,
+      isSuccess: deletedImageIsSuccess,
+    }] = useDeleteUnitImageMutation();
 
   const handlePrevClick = () => {
     setCurrentIndex(currentIndex === 0 ? data.length - 1 : currentIndex - 1);
@@ -26,7 +42,7 @@ const Carousel = ({ data }) => {
         id: id, 
         payload: {data: deletedPhotoId}
       }).unwrap();
-      console.log('deleted image\n', deletedImage)
+      console.log('deleted unit image\n', deletedImage)
     }
   };
 
@@ -37,9 +53,9 @@ const Carousel = ({ data }) => {
 
   return (
     <div className="carousel">
-      <div className="carousel-images">
+      {/* <div className="carousel-images">
         {data && data.map((item, index) => (
-          <div >
+          <div key={index}>
             <img
             key={index}
             src={item.src}
@@ -52,6 +68,26 @@ const Carousel = ({ data }) => {
           onClick={() => handlePhotoDelete(index)} aria-label="delete" size="large">
             <DeleteIcon fontSize="inherit"/>
             </IconButton>
+            </div>
+        ))}
+      </div> */}
+      <div className="carousel-images">
+        {photos && photos.map((photo, index) => (
+            <div key={index}>
+              <img
+                  // onClick={() => handleOpen(i)}
+                  src={photo.imageUrl}
+                  alt=""
+                  className={index === currentIndex ? 'slide' : 'slide-hidden'}
+              />
+              <IconButton 
+                onClick={() => handlePhotoDelete(index)} 
+                aria-label="delete" 
+                size="large"
+                className={index === currentIndex ? 'slide' : 'slide-hidden'}
+                >
+                <DeleteIcon fontSize="inherit"/>
+              </IconButton>
             </div>
         ))}
       </div>

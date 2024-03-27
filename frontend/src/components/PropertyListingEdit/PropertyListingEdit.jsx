@@ -50,6 +50,8 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
     alt:  unitTypes[unit.type].type ,
   })); 
   const [unitObj, setUnitObj] = useState({});
+  const images = unit.images;
+  const id = unit._id;
 
   const handleChange = (event)=>{
     const {name, value}=  event.target;
@@ -82,21 +84,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
         ...prevUnit,
         _id: unit._id, 
         amenities: addedAmenities
-      }))
-      // await frmData({...formData, amenities: addedAmenities})
-      // console.log('useeefrmDATTTTAA\n', formData)
-      // if (formData.amenities){
-      //   console.log('1addedAmenities\n', addedAmenities)
-      //   // setFormData({...formData, amenities: [...formData.amenities, addedAmenities]})
-      //   await frmData({...formData, amenities: [...formData.amenities, addedAmenities]})
-      //   console.log('11frmDATTTTAA\n', formData)
-      // } else {
-      //   console.log('2222addedAmenities\n', addedAmenities)
-      //   await frmData({...formData, amenities: addedAmenities})
-      //   // setFormData({...formData, amenities: addedAmenities})
-      //   console.log('22frmDATTTTAA\n', formData)
-      // }
-      
+      }))      
     })()
 }, [addedAmenities]);
 
@@ -124,7 +112,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-        <CarouselEdit data={carouselData}/> {/* Render the Carousel component */}
+        <CarouselEdit data={carouselData} images={images} id={id}/> {/* Render the Carousel component */}
         </Box>
       </Modal>
 
