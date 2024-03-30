@@ -32,6 +32,7 @@ const columns = [
         align: 'right',
         format: (value) => value.toFixed(2),
     },
+    
     {
         id: 'status',
         label: 'Status',

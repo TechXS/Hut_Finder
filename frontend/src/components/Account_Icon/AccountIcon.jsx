@@ -14,6 +14,8 @@ import Logout from '@mui/icons-material/Logout';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import ExploreIcon from '@mui/icons-material/Explore';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button} from "@mui/base";
 import {setClientLogout} from "../../stores/clientSlice.js";
@@ -127,6 +129,17 @@ export default function AccountMenu({user}) {
                     <BeenhereIcon/>   Wishlist
                   </MenuItem>
                 </Link>
+                <Divider/>
+                <Link to='/browse'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <ExploreIcon/> Browse
+                  </MenuItem>
+                </Link>
+                <Link to='/'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <HomeIcon/> Home
+                  </MenuItem>
+                </Link>
               </>
             )
         }
@@ -143,6 +156,7 @@ export default function AccountMenu({user}) {
           </ListItemIcon>
           Settings
       </MenuItem>*/}
+      <Divider/>
       <Box onClick={()=> handleLogout(user)}>
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
