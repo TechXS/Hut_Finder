@@ -13,7 +13,7 @@ const Wish = () => {
     const Client = useSelector(selectCurrentClient);
     const { data: wishlistProperties, error, isLoading } = useGetWishlistPropertiesQuery(Client?._id); // Fetch wishlist properties for the current client
 
-    if (isLoading) return  <Box sx={{ display: 'flex' }}>
+    if (isLoading) return  <Box sx={{ display: 'flex',justifyContent:'center' }}>
     <CircularProgress />
   </Box>;
     if (error) return <div>Error: {error.message}</div>;

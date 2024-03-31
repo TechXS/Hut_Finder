@@ -55,6 +55,7 @@ export const clientApi = createApi({
                 url: `${id}/wishlist/${property_id}`,
                 method: "POST",
                 body: payload,
+                
             }),
         }),
         getWishlistProperties: builder.query({

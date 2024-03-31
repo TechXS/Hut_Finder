@@ -9,11 +9,11 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'unit', label: 'UnitType', minWidth: 100 },
+    { id: 'propertyName', label: 'Name', minWidth: 170 },
+    
     {
-        id: 'phonenumber',
-        label: 'PhoneNumber',
+        id: 'landlordPhoneNumber',
+        label: 'Landlord Telephone',
         minWidth: 170,
         align: 'right',
         format: (value) => value.toLocaleString('en-US'),
@@ -39,7 +39,8 @@ const columns = [
         minWidth: 170,
         align: 'right',
         format: (value) => value.toFixed(2)
-    }
+    },
+    
 ];
 
 export default function StickyHeadTable({ data }) {

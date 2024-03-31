@@ -112,35 +112,36 @@ export default function AccountMenu({user}) {
       >
         {
           user && user.role === 'client' && (
-              <>
-                <Link to='/client/profile'>
+            [
+                <Link key="profile" to='/client/profile'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <AccountCircleIcon/> Profile
                   </MenuItem>
-                </Link>
-                <Link to='/client/appointments'>
+                </Link>,
+                <Link key="appointments" to='/client/appointments'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <MeetingRoomIcon/>Appointments
                   </MenuItem>
-                </Link>
+                </Link>,
 
-                <Link to='/client/wishlist'>
+                <Link key="wishlist" to='/client/wishlist'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <BeenhereIcon/>   Wishlist
                   </MenuItem>
-                </Link>
-                <Divider/>
-                <Link to='/browse'>
+                </Link>,
+                <Divider key="divider"/>,
+                <Link key="browse" to='/browse'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <ExploreIcon/> Browse
                   </MenuItem>
-                </Link>
-                <Link to='/'>
+                </Link>,
+                <Link key="home" to='/'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <HomeIcon/> Home
                   </MenuItem>
-                </Link>
-              </>
+                </Link>,
+            ]
+              
             )
         }
         {/*<Divider />
@@ -158,7 +159,7 @@ export default function AccountMenu({user}) {
       </MenuItem>*/}
       <Divider/>
       <Box onClick={()=> handleLogout(user)}>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose} key="logout">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
