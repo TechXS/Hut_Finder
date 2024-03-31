@@ -22,7 +22,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
   } 
 
 
-  const {unit, updatedUnit} = props
+  const {unit, updatedUnit, updateUnitPhotos} = props
 
   const amenityUploadRef = useRef();
   // console.log('e', unit);
@@ -43,6 +43,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [addedAmenities, setAddedAmenities] = useState([]);
+  const [unitPhotos, setUnitPhotos] = useState([]);
 
   const [listing, setListing] = useState(unit);
   const carouselData = unit && unit.images && unit.images.map((image) => ({
@@ -52,6 +53,10 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
   const [unitObj, setUnitObj] = useState({});
   const images = unit.images;
   const id = unit._id;
+
+  const updateUnitImages = async (photo) => {
+    setUnitPhotos(photo);
+  }
 
   const handleChange = (event)=>{
     const {name, value}=  event.target;
@@ -80,11 +85,18 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
   useEffect(() => {
     (async () => {
       console.log('unit special amenities\n', addedAmenities)
-      setUnitObj((prevUnit)=>({
-        ...prevUnit,
-        _id: unit._id, 
-        amenities: addedAmenities
-      }))      
+      if (addedAmenities.length > 0){
+        setUnitObj((prevUnit)=>({
+          ...prevUnit,
+          _id: unit._id, 
+          amenities: addedAmenities
+        }))  
+      } 
+      // setUnitObj((prevUnit)=>({
+      //   ...prevUnit,
+      //   _id: unit._id, 
+      //   amenities: addedAmenities
+      // }))      
     })()
 }, [addedAmenities]);
 
@@ -94,7 +106,11 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
     console.log('addedAmenities\n', addedAmenities)
     console.log()
     console.log('unitObj\n', unitObj)
-    updatedUnit(unitObj);
+    if (unitObj){
+      updatedUnit(unitObj);
+    }
+    // updatedUnit(unitObj);
+    updateUnitPhotos(unitPhotos);
   }
 
   const addedSpecialAmenitiesHandler = async (amenity) => {
@@ -117,7 +133,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
       </Modal>
 
       </div>
-      <Imageupload />
+      <Imageupload id ={id} updateUnitPhotos={updateUnitImages} />
       <div className='listing-details'>
         <p className='listing-name'>{unitTypes[listing.type].type}</p>
         <div className="listing-desc">

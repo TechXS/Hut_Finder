@@ -19,7 +19,8 @@ const {
     updateProperty, 
     uploadpImage, 
     deleteImage,
-    deleteUnitImage
+    deleteUnitImage,
+    uploaduImage
 } = require("../controllers/propertyController");
 const upload = require("../middlewares/upload");
 const router = Router();
@@ -29,6 +30,9 @@ const router = Router();
   
 //post
 router.post('/image/:id', upload.single('hutFinder-profileImages'), uploadImage);
+router.post('/unit/image', upload.fields([
+    {name: 'new_uImages', maxCount: 50}
+]), uploaduImage);
 router.post('/:id', upload.fields([
     {name: 'propertyImages', maxCount: 10},
     {name: 'unitImages', maxCount: 50},
@@ -36,6 +40,7 @@ router.post('/:id', upload.fields([
 router.post('/:id/property/image', upload.fields([
     {name: 'new_pImages', maxCount: 10}
 ]), uploadpImage);
+
 
 
 //delete

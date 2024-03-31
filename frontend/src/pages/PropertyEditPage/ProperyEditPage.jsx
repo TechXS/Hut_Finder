@@ -17,7 +17,7 @@ import {selectCurrentLandlord, selectPropertyData, setPropertyData} from "../../
 import {useParams} from "react-router-dom";
 import {notification, setErrorNotification, setLoadingNotification} from "../../stores/notificationSlice.js";
 import {handleReverseGeocode} from "../../utils/geocode.js";
-import { pimageDta } from "../../utils/formValidation.js";
+import { pimageDta, uimageDta } from "../../utils/formValidation.js";
 import { 
   useGetPropertiesQuery,
   useGetPropertyQuery, 
@@ -25,7 +25,8 @@ import {
   useUpdatePropertyMutation,
   useUpdateUnitMutation,
   useDeleteImageMutation,
-  useUploadImageMutation
+  useUploadImageMutation,
+  useUploadUnitImageMutation
 } from "../../stores/landlordApi";
 // import { selectCurrentProperty } from "../../stores/propertySlice";
 
@@ -66,6 +67,7 @@ const PropertyEditPage = () => {
   const [amenities, setAmenities] = useState([]);
   const [editedUnitDets, setEditedUnitDets] = useState([]);
   const [pIMages, setPImages] = useState([]);
+  const [uImages, setUImages] = useState([]);
   const [submitImage, setsubmitImage] = useState(false)
   const [
     updateProperty, {
@@ -95,6 +97,13 @@ const PropertyEditPage = () => {
         isLoading: uploadImageLoading,
         isError: uploadImageIsError
       }] = useUploadImageMutation();
+    const [
+      uploadUnitImage, {
+        data: uploaded_unit_image,  
+        error: uploadUnitImageError,
+        isLoading: uploadUnitImageLoading,
+        isError: uploadUnitImageIsError
+      }] = useUploadUnitImageMutation();
 
   const frmData = async (data) => {
     setFormData(data);
@@ -107,6 +116,10 @@ const PropertyEditPage = () => {
   }
   const updatePropertyPhotos = async (photo) => {
     setPImages(photo);
+  }
+  const updateUnitPhotos = async (photo) => {
+    setUImages([...uImages, photo]);
+    // setUImages(photo);
   }
 
   useEffect(() => {
@@ -220,6 +233,11 @@ useEffect(() => {
     console.log('edited units\n', editedUnitDets)
   })()
 }, [editedUnitDets]);
+useEffect(() => {
+  (async () => {
+    console.log('edited unit photos\n', uImages)
+  })()
+}, [uImages]);
 
 
 useEffect(()=> {
@@ -246,6 +264,48 @@ useEffect(()=> {
   }) ()
 }, [pIMages, submitImage])
 
+useEffect(()=> {
+  (async () => {
+    // const pImageData = new FormData();
+    // pIMages.forEach((image) => {
+    //   pImageData.append("new_pImages", image, image.name);
+    // });
+  if(submitImage && uImages.length > 0){  
+    try {  
+      console.log('uIMages\n', uImages)
+      const uImageData = await uimageDta(uImages);
+      for (var pair of uImageData.entries()) {
+        console.log(pair[0]+ ', ' + pair[1]+ ', ' + pair[2]);
+      }
+      // uImageData.forEach((image) => {
+      //   console.log('image id\n', image[2])
+      // })
+      console.log('uImageData\n', uImageData)
+      const uploadedUnitImages = await uploadUnitImage({
+        payload: uImageData
+      }).unwrap()
+      console.log('uploadedImages\n', uploadedUnitImages)
+      setsubmitImage(false)
+    //   const unitImages = await Promise.all(uImages.map(async (imageObj) => {
+    //     console.log('submitUnitImage', imageObj)
+    //     const uImageData = await uimageDta(imageObj);
+    //     const uploadedUnitImage = await uploadUnitImage({
+    //         id: imageObj.id,
+    //         payload: uImageData
+    //     }).unwrap();
+    //     console.log('updated unit\n', uploadedUnitImage);
+    //     return uploadedUnitImage;
+    // }));
+    // console.log('unit images\n', unitImages);
+    // setsubmitImage(false)
+    } catch (e){
+      console.error(e)
+      setsubmitImage(false)
+    }
+  }
+  }) ()
+}, [uImages, submitImage])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     imageUploadRef1.current.submitForm();
@@ -259,22 +319,43 @@ useEffect(()=> {
     //   console.log('updated unit\n', updatedUnit)
     // })
     console.log('edited unit details\n', editedUnitDets)
-    const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
-      console.log('submitUnit', unit)
-      const updatedUnit = await updateUnit({
-          id: unit._id,
-          payload: {data: unit}
-      }).unwrap();
-      console.log('updated unit\n', updatedUnit);
-      return updatedUnit;
-  }));
-    console.log('unit updates\n', unitUpdates)  
+    if (editedUnitDets.length > 0){
+      const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
+        console.log('submitUnit', unit)
+        const updatedUnit = await updateUnit({
+            id: unit._id,
+            payload: {data: unit}
+        }).unwrap();
+        console.log('updated unit\n', updatedUnit);
+        return updatedUnit;
+    }));
+      console.log('unit updates\n', unitUpdates)
+    }
+  //   const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
+  //     console.log('submitUnit', unit)
+  //     const updatedUnit = await updateUnit({
+  //         id: unit._id,
+  //         payload: {data: unit}
+  //     }).unwrap();
+  //     console.log('updated unit\n', updatedUnit);
+  //     return updatedUnit;
+  // }));
+  //   console.log('unit updates\n', unitUpdates)  
     console.log('form data edit page\n', formData)
-    const propertyUpdates = await updateProperty({
-      id: id, 
-    payload: {data: formData}
-    }).unwrap();
-    console.log('property updates\n', propertyUpdates)
+
+    if (formData){
+      const updatedProperty = await updateProperty({
+        id: id, 
+        payload: {data: formData}
+      }).unwrap();
+      console.log('updated property\n', updatedProperty)
+    }
+
+    // const propertyUpdates = await updateProperty({
+    //   id: id, 
+    // payload: {data: formData}
+    // }).unwrap();
+    // console.log('property updates\n', propertyUpdates)
     setclicked(!clicked)
   }
 
@@ -398,7 +479,7 @@ useEffect(()=> {
                     <div className="flex-container">
                       {
                         property.units && property.units.map((unit, index) => (
-                            <ListingItemEdit ref={unitUploadRef1} unit={unit} key={index} updatedUnit={updatedUnit}/>
+                            <ListingItemEdit ref={unitUploadRef1} unit={unit} key={index} updatedUnit={updatedUnit} updateUnitPhotos={updateUnitPhotos}/>
                         ))
                       }
                     </div>

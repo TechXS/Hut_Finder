@@ -307,26 +307,6 @@ const uploadpImage = async (req, res) => {
         console.log("Error:\n", err.message)
         res.status(400).json({error: "Error uploading property image"});
     })
-
-    // try {
-    //     const data = await uploadToCloudinary(path, "property-images");
-    //     console.log('data:', data)
-    //     Property.findByIdAndUpdate(
-    //         {_id: id},
-    //         {$push: {images: {publicId: data.public_id, imageUrl: data.url}}},
-    //         {new: true}
-    //     ).then((response) => {
-    //         console.log('Updated property:', response)
-    //         res.status(200).json({message: "Property image uploaded successfully"});
-    //     }).catch((err) => {
-    //         console.log("Error:\n", err.message)
-    //         res.status(400).json({error: "Error uploading property image"});
-    //     })
-    // }
-    // catch (error){
-    //     console.log('Error uploading image:', error.message);
-    //     return res.status(400).json({error: "Error uploading image"});
-    // }
 }
 //delete image
 const deleteImage = async (req, res) => {
@@ -351,6 +331,58 @@ const deleteImage = async (req, res) => {
     })
 }
 
+//upload unit image
+const uploaduImage = async (req, res) => {
+    // const { id } = req.params;
+    const uimages = req.files.new_uImages;
+    console.log('unit images:', uimages)
+    const imageUploadPromises = [];
+    // console.log('req.files:', req.files)
+    for (const uimage of uimages){
+        console.log('unit image:', uimage)
+        const id = uimage.originalname;
+        console.log('id:', id)
+        if (!isValidObjectId(id)) {
+            console.log('error in unint id:', id);
+            return res.status(400).json({error: "Not Valid Unit ID"});
+        }
+        let uImageArray = [];
+        try {
+            const data = await uploadToCloudinary(uimage.path, "unit-images");
+            uImageArray.push({publicId: data.public_id, imageUrl: data.url});
+    
+        }
+        catch (error){
+            console.log('Error uploading new uimage:', error);
+            return res.status(400).json({error: "Error uploading uimage"});
+        }
+        Unit.findByIdAndUpdate(
+            {_id: id},
+            {$push: {images: uImageArray}},
+            {new: true}
+        ).then((response) => {
+            console.log('Updated unit:', response)
+            imageUploadPromises.push(response);
+            // res.status(200).json({message: "Unit image uploaded successfully"});
+        }).catch((err) => {
+            console.log("Error:\n", err.message)
+            res.status(400).json({error: "Error uploading unit image"});
+        })
+    }
+    if (imageUploadPromises.length > 0){
+        res.status(200).json({message: "Unit image uploaded successfully"});
+    }
+    // Promise.all(imageUploadPromises)
+    // .then((response) => {
+    //     console.log('Updated unit:', response)
+    //     res.status(200).json({message: "Unit image uploaded successfully"});
+    // }).catch((err) => {
+    //     console.log("Error:\n", err.message)
+    //     res.status(400).json({error: "Error uploading unit image"});
+    // })
+
+}
+
 const deleteUnitImage = async (req, res) => {
     const {id} = req.params;
     const { data } = req.body;
@@ -373,4 +405,13 @@ const deleteUnitImage = async (req, res) => {
     })
 }
 
-module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage,deleteUnitImage}
+module.exports = {
+    createProperty, 
+    updateProperty, 
+    deleteProperty,
+    createAmenity,
+    uploadpImage,
+    deleteImage,
+    uploaduImage,
+    deleteUnitImage
+}

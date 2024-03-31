@@ -46,6 +46,13 @@ export const landlordApi = createApi({
                 body: payload,
             }),
         }),
+        uploadUnitImage: builder.mutation({
+            query: ({payload}) => ({
+                url: `unit/image`,
+                method: "POST",
+                body: payload,
+            }),
+        }),
         updateProperty: builder.mutation({
             query: ({id, payload}) => ({
                 url: `${id}/property`,
@@ -95,6 +102,7 @@ export const {
     useGetAppointmentsQuery,
     useCreatePropertyMutation,
     useUploadImageMutation,
+    useUploadUnitImageMutation,
     useUpdatePropertyMutation,
     useDeletePropertyMutation,
     useDeleteImageMutation,
