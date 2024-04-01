@@ -267,9 +267,11 @@ const getAllAppointments =  async(req, res) => {
     
     try {
         const { clientId } = req.params;
-
+        if (!isValidObjectId(clientId)) {
+            return res.status(400).json({ error: 'Client does not exist' });
+        }
         // Query appointments associated with the client and populate property details
-        const appointments = await Appointment.find({ client_id: clientId })
+        const appointments = await Appointment.find({ client: clientId })
             .populate('property', 'name landlord')
             .populate('landlord', 'phoneNumber') // Populate landlord details directly
             .select('property date time status') // Select required fields

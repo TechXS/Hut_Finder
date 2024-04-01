@@ -14,7 +14,7 @@ router.delete('/:client_id/wishlist/:property_id', removeFromWishlist)
 
 //get
 router.get("/properties",getAllProperties)
-router.get('/:id/appointments', getAllAppointments)
+router.get('/:clientId/appointments', getAllAppointments)
 router.get("/properties/:id",getPropertyById)
 router.get("/:clientId/wishlist",getWishlistProperties)
 
