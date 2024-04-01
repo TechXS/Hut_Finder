@@ -23,8 +23,8 @@ const DateTimePicker = ({value,onChange}) => {
       }
       else if (name === "time") {
         const newTime = value.split(":");
-        setSelectedDate((prevDate) => {
-          const newDateTime = new Date(prevDate);
+        setSelectedDate((value) => {
+          const newDateTime = new Date(value);
           newDateTime.setHours(parseInt(newTime[0], 10));
           newDateTime.setMinutes(parseInt(newTime[1], 10));
           return newDateTime;
