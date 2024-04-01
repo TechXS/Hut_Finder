@@ -1,4 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
+//import thunk from 'redux-thunk'; // Import redux-thunk
 import landlordReducer from "./landlordSlice";
 import clientReducer from "./clientSlice";
 import propertyReducer from "./propertySlice";
@@ -9,6 +10,7 @@ import {userApi} from "./userApi.js";
 import {landlordApi} from "./landlordApi.js"
 import {clientApi} from "./clientApi.js"
 import {setupListeners} from "@reduxjs/toolkit/query";
+
 
 export const store = configureStore({
     reducer: {
@@ -29,6 +31,7 @@ export const store = configureStore({
             .concat(userApi.middleware)
             .concat(landlordApi.middleware)
             .concat(clientApi.middleware),
-
+            // .concat(ThunkAction), 
 });
+
 setupListeners(store.dispatch);

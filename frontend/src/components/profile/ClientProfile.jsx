@@ -11,7 +11,7 @@ import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
 //import wishItemList from '../Wishlist/wishlist';
 import { wishlistItems } from '../../utils/dataUtil';
 import SearchItemList from '../SearchItem/SearchItem';
-import StickyHeadTable from '../table/ClientAppointments';
+//import StickyHeadTable from '../table/ClientAppointments';
 import { clientAppointmentsData } from '../../utils/dataUtil';
 
 const ProfileClient = () => {
@@ -213,34 +213,34 @@ const ProfileClient = () => {
 
 
     <div className="top">
-        <div className="left">
-          <div className="editButton" onClick={handleEditClick}>
+        {/* <div className="left">
+          {/* <div className="editButton" onClick={handleEditClick}>
             {isEditing ? "Save" : "Edit"}
-          </div>
-          <h1 className="title">Property Information</h1>
-          <div className="item">
+          </div> */}
+          {/* <h1 className="title">Property Information</h1> */}
+          {/* <div className="item">
             
-            <div className="details">
-              <h1 className="itemTitle"></h1>
-              <div className="detailItem">
-                <span className="itemKey">PropertyName:</span>
-                {renderFieldValue("propertyName", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Unit Type:</span>
-                {renderFieldValue("unitType", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">House Number:</span>
-                {renderFieldValue("houseNumber", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Landlord:</span>
-                {renderFieldValue("landLord", true)}
-              </div>
-            </div>
+            {/* <div className="details">
+                {/* <h1 className="itemTitle"></h1>
+                <div className="detailItem">
+                  <span className="itemKey">PropertyName:</span>
+                  {renderFieldValue("propertyName", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Unit Type:</span>
+                  {renderFieldValue("unitType", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">House Number:</span>
+                  {renderFieldValue("houseNumber", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Landlord:</span>
+                  {renderFieldValue("landLord", true)}
+                </div> 
+            </div> 
           </div>
-        </div>
+        </div>*/}
     </div>
       </ul>
       </div>

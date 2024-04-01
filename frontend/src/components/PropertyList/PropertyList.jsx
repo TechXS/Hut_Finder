@@ -3,7 +3,7 @@ import { useGetPropertiesQuery } from "../../stores/clientApi.js";
 import SearchItem from "../../components/SearchItem/SearchItem";
 import Pagination from "../../components/Pagination/Pagination";
 import {Box,CircularProgress} from "@mui/material";
-
+ 
 const PropertyList = ( { filterCondition, search } ) => {
   const [activePage, setActivePage] = useState(1);
   const [cardsPerPage, setCardsPerPage] = useState(6);

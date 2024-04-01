@@ -14,6 +14,8 @@ import Logout from '@mui/icons-material/Logout';
 import BeenhereIcon from '@mui/icons-material/Beenhere';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import ExploreIcon from '@mui/icons-material/Explore';
 import {Link, useNavigate} from 'react-router-dom';
 import {Button} from "@mui/base";
 import {setClientLogout} from "../../stores/clientSlice.js";
@@ -110,24 +112,36 @@ export default function AccountMenu({user}) {
       >
         {
           user && user.role === 'client' && (
-              <>
-                <Link to='/client/profile'>
+            [
+                <Link key="profile" to='/client/profile'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <AccountCircleIcon/> Profile
                   </MenuItem>
-                </Link>
-                <Link to='/client/appointments'>
+                </Link>,
+                <Link key="appointments" to='/client/appointments'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <MeetingRoomIcon/>Appointments
                   </MenuItem>
-                </Link>
+                </Link>,
 
-                <Link to='/client/wishlist'>
+                <Link key="wishlist" to='/client/wishlist'>
                   <MenuItem onClick={handleClose} style={{gap:8}}>
                     <BeenhereIcon/>   Wishlist
                   </MenuItem>
-                </Link>
-              </>
+                </Link>,
+                <Divider key="divider"/>,
+                <Link key="browse" to='/browse'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <ExploreIcon/> Browse
+                  </MenuItem>
+                </Link>,
+                <Link key="home" to='/'>
+                  <MenuItem onClick={handleClose} style={{gap:8}}>
+                    <HomeIcon/> Home
+                  </MenuItem>
+                </Link>,
+            ]
+              
             )
         }
         {/*<Divider />
@@ -143,8 +157,9 @@ export default function AccountMenu({user}) {
           </ListItemIcon>
           Settings
       </MenuItem>*/}
+      <Divider/>
       <Box onClick={()=> handleLogout(user)}>
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleClose} key="logout">
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
