@@ -1,47 +1,99 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./profile.scss";
-
+//import Approval from '../Approval/Approval';
+import Datatable from '../Approval/Approval';
+import { useSelector } from 'react-redux';
+import { selectCurrentLandlord, selectGetDataError } from '../../stores/landlordSlice';
+import {useUpdateProfileMutation, useUploadProfileImageMutation} from '../../stores/userApi';
+import { updateProfileValidation } from '../../utils/formValidation';
+import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
 
 const Profile = () => {
+  const Landlord = useSelector(selectCurrentLandlord);
+  console.log('Landlord\n', Landlord);
+  const error = useSelector(selectGetDataError);
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [uploadPic, setUploadPic] = useState(null);
   const [savedFields, setSavedFields] = useState({
-    email: "natalie@gmail.com",
-    phone: "0712847343",
-    address: "Mwabe St. 24 Garden City. Nairobi",
-    Role: "Landlord",
+    name: Landlord?.name,
+    email: Landlord?.email,
+    phone: Landlord?.phoneNumber,
+    Role: Landlord?.role
   });
+  const [updateProfile, {
+    data: updateResponse,
+    isLoading: updateLoading,
+    isError: updateIsError,
+    error: updateError
+  }] = useUpdateProfileMutation()
 
-  const handleEditClick = () => {
-    if (isEditing) {
-      if (validateFields(editedFields)) {
-        setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-      } else {
-        alert('Please fill in all the fields with valid values.');
-        return;
-      }
-    }
-    setIsEditing(!isEditing);
-  };
+  const [uploadProfileImage, {
+    data: uploadResponse,
+    isLoading: uploadLoading,
+    isError: uploadIsError,
+    error: uploadError
+  }] = useUploadProfileImageMutation()
 
-  const validateFields = fields => {
-    for (const key in fields) {
-      if (Object.prototype.hasOwnProperty.call(fields, key)) {
-        if (!fields[key]) {
-          return false; // Field is empty
+  useEffect(() => {
+    setProfilePicture(Landlord?.imageUrl)
+    console.log("profilePicture set")
+  },[]);
+
+  const handleEditClick = async () => {
+    if (isEditing === false) {
+      setIsEditing(!isEditing);
+    } else {
+      try {
+        if (validateFields(editedFields)) {
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+        } else {
+          alert('Please fill in all the fields with valid values.');
+          return;
         }
-        if (key === 'email' && !isValidEmail(fields[key])) {
-          return false; 
+        console.log("profilePicture", profilePicture)
+        if (uploadPic){
+          console.log("uploading")
+          upload(uploadPic);
+        }
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+          const newProfile = await updateProfile({
+              id: Landlord._id,
+              layout: "landlord",
+              payload: {data: editedFields}
+          }).unwrap()
+          setIsEditing(!isEditing);
+          localStorage.setItem("currentLandlord", JSON.stringify(newProfile));
+          // dispatch(setSuccessNotification(`${newProfile.name}${newProfile.name.substring(-1, 0) === "s" ? "'" : "'s"} data updated `));
+      } catch (e) {
+          console.log(e.data.message)
+          // dispatch(setGetDataError(`Failed to update landlord data`));
+          // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"} data`));
+      }
+     }
+    };
+
+    const validateFields = fields => {
+      for (const key in fields) {
+        if (Object.prototype.hasOwnProperty.call(fields, key)) {
+          if (!fields[key]) {
+            return false; // Field is empty
+          }
+          if (key === 'email' && !isValidEmail(fields[key])) {
+            return false; 
+          }
         }
       }
-    }
-    return true;
-  };
+      return true;
+    };
+  
+    const isValidEmail = email => {
+      //email validation logic
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    };
+  
 
-  const isValidEmail = email => {
-    //email validation logic
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
 
   const handleFieldChange = (field, value) => {
     setEditedFields(prevFields => ({ ...prevFields, [field]: value }));
@@ -67,6 +119,39 @@ const Profile = () => {
       );
     }
   };
+  const upload = async (file) => {
+    console.log("file", file)
+    const formData = new FormData();
+    formData.append("hutFinder-profileImages", file, file.name);
+    // console.log("formData", formData);
+    for(var pair of formData.entries()) {
+      console.log(pair[0]+ ', '+ pair[1]);
+    }
+    try {
+        const response = await uploadProfileImage({
+          id: Landlord._id, 
+          layout: "landlord", 
+          payload: formData
+        }).unwrap()
+        console.log("response", response)
+        setProfilePicture(response.imageUrl);
+        console.log("profilePicture", profilePicture)
+        localStorage.setItem("currentLandlord", JSON.stringify(response));
+        setUploadPic(null)
+        // dispatch(setGetDataSuccess(`Landlord Profile Image updated`));
+        // dispatch(setSuccessNotification(`${response.name}${response.name.substring(-1, 0) === "s" ? "'" : "'s"} Profile Image updated`));
+    } catch (e) {
+        console.log(e)
+        console.log(e.data.message)
+        setUploadPic(null)
+        // dispatch(setGetDataError(`Failed to update landlord Profile Image`));
+        // dispatch(setErrorNotification(`Failed to update ${user.name}${user.name.substring(-1, 0) === "s" ? "'" : "'s"}  Profile Image`));
+    }
+  }
+
+  const handleFileUpload = async (file) => {
+    setUploadPic(file)
+  };
 
   return (
     <>
@@ -78,13 +163,30 @@ const Profile = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            <img
-              src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-              alt=""
-              className="itemImg"
-            />
+            {
+              isEditing ? (
+                <>
+                  <img
+                    src={profilePicture}
+                    alt=""
+                    className="itemImg"
+                  />
+                  <ImageuploadSingle handleFileUpload={handleFileUpload}/>
+                </>
+              ) : (
+                <img
+                  src={profilePicture}
+                  alt=""
+                  className="itemImg"
+                />
+              )
+            }
             <div className="details">
-              <h1 className="itemTitle">Natalie Halle</h1>
+              <h1 className="itemTitle">{Landlord?.name}</h1>
+              <div className="detailItem">
+                <span className="itemKey">Name:</span>
+                {renderFieldValue("name", true)}
+              </div>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}
@@ -92,10 +194,6 @@ const Profile = () => {
               <div className="detailItem">
                 <span className="itemKey">Phone:</span>
                 {renderFieldValue("phone", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Address:</span>
-                {renderFieldValue("address", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Role:</span>

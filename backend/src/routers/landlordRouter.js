@@ -1,21 +1,65 @@
 const {Router} = require("express");
-const {getAllProperties, addProperty, getSpecificProperty, createLandlord, getAllAppointments,getLandlordData} = require("../controllers/landlordController");
-const {createProperty, deleteProperty, updateProperty} = require("../controllers/propertyController");
+const {
+    getAllProperties,
+    addProperty,
+    getSpecificProperty, 
+    createLandlord, 
+    getAllAppointments,
+    getLandlordData,
+    getAllLandlordProperties,
+    updateLandlord,
+    uploadImage,
+    getAllAmenities,
+    updateUnit
+} = require("../controllers/landlordController");
+
+const {
+    createProperty, 
+    deleteProperty, 
+    updateProperty, 
+    uploadpImage, 
+    deleteImage,
+    deleteUnitImage,
+    uploaduImage
+} = require("../controllers/propertyController");
 const upload = require("../middlewares/upload");
 const router = Router();
 
-router.get("/:id",getLandlordData);
-router.get('/:id/properties', getAllProperties)
-router.get('/:id/properties/:id', getSpecificProperty)
+// router.get('/:id/properties', getAllProperties)
 // router.post('/create', createLandlord)
-router.get('/:id/appointments', getAllAppointments)
-
+  
+//post
+router.post('/image/:id', upload.single('hutFinder-profileImages'), uploadImage);
+router.post('/unit/image', upload.fields([
+    {name: 'new_uImages', maxCount: 50}
+]), uploaduImage);
 router.post('/:id', upload.fields([
-    {name: 'propertyImages', maxCount: 5},
+    {name: 'propertyImages', maxCount: 10},
     {name: 'unitImages', maxCount: 50},
 ]),createProperty);
+router.post('/:id/property/image', upload.fields([
+    {name: 'new_pImages', maxCount: 10}
+]), uploadpImage);
+
+
+
+//delete
 router.delete('/:id', deleteProperty);
-router.patch('/:id', updateProperty);
+router.delete('/:id/property/image', deleteImage);
+router.delete('/:id/unit/images', deleteUnitImage);
+
+
+//patch
+router.patch('/:id/property', updateProperty);
+router.patch('/:id', updateLandlord);
+router.patch('/:id/property/unit', updateUnit);
+
+//get
+router.get('/amenities', getAllAmenities);
+router.get("/:id",getLandlordData);
+router.get('/:id/properties', getAllLandlordProperties)
+router.get('/:id/properties/:id', getSpecificProperty)
+router.get('/:id/appointments', getAllAppointments)
 
 
 module.exports = router;

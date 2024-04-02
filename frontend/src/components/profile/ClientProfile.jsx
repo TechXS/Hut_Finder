@@ -1,39 +1,82 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import "./profile.scss";
+import { useSelector } from 'react-redux';
+import { selectCurrentClient, selectGetDataError } from '../../stores/clientSlice';
+import { useUpdateProfileMutation, useUploadProfileImageMutation } from '../../stores/userApi';
+import { updateProfileValidation } from '../../utils/formValidation';
+import ImageuploadSingle from '../FileUpload/ImageUploadSingle';
 //import MuiAlert from '@mui/material/Alert';
 //import CustomizedSnackbars from '../Alerts/SnackBar';
 
 //import wishItemList from '../Wishlist/wishlist';
 import { wishlistItems } from '../../utils/dataUtil';
 import SearchItemList from '../SearchItem/SearchItem';
-import StickyHeadTable from '../table/ClientAppointments';
+//import StickyHeadTable from '../table/ClientAppointments';
 import { clientAppointmentsData } from '../../utils/dataUtil';
 
 const ProfileClient = () => {
+  const Client = useSelector(selectCurrentClient);
+  console.log('Client\n', Client);
+  const error = useSelector(selectGetDataError);
+  const [profilePicture, setProfilePicture] = useState(null);
+  const [uploadPic, setUploadPic] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [editedFields, setEditedFields] = useState({});
   const [savedFields, setSavedFields] = useState({
-    email: "natalie@gmail.com",
-    phone: "0712847343",
-    address: "Mwabe St. 24 Garden City. Nairobi",
-    Role: "Tenant",
-    propertyName:"Cascade Apartments",
-    unitType:"2 Bedroom",
-    houseNumber:"C9",
-    landLord: "J.M.Kariuki",
+    name: Client?.name,
+    email: Client?.email,
+    phoneNumber: Client?.phoneNumber,
+    Role: Client?.role,
     
   });
+  const [updateProfile, {
+    data: updateResponse,
+    isLoading: updateLoading,
+    isError: updateIsError,
+    error: updateError
+  }] = useUpdateProfileMutation()
+
+  const [uploadProfileImage, {
+    data: uploadResponse,
+    isLoading: uploadLoading,
+    isError: uploadIsError,
+    error: uploadError
+  }] = useUploadProfileImageMutation()
+
+  useEffect(() => {
+    setProfilePicture(Client?.imageUrl)
+    console.log("profilePicture set")
+  },[]);
 
   const handleEditClick = () => {
-    if (isEditing) {
-      if (validateFields(editedFields)) {
+    if (isEditing === false) {
+      setIsEditing(!isEditing);
+    } else {
+      try {
+        console.log('Edited fields:', editedFields)
+        if (validateFields(editedFields)) {
+          setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
+        } else {
+          alert('Please fill in all the fields with valid values.');
+          return;
+        }
+        console.log("uploadPic", uploadPic)
+        if (uploadPic){
+          console.log("uploading")
+          upload(uploadPic);
+        }
         setSavedFields(prevFields => ({ ...prevFields, ...editedFields }));
-      } else {
-        alert('Please fill in all the fields with valid values.');
-        return;
+        const newProfile = updateProfile({
+          id: Client._id,
+          layout: "client",
+          payload: { data: editedFields }
+        }).unwrap()
+        setIsEditing(!isEditing);
+        localStorage.setItem("currentClient", JSON.stringify(newProfile));
+      } catch (error) {
+        console.error('Failed to update profile', error);
       }
     }
-    setIsEditing(!isEditing);
   };
 
   const validateFields = fields => {
@@ -80,6 +123,34 @@ const ProfileClient = () => {
       );
     }
   };
+  const upload = async (file) => {
+    const formData = new FormData();
+    console.log('ufile', file)
+    formData.append("hutFinder-profileImages", file, file.name);
+    for(var pair of formData.entries()) {
+      console.log(pair[0]+ ', '+ pair[1]);
+    }
+    try {
+      const response = await uploadProfileImage({
+        id: Client._id,
+        layout: "client",
+        payload: formData
+      
+      }).unwrap()
+      console.log('Upload response:', response);
+      setProfilePicture(response.imageUrl);
+      console.log("profilePicture", profilePicture)
+      localStorage.setItem("currentClient", JSON.stringify(response));
+      setUploadPic(null);
+    } catch (error) {
+      console.error('Failed to upload profile image', error);
+      setUploadPic(null);
+    }
+  }
+
+  const handleFileUpload = (file) => {
+    setUploadPic(file);
+  };
 
   return (
     <>
@@ -96,24 +167,37 @@ const ProfileClient = () => {
           </div>
           <h1 className="title">Information</h1>
           <div className="item">
-            <img
-              src="https://images.pexels.com/photos/733872/pexels-photo-733872.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260"
-              alt=""
-              className="itemImg"
-            />
+            {
+              isEditing ? (
+                <>
+                  <img
+                    src={profilePicture}
+                    alt=""
+                    className="itemImg"
+                  />
+                  <ImageuploadSingle handleFileUpload={handleFileUpload}/>  
+                </>
+              ) : (
+                <img
+                  src={profilePicture}
+                  alt=""
+                  className="itemImg"
+                />
+              )
+            }
             <div className="details">
-              <h1 className="itemTitle">Natalie Halle</h1>
+              <h1 className="itemTitle">{Client?.name}</h1>
+              <div className="detailItem">
+                <span className="itemKey">Name:</span>
+                {renderFieldValue("name", true)}
+              </div>
               <div className="detailItem">
                 <span className="itemKey">Email:</span>
                 {renderFieldValue("email", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Phone:</span>
-                {renderFieldValue("phone", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Address:</span>
-                {renderFieldValue("address", true)}
+                {renderFieldValue("phoneNumber", true)}
               </div>
               <div className="detailItem">
                 <span className="itemKey">Role:</span>
@@ -129,34 +213,34 @@ const ProfileClient = () => {
 
 
     <div className="top">
-        <div className="left">
-          <div className="editButton" onClick={handleEditClick}>
+        {/* <div className="left">
+          {/* <div className="editButton" onClick={handleEditClick}>
             {isEditing ? "Save" : "Edit"}
-          </div>
-          <h1 className="title">Property Information</h1>
-          <div className="item">
+          </div> */}
+          {/* <h1 className="title">Property Information</h1> */}
+          {/* <div className="item">
             
-            <div className="details">
-              <h1 className="itemTitle"></h1>
-              <div className="detailItem">
-                <span className="itemKey">PropertyName:</span>
-                {renderFieldValue("propertyName", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Unit Type:</span>
-                {renderFieldValue("unitType", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">House Number:</span>
-                {renderFieldValue("houseNumber", true)}
-              </div>
-              <div className="detailItem">
-                <span className="itemKey">Landlord:</span>
-                {renderFieldValue("landLord", true)}
-              </div>
-            </div>
+            {/* <div className="details">
+                {/* <h1 className="itemTitle"></h1>
+                <div className="detailItem">
+                  <span className="itemKey">PropertyName:</span>
+                  {renderFieldValue("propertyName", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Unit Type:</span>
+                  {renderFieldValue("unitType", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">House Number:</span>
+                  {renderFieldValue("houseNumber", true)}
+                </div>
+                <div className="detailItem">
+                  <span className="itemKey">Landlord:</span>
+                  {renderFieldValue("landLord", true)}
+                </div> 
+            </div> 
           </div>
-        </div>
+        </div>*/}
     </div>
       </ul>
       </div>

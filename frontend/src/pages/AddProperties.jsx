@@ -37,7 +37,6 @@ const AddProperty = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const {propertyData, propertyError, unitData, unit} = useSelector(propertyForm);
-    // console.log('properrtyData', propertyData);
     const currentLandlord = useSelector(selectCurrentLandlord);
     const theme = useTheme();
     const imageUploadRef1 = useRef();
@@ -50,11 +49,9 @@ const AddProperty = () => {
 
     const updatePropertyImages = async (newImages) => {
         setPropertyImages(newImages);
-        // console.log('1stPropertyimages\n', propertyImages)
     }
     const updateUnitImages = async (newImages) => {
         setUnitImages(newImages);
-        // console.log('1stUnitimages\n', unitImages)
     }
 
 
@@ -85,9 +82,6 @@ const AddProperty = () => {
             ]);
             setUnitImages([])
         }
-
-        // Logging the updated unitImagesObject
-        // console.log('unitImagesObjec123456t\n', unitImagesObject);
     };
 
 
@@ -102,31 +96,10 @@ const AddProperty = () => {
         },
     ] = useCreatePropertyMutation();
 
-    // useEffect(() => {
-    //     if (unit.type && unitImages.length > 0) {
-    //         createUnitImagesObject(unit.type, unitImages)
-    //     }
-    //     console.log('Use effect images\n', unitImagesObject)
-
-    // }, [activeStep]);
 
     console.log('active step', activeStep);
-    // if(activeStep <= numberOfSteps){
-    //     if (unit.type && unitImages.length > 0) {
-    //         createUnitImagesObject(unit.type, unitImages)
-    //     }
-    //     console.log('Use effect images\n', unitImagesObject)
-    // }
-
     useEffect(() => {
         (async () => {
-            // console.log('updated property images', propertyImages)
-            // console.log('updated unit images', unitImages)
-            // console.log('unitImagesObject\n', unitImagesObject)
-            // const formData = new FormData();
-            // propertyImages.forEach((image) => {
-            //     formData.append("propertyImages", image.name);
-            // });
             if (submitForm && activeStep === numberOfSteps && numberOfSteps === unitData.length) {
                 // console.log("propertyData\n", propertyData);
                 console.log('unit data\n', unitData)
@@ -152,21 +125,7 @@ const AddProperty = () => {
 
                     // finalData.unitTypes = unitTypes;
                     console.log('finalData\n', finalData);
-
-                    // await finalData.unitTypes.forEach((unit) => {
-                    //     if (unit.images && Array.isArray(unit.images)){
-                    //         unit.images.forEach((image) => {
-                    //             formData.append(unit.type, image.name);
-                    //         })
-                    //     }
-                    // })
-                    // formData.append('data ', JSON.stringify(finalData));
-                    // // console.log('formdata', formData);
-                    // for (var pair of formData.entries()) {
-                    //     console.log('key: ',pair[0], 'value: ' , pair[1]);
-                    // }
-                    // const newFormData = JSON.stringify(formData);
-                    // console.log('newFormData', newFormData);
+                    console.log('propertyImages\n', propertyImages);
                     const formData = await frmDta(finalData, propertyImages, unitTypes)
                     for (var pair of formData.entries()) {
                         console.log('key: ',pair[0], 'value: ' , pair[1]);
@@ -181,7 +140,7 @@ const AddProperty = () => {
                             `Property ${response.name} created successfully`
                         )
                     );
-                    navigate("/");
+                    navigate("/landlord/dashboard");
                     setActiveStep(1);
                     setNumberOfSteps(1);
                     setSubmitForm(false)

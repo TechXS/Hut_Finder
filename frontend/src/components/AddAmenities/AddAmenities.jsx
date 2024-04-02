@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { ListItemIcon,ListItemText, Paper } from '@mui/material'
 import {Box}from '@mui/material'
@@ -7,42 +8,29 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Bathtub from '@mui/icons-material/Bathtub';
-
-
+// import { useGetAllAmenitiesQuery } from '../../stores/landlordApi';
 
 
 
 const AddAmenities = forwardRef((props, ref) => {
+    
     const [amenity, setAmenity] = useState([])
-    const [amenities, setAmenities] = useState([
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small"  />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-        {
-            name:'bathtub',
-            icon: <Bathtub fontSize="small" />
-        },
-    ])
+    const amenities = props.amenities;
 
 
-    const handleChange=(event)=>{
+    const handleChange= async (event)=>{
         const {name, icon} =event.target.value;
-        console.log(name , icon)
-        setAmenity((amenity)=>([...amenity,{name:name , icon:icon}])) 
+        // console.log(name , icon)
+        setAmenity(prevAmenity => [...prevAmenity,{name:name , icon:icon}]) 
+        console.log('amenitynnnn\n', amenity)
+        // props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        if(props.addedAmenitiesHandler){
+            props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+        if(props.addedSpecialAmenitiesHandler){
+            props.addedSpecialAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+
     }
 
     useImperativeHandle(ref, ()=>({
@@ -50,6 +38,7 @@ const AddAmenities = forwardRef((props, ref) => {
 
 
             console.log(amenity)
+            // props.addedAmenitiesHandler(amenity)
             setAmenity([])
         }
     }));
@@ -75,10 +64,13 @@ const AddAmenities = forwardRef((props, ref) => {
             >
                 {amenities.map((amenit, index)=>(
                         <MenuItem value={amenit} key={index}>
-                            <ListItemIcon>
+                            <span
+                            className="material-symbols-outlined"
+                            >
                                 {amenit.icon}
-                            </ListItemIcon>
+                            </span>
                             <ListItemText>{amenit.name}</ListItemText>
+                            {/* {handleIdset(amenit._id)} */}
                             </MenuItem>
                 ))}
 
@@ -93,10 +85,10 @@ const AddAmenities = forwardRef((props, ref) => {
                         <MenuItem
                             sx={{width:'10px'}}
                          value={amenit.name} key={index}>
-                            <ListItemIcon>
+                            <span className="material-symbols-outlined">
                                 {amenit.icon}
-                            </ListItemIcon>
-                            {/* <ListItemText>{amenit.name}</ListItemText> */}
+                            </span>
+                            
                             </MenuItem>
                 ))}
         </Box>

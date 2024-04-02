@@ -107,5 +107,38 @@ export const frmDta = (data, propertyImages, unitTypes) => {
     });
 };
 
+export const pimageDta = (pImages) => {
+    return new Promise((resolve, reject) => {
+        try {
 
+            const formData = new FormData();
+            pImages.forEach((image) => {
+                formData.append('new_pImages', image, image.name);
+            });
+            resolve(formData);
+        } catch (error) {
+            console.error('Error in pimageDta:', error);
+            reject(error);
+        }
+    });
+};
+export const uimageDta = (uImages) => {
+    return new Promise((resolve, reject) => {
+        try {
+
+            const formData = new FormData();
+            uImages.forEach((imageObj) => {
+                // formData.append('id', image.id);
+                imageObj.unitImages.forEach((image) => {
+                    formData.append('new_uImages', image, imageObj.id);
+                })
+                // formData.append('new_uImages', image.unitImages, image.id);
+            });
+            resolve(formData);
+        } catch (error) {
+            console.error('Error in uimageDta:', error);
+            reject(error);
+        }
+    });
+};
 
