@@ -82,23 +82,19 @@
   
   .brRating{
     display: flex;
-    justify-content: space-between
+    justify-content: space-between;
+    align-self: flex-end;
   }
+  
+ 
   
   .brRating > span {
-    font-weight: 500;
-    margin-top: 14  px;
-    margin-left: 45px; /* Adjust right margin */
-  }
-  
-  .brRating > a {
-    background-color: #003580;
-    color: white;
     padding: 5px;
     font-weight: bold;
     border: none;
     margin-top: 10px;
     border-radius: 5px;
+    cursor: pointer;
     /* margin-right: 10px; Adjust left margin */
   }
   

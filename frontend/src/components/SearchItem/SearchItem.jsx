@@ -47,8 +47,7 @@ const SearchItem = ({ properties }) => {
           </div>
         <div className="brDetails">
           <div className="brRating">
-            <span>Excellent</span>
-            <a>8.9</a>
+            <span className="material-symbols-outlined">favorite</span>
           </div>
           <div className="brDetailTexts">
             {/*<span className="brPrice">$112</span>*/}

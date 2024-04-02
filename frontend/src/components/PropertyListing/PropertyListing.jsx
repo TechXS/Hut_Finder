@@ -9,7 +9,7 @@
     // Format image data for the Carousel component
     const carouselData = unit && unit.images && unit.images.map((url) => ({
       src: url,
-      alt:  unitTypes[unit.type].type ,
+      alt:  unitTypes[unit.type].type , 
     }));
   
     return (
