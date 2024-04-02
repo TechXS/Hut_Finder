@@ -1,3 +1,4 @@
+
 import "./PropertEditPage.css";
 import Navbar from "../../components/NavBar/NavBar";
 import PropertyListing from "../../components/PropertyListing/PropertyListing"
