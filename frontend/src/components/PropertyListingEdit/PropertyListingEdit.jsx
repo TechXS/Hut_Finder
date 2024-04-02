@@ -75,8 +75,6 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
     submitForm: () => {
         //put submit logic here
 
-        // updatedUnit(unitObj);
-
       console.log('ello govner')
       
     },
@@ -91,12 +89,7 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
           _id: unit._id, 
           amenities: addedAmenities
         }))  
-      } 
-      // setUnitObj((prevUnit)=>({
-      //   ...prevUnit,
-      //   _id: unit._id, 
-      //   amenities: addedAmenities
-      // }))      
+      }     
     })()
 }, [addedAmenities]);
 
@@ -106,10 +99,10 @@ const PropertyListingEdit = forwardRef(( props ,ref) => {
     console.log('addedAmenities\n', addedAmenities)
     console.log()
     console.log('unitObj\n', unitObj)
-    if (unitObj){
+    if (Object.keys(unitObj).length > 0) {
       updatedUnit(unitObj);
+      console.log('unitObjNot empty\n', unitObj)
     }
-    // updatedUnit(unitObj);
     updateUnitPhotos(unitPhotos);
   }
 

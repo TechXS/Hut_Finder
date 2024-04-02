@@ -242,10 +242,6 @@ useEffect(() => {
 
 useEffect(()=> {
   (async () => {
-    // const pImageData = new FormData();
-    // pIMages.forEach((image) => {
-    //   pImageData.append("new_pImages", image, image.name);
-    // });
   if(submitImage && pIMages.length > 0){  
     try {  
       console.log('pIMages\n', pIMages)
@@ -266,20 +262,13 @@ useEffect(()=> {
 
 useEffect(()=> {
   (async () => {
-    // const pImageData = new FormData();
-    // pIMages.forEach((image) => {
-    //   pImageData.append("new_pImages", image, image.name);
-    // });
   if(submitImage && uImages.length > 0){  
     try {  
       console.log('uIMages\n', uImages)
       const uImageData = await uimageDta(uImages);
       for (var pair of uImageData.entries()) {
-        console.log(pair[0]+ ', ' + pair[1]+ ', ' + pair[2]);
+        console.log(pair[0]+ ', ' + pair[1]);
       }
-      // uImageData.forEach((image) => {
-      //   console.log('image id\n', image[2])
-      // })
       console.log('uImageData\n', uImageData)
       const uploadedUnitImages = await uploadUnitImage({
         payload: uImageData
@@ -311,15 +300,8 @@ useEffect(()=> {
     imageUploadRef1.current.submitForm();
     setsubmitImage(true)
     console.log('addedAmenities\n', addedAmenities)
-    //send form data images and other object  to the database
-    // const unitUpdates = editedUnitDets.forEach(async (unit) => {
-    //   const updatedUnit = await updateUnit({
-    //     id: unit._id, 
-    //     payload: unit}).unwrap();
-    //   console.log('updated unit\n', updatedUnit)
-    // })
     console.log('edited unit details\n', editedUnitDets)
-    if (editedUnitDets.length > 0){
+    if (editedUnitDets && typeof editedUnitDets === 'object' && Object.keys(editedUnitDets).length > 0){
       const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
         console.log('submitUnit', unit)
         const updatedUnit = await updateUnit({
@@ -330,17 +312,7 @@ useEffect(()=> {
         return updatedUnit;
     }));
       console.log('unit updates\n', unitUpdates)
-    }
-  //   const unitUpdates = await Promise.all(editedUnitDets.map(async (unit) => {
-  //     console.log('submitUnit', unit)
-  //     const updatedUnit = await updateUnit({
-  //         id: unit._id,
-  //         payload: {data: unit}
-  //     }).unwrap();
-  //     console.log('updated unit\n', updatedUnit);
-  //     return updatedUnit;
-  // }));
-  //   console.log('unit updates\n', unitUpdates)  
+    } 
     console.log('form data edit page\n', formData)
 
     if (formData){
@@ -350,12 +322,6 @@ useEffect(()=> {
       }).unwrap();
       console.log('updated property\n', updatedProperty)
     }
-
-    // const propertyUpdates = await updateProperty({
-    //   id: id, 
-    // payload: {data: formData}
-    // }).unwrap();
-    // console.log('property updates\n', propertyUpdates)
     setclicked(!clicked)
   }
 
