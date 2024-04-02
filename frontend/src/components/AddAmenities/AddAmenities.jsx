@@ -23,7 +23,14 @@ const AddAmenities = forwardRef((props, ref) => {
         // console.log(name , icon)
         setAmenity(prevAmenity => [...prevAmenity,{name:name , icon:icon}]) 
         console.log('amenitynnnn\n', amenity)
-        props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        // props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        if(props.addedAmenitiesHandler){
+            props.addedAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+        if(props.addedSpecialAmenitiesHandler){
+            props.addedSpecialAmenitiesHandler([...amenity,{name:name , icon:icon}])
+        }
+
     }
 
     useImperativeHandle(ref, ()=>({
@@ -57,9 +64,11 @@ const AddAmenities = forwardRef((props, ref) => {
             >
                 {amenities.map((amenit, index)=>(
                         <MenuItem value={amenit} key={index}>
-                            <ListItemIcon>
+                            <span
+                            className="material-symbols-outlined"
+                            >
                                 {amenit.icon}
-                            </ListItemIcon>
+                            </span>
                             <ListItemText>{amenit.name}</ListItemText>
                             {/* {handleIdset(amenit._id)} */}
                             </MenuItem>
@@ -76,10 +85,10 @@ const AddAmenities = forwardRef((props, ref) => {
                         <MenuItem
                             sx={{width:'10px'}}
                          value={amenit.name} key={index}>
-                            <ListItemIcon>
+                            <span className="material-symbols-outlined">
                                 {amenit.icon}
-                            </ListItemIcon>
-                            <ListItemText>{amenit.name}</ListItemText>
+                            </span>
+                            
                             </MenuItem>
                 ))}
         </Box>
