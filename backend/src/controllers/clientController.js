@@ -2,8 +2,27 @@ const Client = require('../models/clientModel')
 const {isValidObjectId,Types} = require("mongoose");
 const Property = require("../models/propertyModel");
 const Appointment = require("../models/appointmentModel");
-const Landlord = require('../models/landlordModel')
+const Landlord = require('../models/landlordModel');
+const mongoose = require('mongoose');
 const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
+
+
+
+const getWishlistProperties = async (req, res) => {
+    try {
+        const clientId = req.params.clientId;
+        const client = await Client.findById(clientId).populate('wishlist');
+        
+        if (!client) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        res.json(client.wishlist); // Assuming wishlist is an array of property IDs
+    } catch (error) {
+        console.error('Error fetching wishlist properties:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
 
 // add to wishlist
 const addToWishList = async (req, res) => {
@@ -53,75 +72,164 @@ const removeFromWishlist = async (req, res) => {
 }
 
 // create appointment
+// const createAppointment = async (req, res) => {
+//     try {
+//         const { data } = req.body;
+//         const { property, client, landlord, date } = data; // Extract data from request body
+//         //const landlord = await Landlord.findOne({ properties: data.property }).select("_id");
+//         // Create the appointment using the provided data
+//         if (!landlord) {
+//             return res.status(404).json({ message: "Landlord not found for the given property" });
+//         }
+
+//         //data.landlord = landlord._id;
+
+//         // Ensuring the required data is present in the request body
+//         if (!landlord || !property || !client || !date) {
+//             return res.status(400).json({ error: 'Missing required fields for appointment creation.' });
+//         }
+
+//         // Create the appointment using the provided data
+//         //const appointment = await Appointment.create(data);
+//         const appointment = await Appointment.create({
+//             property,
+//             client,
+//             landlord,
+//             date,
+//       });
+
+//         res.status(201).json(appointment);
+//     } catch (error) {
+//         console.error("Error creating appointment:", error);
+//         res.status(500).json({ message: 'Failed to create appointment.' ,error:error.message });
+//     }
+// };
 const createAppointment = async (req, res) => {
     try {
-        const { data } = req.body;
-        const landlord = await Landlord.findOne({ properties: data.property }).select("_id");
-        if (!landlord) {
-            return res.status(404).json({ message: "Landlord not found for the given property" });
-        }
-
-        data.landlord = landlord._id;
-
-        // Ensuring the required data is present in the request body
-        if (!data.landlord || !data.property || !data.client || !data.date) {
-            return res.status(400).json({ error: 'Missing required fields for appointment creation.' });
-        }
-
-        // Create the appointment using the provided data
-        const appointment = await Appointment.create(data);
-
-        res.status(201).json(appointment);
+      const { data } = req.body;
+      const { property, client, date } = data; // Extract data from request body
+  
+      // Find the landlords who own the given property
+      const landlords = await Landlord.find({ properties: property }).select("_id");
+      
+      if (!landlords || landlords.length === 0) {
+        return res.status(404).json({ message: "No landlords found for the given property" });
+      }
+  
+      // Assume the property has only one landlord for simplicity (modify as needed)
+      const landlord = landlords[0]._id;
+  
+      // Create the appointment using the provided data and the found landlord
+      const appointment = await Appointment.create({
+        property,
+        client,
+        landlord,
+        date,
+      });
+  
+      res.status(201).json(appointment);
     } catch (error) {
-        console.error("Error creating appointment:", error);
-        res.status(500).json({ message: 'Failed to create appointment.' ,error:error.message });
+      console.error("Error creating appointment:", error);
+      res.status(500).json({ message: "Failed to create appointment.", error: error.message });
     }
-};
-
+  };
+  
+  
+  
 // Get all properties
+// const getAllProperties = async (req, res) => {
+//     const { data } = req.body;
+//     let { location } = req.query;
+
+//     location = JSON.parse(location);
+
+//     try {
+//         let properties;
+//        if (location){
+//            properties = await Property.aggregate([
+//                {
+//                    "$geoNear": {
+//                        "near": {
+//                            "type": "Point",
+//                            "coordinates": [location.longitude, location.latitude]
+//                        },
+//                        "spherical": true,
+//                        "distanceField": "dis"
+//                    }
+//                },
+//                { "$sort": { "dis": 1 } },
+//                {
+//                    "$lookup": {
+//                        "from": "amenities",
+//                        "localField": "amenities",
+//                        "foreignField": "_id",
+//                        "as": "amenities"
+//                    }
+//                },
+//                {
+//                    "$lookup": {
+//                        "from": "units",
+//                        "localField": "units",
+//                        "foreignField": "_id",
+//                        "as": "units"
+//                    }
+//                }
+//            ]);
+//        }else {
+//            properties = await Property.find( {})
+//             .populate({ path: 'amenities', select: 'name icon' })
+//             .populate({ path: 'units', select: 'name vacancies type' });
+//        }
+//         res.status(200).json(properties);
+//     } catch (error) {
+//         console.error("Error getting properties:", error);
+//         res.status(500).json({ error: 'Failed to retrieve properties.' });
+//     }
+// };
+
 const getAllProperties = async (req, res) => {
-    const { data } = req.body;
-    let { location } = req.query;
-
-    location = JSON.parse(location);
-
     try {
         let properties;
-       if (location){
-           properties = await Property.aggregate([
-               {
-                   "$geoNear": {
-                       "near": {
-                           "type": "Point",
-                           "coordinates": [location.longitude, location.latitude]
-                       },
-                       "spherical": true,
-                       "distanceField": "dis"
-                   }
-               },
-               { "$sort": { "dis": 1 } },
-               {
-                   "$lookup": {
-                       "from": "amenities",
-                       "localField": "amenities",
-                       "foreignField": "_id",
-                       "as": "amenities"
-                   }
-               },
-               {
-                   "$lookup": {
-                       "from": "units",
-                       "localField": "units",
-                       "foreignField": "_id",
-                       "as": "units"
-                   }
-               }
-           ]);
-       }else {
-           properties = await Property.find( {})
-            .populate({ path: 'amenities', select: 'name icon' })
-            .populate({ path: 'units', select: 'name vacancies type' });
-       }
+        let { location } = req.query;
+
+        //Check if location is provided in the query
+        if (!location) {
+            properties = await Property.find({})
+                .populate({ path: 'amenities', select: 'name icon' })
+                .populate({ path: 'units', select: 'name vacancies type' });
+        } else {
+            location = JSON.parse(location);
+            properties = await Property.aggregate([
+                {
+                    "$geoNear": {
+                        "near": {
+                            "type": "Point",
+                            "coordinates": [location.longitude, location.latitude]
+                        },
+                        "spherical": true,
+                        "distanceField": "dis"
+                    }
+                },
+                { "$sort": { "dis": 1 } },
+                {
+                    "$lookup": {
+                        "from": "amenities",
+                        "localField": "amenities",
+                        "foreignField": "_id",
+                        "as": "amenities"
+                    }
+                },
+                {
+                    "$lookup": {
+                        "from": "units",
+                        "localField": "units",
+                        "foreignField": "_id",
+                        "as": "units"
+                    }
+                }
+            ]);
+        }
+
         res.status(200).json(properties);
     } catch (error) {
         console.error("Error getting properties:", error);
@@ -153,22 +261,39 @@ const getPropertyById = async (req, res) => {
     }
 };
 
-//get appointments
-const getAllAppointments = (req, res) => {
-    const { id } = req.params
-    console.log("id", id)
-    Appointment.find({ landlord: id })
-        .populate({ path: 'property', select: 'name location' })
-        .populate({ path: 'client', select: 'name email' })
-        .then((appointments) => {
-            console.log("appointments\n", appointments)
-            res.status(200).json({ message: "Appointments fetched successfully\n", appointments });
-        })
-        .catch((err) => {
-            console.log("Error:\n", err.message)
-            res.status(400).json({ error: "Error fetching appointments" });
-        });
-};
+
+// Get all appointments for a specific client
+const getAllAppointments =  async(req, res) => {
+    
+    try {
+        const { clientId } = req.params;
+        if (!isValidObjectId(clientId)) {
+            return res.status(400).json({ error: 'Client does not exist' });
+        }
+        // Query appointments associated with the client and populate property details
+        const appointments = await Appointment.find({ client: clientId })
+            .populate('property', 'name landlord')
+            .populate('landlord', 'phoneNumber') // Populate landlord details directly
+            .select('property date time status') // Select required fields
+            .lean(); // Convert to plain JavaScript objects
+
+        // Construct response with required fields
+        const populatedAppointments = appointments.map(appointment => ({
+            propertyName: appointment.property.name,
+            landlordPhoneNumber: appointment.landlord ? appointment.landlord.phoneNumber : 'N/A', // Check if landlord is populated
+            date: appointment.date,
+            time: appointment.time,
+            status: appointment.status,
+        }));
+
+        res.status(200).json(populatedAppointments);
+    } catch (error) {
+        console.error('Error fetching client appointments:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+    }
+    
+
 
 //update client
 const updateClient = (req, res) => {
@@ -243,4 +368,4 @@ const deleteImage = async (req, res) => {
     }
 }
 
-module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById,updateClient,uploadImage}
+module.exports = {getWishlistProperties,getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById,updateClient,uploadImage}

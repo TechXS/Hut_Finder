@@ -3,18 +3,35 @@ import  { useState } from 'react';
 import {setAppointmentDate,selectAppointmentDate} from "../../stores/clientSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
-const DateTimePicker = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+
+const DateTimePicker = ({value,onChange}) => {
+  const [selectedDate, setSelectedDate] = useState(value);
     const dispatch = useDispatch();
     const apointmentDate = useSelector(selectAppointmentDate)
 
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-    console.log(selectedDate)
-  };
+  // const handleDateChange = (date) => {
+  //   setSelectedDate(date);
+  //   console.log(selectedDate)
+  // };
     const handleInputChange = (event) => {
-        let {name, value} = event.target;
-        dispatch(setAppointmentDate({[name]: value}));
+      const { name, value } = event.target;
+      dispatch(setAppointmentDate({ [name]: value }));
+      if (name === "date") {
+        const newDate = new Date(value);
+        setSelectedDate(newDate);
+        onChange(newDate); // Notify parent component of the change
+      }
+      else if (name === "time") {
+        const newTime = value.split(":");
+        setSelectedDate((value) => {
+          const newDateTime = new Date(value);
+          newDateTime.setHours(parseInt(newTime[0], 10));
+          newDateTime.setMinutes(parseInt(newTime[1], 10));
+          return newDateTime;
+        });
+        onChange(selectedDate); // Notify parent component of the change
+      }
+      
     };
 
 
@@ -26,7 +43,7 @@ const DateTimePicker = () => {
         id="date-input"
         type="date"
         name={"date"}
-        value={apointmentDate?.date ?? new Date().toISOString().slice(0, 10)}
+        value={selectedDate.toISOString().slice(0, 10)}
         onChange={handleInputChange}
       />
       <label htmlFor="time-input">Select Time:</label>
@@ -34,7 +51,7 @@ const DateTimePicker = () => {
         id="time-input"
         type="time"
         name={"time"}
-        value={apointmentDate?.time ?? new Date().toTimeString().slice(0, 5)}
+        value={selectedDate.toTimeString().slice(0, 5)}
         onChange={handleInputChange}
       />
     </div>

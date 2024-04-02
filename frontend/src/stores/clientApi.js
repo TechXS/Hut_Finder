@@ -53,9 +53,19 @@ export const clientApi = createApi({
         addToWishList: builder.mutation({
             query: ({id,property_id, payload}) => ({
                 url: `${id}/wishlist/${property_id}`,
-                method: "PATCH",
+                method: "POST",
                 body: payload,
+                
             }),
+        }),
+        getWishlistProperties: builder.query({
+            query: (id) => {
+                return { url: `${id}/wishlist` }; // Assuming this endpoint returns the wishlist properties for the given user ID
+            },
+            transformResponse: async (response) => {
+                // Perform any necessary transformation on the wishlist properties response
+                return response;
+            },
         }),
         removeFromWishlist: builder.mutation({
             query: ({id,property_id, payload}) => ({
@@ -73,5 +83,6 @@ export const {
     useGetAppointmentsQuery,
     useCreateAppointmentMutation,
     useAddToWishListMutation,
-    useRemoveFromWishlistMutation
+    useRemoveFromWishlistMutation,
+    useGetWishlistPropertiesQuery
 } = clientApi;

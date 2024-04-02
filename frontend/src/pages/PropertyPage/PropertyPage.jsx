@@ -1,8 +1,4 @@
 import "./propertyPage.css";
-import Navbar from "../../components/NavBar/NavBar";
-import PropertyListing from "../../components/PropertyListing/PropertyListing"
-import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
-import "./propertyPage.css";
 import {useEffect, useState} from "react";
 import DateTimePicker from "../../components/DateTimePicker/DateTimePicker";
 import {useCreateAppointmentMutation, useGetPropertiesQuery, useGetPropertyQuery} from "../../stores/clientApi.js";
@@ -12,16 +8,25 @@ import {handleReverseGeocode} from "../../utils/geocode.js";
 import {selectAppointmentDate, setSignupError} from "../../stores/clientSlice.js";
 import {setForgotPassSuccess} from "../../stores/landlordSlice.js";
 import {signUpValidation} from "../../utils/formValidation.js";
-import {setErrorNotification} from "../../stores/notificationSlice.js";
+
 import {useSignUpClientMutation} from "../../stores/authApi.js";
-import LoadingButton from "@mui/lab/LoadingButton";
 import {selectCurrentClient} from "../../stores/clientSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 import { selectCurrentProperty } from "../../stores/propertySlice";
+import {setErrorNotification} from "../../stores/notificationSlice.js";
+import {Box,CircularProgress} from "@mui/material";
+import Navbar from "../../components/NavBar/NavBar";
+import PropertyListing from "../../components/PropertyListing/PropertyListing"
+import PropertyHeader from "../../components/PropertyHeader/PropertyHeader"
+import "./propertyPage.css";
+
+
+import LoadingButton from "@mui/lab/LoadingButton";
+
 
 const PropertyPage = () => {
   const client = useSelector(selectCurrentClient);
-  const appointmentDate = useSelector(selectAppointmentDate);
+  //const appointmentDate = useSelector(selectAppointmentDate);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [slideNumber, setSlideNumber] = useState(0);
@@ -30,6 +35,9 @@ const PropertyPage = () => {
   const [location,setLocation] = useState({});
   const { data: property, error, } = useGetPropertyQuery({property_id});
   const [createAppointment, {data: response, isLoading}] = useCreateAppointmentMutation();
+  
+  
+  const [appointmentDate, setAppointmentDate] = useState(new Date());
 
   const photos = property?.images
 
@@ -73,25 +81,89 @@ const PropertyPage = () => {
 
   }, [property]);
 
-  const handleSubmit = async (event) => {
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //       console.log(appointmentDate)
+  //     if (!client._id){return navigate("/auth/signin/client")}
+
+  //    //Check if appointment date is selected
+  //    if (!appointmentDate) {
+  //      return dispatch(setErrorNotification("Please select an appointment date."));
+  //    }
+  //    setAppointmentDate()
+  //    // Extract date and time from the selected appointmentDate
+     
+
+  //    const formData = {
+  //      date: appointmentDate(),
+  //      property: property._id,
+  //      client: client._id,
+  //    };
+
+
+  //     //const formData = {...appointmentDate}
+  //     //formData.property = property._id
+  //     //formData.client = client._id
+  //     //
+  //     console.log(formData)
+      
+    
+
+  //     //const appointmentData = await createAppointment({id:client._id,payload:{data: formData}}).unwrap();
+  //     // navigate("/auth/signin/client");
+  //     //console.log("Appointment created:", appointmentData);
+  //   } catch (e) {
+  //     // console.error(e.data.message);
+  //     // dispatch(setSignupError(e.data.message));
+  //     dispatch(setErrorNotification(e?.data?.message ?? e.error));
+  //   }
+  // };
+  
+  const handleSubmit = async(event) => {
     event.preventDefault();
     try {
-        console.log(appointmentDate)
-      if (!client._id){return navigate("/auth/signin/client")}
-
-      const formData = {...appointmentDate}
-      formData.property = property._id
-      formData.client = client._id
-      console.log(formData)
-      const appointmentData = await createAppointment({id:client._id,payload:{data: formData}}).unwrap();
-      // navigate("/auth/signin/client");
-      console.log(appointmentData);
-    } catch (e) {
-      // console.error(e.data.message);
-      // dispatch(setSignupError(e.data.message));
-      dispatch(setErrorNotification(e?.data?.message ?? e.error));
+      // Check if the client is logged in
+      if (!client?._id) {
+        return navigate("/auth/signin/client");
+      }
+  
+      // Check if appointment date is selected
+      if (!appointmentDate) {
+        return dispatch(setErrorNotification("Please select an appointment date."));
+      }
+  //setAppointmentDate(appointmentDate.toISOString())
+      // Extract date and time from the selected appointmentDate
+      const formData = {
+        date: appointmentDate.toISOString(), // Convert date to ISO string format
+        property: property?._id,
+        client: client?._id,
+      };
+  
+      // Log the form data
+      console.log("Form Data:", formData);
+  
+      // Create the appointment
+      const appointmentData = await createAppointment({id:client._id, payload:{data: formData} }).unwrap();
+      
+      console.log("Appointment created:", appointmentData);
+  
+      // Reset the appointment date state
+      setAppointmentDate(new Date());
+      
+      // Navigate or perform any other actions upon successful appointment creation
+      // navigate("/success"); // Example navigation to a success page
+    } catch (error) {
+      console.error("Error creating appointment:", error);
+      dispatch(setErrorNotification(error?.data?.message ?? "Failed to create appointment."));
     }
+    
   };
+  // Handle appointment date change
+  const handleAppointmentDateChange = (date) => {
+    dispatch(setAppointmentDate(date)); // Update appointmentDate state
+  };
+  
   return (
     <div>
       <Navbar />
@@ -212,18 +284,20 @@ const PropertyPage = () => {
                 Top Location: Highly rated by recent guests (8.7/10).
               </span>
                     <div className="date">
-                      <DateTimePicker/>
+                      <DateTimePicker value={appointmentDate} onChange={handleAppointmentDateChange}/>
                     </div>
                     <LoadingButton
                         loading={isLoading}
                         loadingPosition="end"
+                        endIcon={isLoading?<CircularProgress/>:<Box/> }
                         type="submit"
                         fullWidth
                         variant="contained"
                         sx={{mt: 3, mb: 2 ,textTransform:"none"}}
 
                     >
-                      Reserve or Book Now!
+                      
+                      {isLoading ? "Creating Appointment" : "Reserve or Book Now!"}
                     </LoadingButton>
                   </form>
                 </div>
