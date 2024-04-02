@@ -344,7 +344,7 @@ const uploaduImage = async (req, res) => {
         console.log('id:', id)
         if (!isValidObjectId(id)) {
             console.log('error in unint id:', id);
-            return res.status(400).json({error: "Not Valid Unit ID"});
+            return res.status(400).json({error: "Not Valid Uniiiiiit ID"});
         }
         let uImageArray = [];
         try {
@@ -370,6 +370,8 @@ const uploaduImage = async (req, res) => {
         })
     }
     if (imageUploadPromises.length > 0){
+        console.log('promises lenght:', imageUploadPromises.length)
+        console.log('uimages length:', uimages.length)
         res.status(200).json({message: "Unit image uploaded successfully"});
     }
     // Promise.all(imageUploadPromises)
@@ -404,7 +406,7 @@ const deleteUnitImage = async (req, res) => {
         res.status(400).json({error: "Error deleting unit image"});
     })
 }
-
+ 
 module.exports = {
     createProperty, 
     updateProperty, 
