@@ -166,7 +166,7 @@ const getAllAppointments = (req, res) => {
         })
         .catch((err) => {
             console.log("Error:\n", err.message)
-            res.status(400).json({ error: "Error fetching appointments" });
+            res.status(400).json({ error: "Er// Extract amenity names from the request bodyror fetching appointments" });
         });
 };
 
@@ -240,7 +240,35 @@ const deleteImage = async (req, res) => {
     } catch (error) {
         console.error('Error deleting image:', error);
         res.status(500).json({ error: 'Failed to delete image.' });
-    }
+    } 
 }
 
-module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById,updateClient,uploadImage}
+const addFavouriteamenity = async (req,res)=>{
+    try {
+    
+        // Extract client ID from the request parameters
+        const { clientId } = req.params;
+    
+        // Extract amenity names from the request body
+        const { amenityNames } = req.body;
+    
+        // Find the client document in the database based on the extracted client ID
+        const existingClient = await Client.findById(clientId);
+    
+        // Append new amenity names to the existing list of amenities associated with the client
+        existingClient.Aiamenities.push(...amenityNames);
+    
+        // Save the updated client document back to the database
+        const updatedClient = await existingClient.save();
+    
+        // Respond with success message and updated client data
+        res.status(201).json({ message: 'Amenities added successfully', client: updatedClient });
+      } catch (error) {
+        // Handle errors
+        console.error('Error saving amenities to database:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+}
+
+
+module.exports = {getAllAppointments,addToWishList,removeFromWishlist,createAppointment,getAllProperties,getPropertyById,updateClient,uploadImage,addFavouriteamenity}

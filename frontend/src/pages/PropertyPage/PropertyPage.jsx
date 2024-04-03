@@ -32,11 +32,19 @@ const PropertyPage = () => {
   const [createAppointment, {data: response, isLoading}] = useCreateAppointmentMutation();
 
   const photos = property?.images
-
+  const amenities = property?.amenities
   const handleOpen = (i) => {
     setSlideNumber(i);
     setOpen(true);
   };
+
+  function extractAmenityNames(amenitiess){
+        const amenityNames= [];
+        for (const amenity of amenitiess){
+          amenityNames.push(amenity.name);
+        }
+        return amenityNames
+  }
 
   const handleMove = (direction) => {
     let newSlideNumber;
@@ -92,6 +100,42 @@ const PropertyPage = () => {
       dispatch(setErrorNotification(e?.data?.message ?? e.error));
     }
   };
+
+
+  const handleAddWish= async ()=>{
+    try{
+
+      const amenityNames =extractAmenityNames(amenities)
+      console.log(amenityNames)
+      const backendEndpoint = `http://localhost:5000/api/client/wishlist/${client._id}/`;
+      const requestData = {
+        amenityNames: amenityNames
+      };
+  
+      const response = await fetch(backendEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      });
+  
+      // Check if the request was successful
+      if (!response.ok) {
+        throw new Error('Failed to send amenity names to backend');
+      }
+  
+      // Log the response from the backend
+      const responseData = await response.json();
+      console.log('Response from backend:', responseData);
+    
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error('Error sending amenity names to backend:', error);
+    // You can dispatch an error notification or handle the error as needed
+  }
+  
+  }
   return (
     <div>
       <Navbar />
@@ -214,17 +258,36 @@ const PropertyPage = () => {
                     <div className="date">
                       <DateTimePicker/>
                     </div>
+                    <div style={{
+                      display:'flex',
+                      justifyContent:'center',
+                      alignItems:'center',
+
+                    }}>
                     <LoadingButton
                         loading={isLoading}
                         loadingPosition="end"
                         type="submit"
                         fullWidth
                         variant="contained"
-                        sx={{mt: 3, mb: 2 ,textTransform:"none"}}
-
+                        sx={{mt: 3, mb: 2 ,textTransform:"none",marginRight:1}}
+                      
                     >
-                      Reserve or Book Now!
+                       Book Now!
                     </LoadingButton>
+                    <LoadingButton
+                        loading={isLoading}
+                        loadingPosition="end"
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{mt: 3, mb: 2 ,textTransform:"none",marginLeft:1}}
+                      onClick={handleAddWish}
+                    >
+                      Add to Wish
+                    </LoadingButton>
+
+                    </div>
                   </form>
                 </div>
               </div>

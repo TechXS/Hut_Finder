@@ -66,7 +66,11 @@ const clientSchema = new Schema(
         reviews: [{
             type: Schema.Types.ObjectId,
             ref: "review",
-        }]
+        }],
+        Aiamenities:{
+            type:[String],
+            ref: 'Aiamenities'
+        }
     },
     {timestamps: true}
 );
