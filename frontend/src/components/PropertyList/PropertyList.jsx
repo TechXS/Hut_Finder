@@ -21,7 +21,9 @@ const PropertyList = ( { filterCondition, search } ) => {
       filteredProperties = properties.filter((property) =>
       filterCondition.length > 0
         ? filterCondition.every((filterCriteria) =>
-            property.amenities.map((amenity) => amenity.name).includes(filterCriteria)
+          property.amenities.map((amenity) => amenity.name).includes(filterCriteria),
+          // property.units.map((unit) => unit.type).includes(filterCriteria)
+          // }
           )
         : properties
     );
@@ -32,6 +34,7 @@ const PropertyList = ( { filterCondition, search } ) => {
     }
 
       setFilteredProperties(filteredProperties);
+      console.log("filteredProperties", filteredProperties);
     }
   }, [properties, filterCondition, search]);
 
