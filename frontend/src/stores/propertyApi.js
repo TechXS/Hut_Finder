@@ -24,6 +24,15 @@ export const propertyApi = createApi({
                 return {url: `${id}`};
             },
         }),
+        // Add a new endpoint to fetch nearby places based on property location
+        getNearbyPlacesOfProperty: builder.query({
+            query: (id) => {
+                return { url: `${id}` }; // This will use the property ID to fetch nearby places
+            },
+            transformResponse: (response) => {
+                return response; // No transformation needed as we are directly returning the response
+            },
+        }),
         getUnitsOfProperty: builder.query({
             query: (id) => {
                 return {url: `client/${id}`};
@@ -61,5 +70,6 @@ export const {
     useCreatePropertyMutation,
     useUpdatePropertyMutation,
     useDeletePropertyMutation,
-    useGetPropertyQuery
+    useGetPropertyQuery,
+    useGetNearbyPlacesOfPropertyQuery
 } = propertyApi;
