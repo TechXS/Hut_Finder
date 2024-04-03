@@ -370,7 +370,7 @@ export const wishlistItems = [
 export const clientAppointmentsData = [
     {
         name: 'MIMO APARTMENTS',
-        unit: 'Bedsitter',
+        
         phonenumber: '+2547789953',
         date: '21/06/2023',
         time: '14:00',
@@ -378,7 +378,7 @@ export const clientAppointmentsData = [
     },
     {
         name: 'MKB2 COMPLEX',
-        unit: 'Bedsitter',
+        
         phonenumber: '+2547789953',
         date: '18/05/2023',
         time: '14:00',
@@ -386,7 +386,7 @@ export const clientAppointmentsData = [
     },
     {
         name: 'JUJA APARTMENTS',
-        unit: '2 Bedroom',
+        
         phonenumber: '+2547789953',
         date: '21/04/2023',
         time: '14:00',
@@ -394,7 +394,7 @@ export const clientAppointmentsData = [
     },
     {
         name: 'TIFA APARTMENTS',
-        unit: 'Bedsitter',
+        
         phonenumber: '+2547789953',
         date: '21/03/2023',
         time: '14:00',
@@ -402,7 +402,7 @@ export const clientAppointmentsData = [
     },
     {
         name: 'MREEVES COMPLEX',
-        unit: 'Bedsitter',
+        
         phonenumber: '+2547789953',
         date: '21/02/2023',
         time: '14:00',

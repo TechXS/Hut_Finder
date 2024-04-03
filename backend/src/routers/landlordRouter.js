@@ -13,7 +13,15 @@ const {
     updateUnit
 } = require("../controllers/landlordController");
 
-const {createProperty, deleteProperty, updateProperty, uploadpImage, deleteImage} = require("../controllers/propertyController");
+const {
+    createProperty, 
+    deleteProperty, 
+    updateProperty, 
+    uploadpImage, 
+    deleteImage,
+    deleteUnitImage,
+    uploaduImage
+} = require("../controllers/propertyController");
 const upload = require("../middlewares/upload");
 const router = Router();
 
@@ -22,6 +30,9 @@ const router = Router();
   
 //post
 router.post('/image/:id', upload.single('hutFinder-profileImages'), uploadImage);
+router.post('/unit/image', upload.fields([
+    {name: 'new_uImages', maxCount: 50}
+]), uploaduImage);
 router.post('/:id', upload.fields([
     {name: 'propertyImages', maxCount: 10},
     {name: 'unitImages', maxCount: 50},
@@ -31,9 +42,11 @@ router.post('/:id/property/image', upload.fields([
 ]), uploadpImage);
 
 
+
 //delete
 router.delete('/:id', deleteProperty);
 router.delete('/:id/property/image', deleteImage);
+router.delete('/:id/unit/images', deleteUnitImage);
 
 
 //patch

@@ -46,6 +46,13 @@ export const landlordApi = createApi({
                 body: payload,
             }),
         }),
+        uploadUnitImage: builder.mutation({
+            query: ({payload}) => ({
+                url: `unit/image`,
+                method: "POST",
+                body: payload,
+            }),
+        }),
         updateProperty: builder.mutation({
             query: ({id, payload}) => ({
                 url: `${id}/property`,
@@ -74,6 +81,13 @@ export const landlordApi = createApi({
                 body: payload,
             }),
         }),
+        deleteUnitImage: builder.mutation({
+            query: ({id, payload}) => ({
+                url: `${id}/unit/images`,
+                method: "DELETE",
+                body: payload,
+            }),
+        }),
         getAllAmenities: builder.query({
             query: () => {
                 return {url: `amenities`};
@@ -88,9 +102,11 @@ export const {
     useGetAppointmentsQuery,
     useCreatePropertyMutation,
     useUploadImageMutation,
+    useUploadUnitImageMutation,
     useUpdatePropertyMutation,
     useDeletePropertyMutation,
     useDeleteImageMutation,
+    useDeleteUnitImageMutation,
     useGetAllAmenitiesQuery,
     useUpdateUnitMutation,
 } = landlordApi;
