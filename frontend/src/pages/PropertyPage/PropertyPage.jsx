@@ -22,6 +22,7 @@ import "./propertyPage.css";
 
 
 import LoadingButton from "@mui/lab/LoadingButton";
+import AnchorTemporaryDrawer from "../../components/NearbyPlaces/Nearplaces.jsx";
 
 
 const PropertyPage = () => {
@@ -269,6 +270,7 @@ const PropertyPage = () => {
                           {/*  <span className="material-symbols-outlined">balcony</span>*/}
                           {/*  <span>Balcony</span>*/}
                           {/*</div>*/}
+                          <AnchorTemporaryDrawer propertyId={property_id}/>
                         </div>
                       </div>
                     </div>
