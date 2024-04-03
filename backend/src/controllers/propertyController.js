@@ -4,6 +4,63 @@ const Amenity = require('../models/amenityModel');
 const Unit = require('../models/unitModel');
 const {isValidObjectId} = require("mongoose");
 const { uploadToCloudinary, removeFromCloudinary } = require("../services/cloudinary");
+const axios = require('axios');
+
+
+const getNearbyPlaces = async (req, res) => {
+    try {
+        const { propertyID } = req.params;
+
+        // Find the property by ID to get its location
+        const property = await Property.findById(propertyID);
+        if (!property) {
+            return res.status(404).json({ error: 'Property not found' });
+        }
+
+        // Extract the property location coordinates and format it as '-33.8670522,151.1957362'
+        const location = `${property.location.coordinates[1]},${property.location.coordinates[0]}`;
+
+        // Configure the options object with the updated location parameter
+        const options = {
+            method: 'GET',
+            url: 'https://map-places.p.rapidapi.com/nearbysearch/json',
+            params: {
+                location: location,
+                radius: '500',
+                keyword: '',
+                type: 'social'
+            },
+            headers: {
+                'X-RapidAPI-Key': 'f88471ee74msh917767dc552c59bp1f11ebjsn308896a9244a',
+                'X-RapidAPI-Host': 'map-places.p.rapidapi.com'
+            }
+        };
+
+        // Make the request to the RapidAPI service
+        const response = await axios.request(options);
+
+        // Extract only the desired fields from each result
+        const simplifiedResults = response.data.results.map(result => ({
+            name: result.name,
+            business_status: result.business_status,
+            open_now: result.opening_hours ? result.opening_hours.open_now : 'N/A',
+            photos: result.photos ? result.photos.map(photo => {
+                // Construct URL for each photo using photo_reference
+                return `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo.photo_reference}&key=f88471ee74msh917767dc552c59bp1f11ebjsn308896a9244a`;
+            }) : [],
+            vicinity: result.vicinity,
+            types:result.types,
+            icon:result.icon
+        }));
+
+        res.status(200).json(simplifiedResults);
+    } catch (error) {
+        console.error('Error fetching nearby places:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
 
 //Create property
 const createProperty = async (req, res) => {
@@ -351,4 +408,4 @@ const deleteImage = async (req, res) => {
     })
 }
 
-module.exports = {createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage}
+module.exports = {getNearbyPlaces,createProperty, updateProperty, deleteProperty,createAmenity,uploadpImage,deleteImage}
