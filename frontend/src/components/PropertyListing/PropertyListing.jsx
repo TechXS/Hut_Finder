@@ -29,7 +29,7 @@
               <div className="listing-features">
                 {
                   unit?.special_amenities?.map((special_amenity, index) => (
-                      <div className="feature">{special_amenity.name}</div>
+                      <div className="feature" key={index}>{special_amenity.name}</div>
                   ))
                 }
               </div>
