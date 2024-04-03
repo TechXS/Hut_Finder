@@ -180,7 +180,7 @@ const PropertyPage = () => {
 
       const amenityNames =extractAmenityNames(amenities)
       console.log(amenityNames)
-      const backendEndpoint = `http://localhost:5000/api/client/wishlist/${client._id}/`;
+      const backendEndpoint = `${import.meta.env.VITE_BACKEND_API_URL}/api/client/wishlist/${client._id}/`;
       const requestData = {
         amenityNames: amenityNames
       };
@@ -278,42 +278,6 @@ const PropertyPage = () => {
                                 </div>
                             ))
                           }
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">local_florist</span>*/}
-                          {/*  <span>Garden</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">wifi</span>*/}
-                          {/*  <span>Wifi</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">bathtub</span>*/}
-                          {/*  <span>Washrooms</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">local_parking</span>*/}
-                          {/*  <span>Parking</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">visibility</span>*/}
-                          {/*  <span>View</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">smoke_free</span>*/}
-                          {/*  <span>Smoke Free</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">fitness_center</span>*/}
-                          {/*  <span>Gym</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">pool</span>*/}
-                          {/*  <span>Pool</span>*/}
-                          {/*</div>*/}
-                          {/*<div className="iconWithText">*/}
-                          {/*  <span className="material-symbols-outlined">balcony</span>*/}
-                          {/*  <span>Balcony</span>*/}
-                          {/*</div>*/}
                           <AnchorTemporaryDrawer propertyId={property_id}/>
                         </div>
                       </div>
